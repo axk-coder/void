@@ -15,5 +15,7 @@
 - [x] Task 13: Update catalog in src/main.js and test all newly added games
 - [x] Task 14: Build production dist and push commit to GitHub repository
 - [x] Task 15: Configure GitHub Actions Pages workflow (.github/workflows/deploy.yml) and push to master
+- [x] Task 16: Scrape 559 games from Truffled, add Truffled category tab, and integrate thumbnails
+
 
 

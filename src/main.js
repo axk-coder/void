@@ -7,8 +7,9 @@ import { SettingsModal, CLOAKS } from './components/SettingsModal.js';
 import { LegalModal } from './components/LegalModal.js';
 import { CreditsModal } from './components/CreditsModal.js';
 import { GamePlayer } from './components/GamePlayer.js';
+import truffledGames from './data/truffledGames.json';
 
-const games = [
+const builtInGames = [
   { id: '2048', title: '2048', category: 'puzzle', url: './games/2048/index.html' },
   { id: 'snake', title: 'Snake', category: 'arcade', url: './games/snake/index.html' },
   { id: 'tetris', title: 'Tetris', category: 'puzzle', url: './games/tetris/index.html' },
@@ -29,8 +30,11 @@ const games = [
   { id: 'wordle', title: 'Word Guess', category: 'puzzle', url: './games/wordle/index.html' }
 ];
 
+const games = [...builtInGames, ...truffledGames];
+
 const CATEGORIES = [
   { id: 'all', name: 'All Games' },
+  { id: 'truffled', name: 'Truffled' },
   { id: 'action', name: 'Action' },
   { id: 'arcade', name: 'Arcade' },
   { id: 'puzzle', name: 'Puzzle' },
@@ -327,7 +331,14 @@ class VoidApp {
 
       const thumb = document.createElement('div');
       thumb.className = 'game-card-thumb';
-      thumb.innerHTML = `<span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono);">${this.escapeHtml(game.title)}</span>`;
+      if (game.thumbnail) {
+        thumb.innerHTML = `
+          <img src="${this.escapeHtml(game.thumbnail)}" class="game-card-img" loading="lazy" alt="" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+          <span class="game-card-fallback" style="display: none;">${this.escapeHtml(game.title)}</span>
+        `;
+      } else {
+        thumb.innerHTML = `<span class="game-card-fallback">${this.escapeHtml(game.title)}</span>`;
+      }
 
       const body = document.createElement('div');
       body.className = 'game-card-body';

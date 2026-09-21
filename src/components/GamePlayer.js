@@ -41,7 +41,7 @@ export class GamePlayer {
           </div>
         </div>
         <div class="player-frame-container" id="player-frame-container">
-          <iframe id="game-frame" class="game-frame" src="${this.escapeHtml(this.currentGame.url)}" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" allow="fullscreen; autoplay; gamepad"></iframe>
+          <iframe id="game-frame" class="game-frame" src="${this.escapeHtml(this.currentGame.url)}" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-downloads allow-modals" allow="fullscreen; autoplay; gamepad"></iframe>
         </div>
       </section>
     `;
@@ -89,7 +89,7 @@ export class GamePlayer {
         frame.style.position = 'fixed';
         frame.style.top = '0';
         frame.style.left = '0';
-        frame.sandbox = 'allow-scripts allow-same-origin allow-forms allow-pointer-lock';
+        frame.sandbox = 'allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-downloads allow-modals';
         frame.allow = 'fullscreen; autoplay; gamepad';
         frame.src = this.currentGame.url;
         doc.body.style.margin = '0';
