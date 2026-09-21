@@ -45,4 +45,5 @@
 - [x] Task 45: Verify build in both VOID and msg app, verify exploit protection with private permissions, and push changes to GitHub
 - [x] Task 46: Make top navbar Pulse button hidden by default and toggle its visibility using the configured shortcut keybind (default: "]" and "}")
 - [x] Task 47: Implement pulse://file parsing, media embeds (images, video, audio, files), download handler, and file upload composer in Mini Pulse
+- [x] Task 48: Add clipboard image paste and drag-and-drop file uploading support to Mini Pulse
 

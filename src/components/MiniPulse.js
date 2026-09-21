@@ -525,6 +525,44 @@ export class MiniPulse {
       }
     });
 
+    input?.addEventListener('paste', async (e) => {
+      const items = e.clipboardData && e.clipboardData.items;
+      if (!items) return;
+
+      const pastedFiles = [];
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (file) {
+            let finalName = file.name;
+            if (!finalName || finalName === 'image.png' || finalName === 'blob') {
+              const ext = (file.type ? file.type.split('/')[1] : 'png') || 'png';
+              finalName = `pasted_image_${Date.now()}.${ext}`;
+            }
+            const namedFile = new File([file], finalName, { type: file.type || 'image/png' });
+            pastedFiles.push(namedFile);
+          }
+        }
+      }
+      if (pastedFiles.length > 0) {
+        e.preventDefault();
+        await this.handleFileUpload(pastedFiles);
+      }
+    });
+
+    const panel = document.getElementById('mini-pulse-panel');
+    panel?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+    panel?.addEventListener('drop', (e) => {
+      const files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files.length > 0) {
+        e.preventDefault();
+        this.handleFileUpload(files);
+      }
+    });
+
     const sendBtn = document.getElementById('mp-send-btn');
     sendBtn?.addEventListener('click', () => {
       this.handleSend();
