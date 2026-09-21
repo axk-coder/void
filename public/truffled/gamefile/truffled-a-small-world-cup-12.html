@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<base href="https://snoopylovestruffle.getinspiredflight.com/gamefile/">
+
 	
 <style type="text/css">
 /* Disable all scrolling */
@@ -96,14 +98,11 @@ html, body {
 	});
 	</script>
 	
-	<!-- The canvas must be inside a div called c2canvasdiv -->
+	
 	<div id="c2canvasdiv">
-		<!-- The canvas the project will render to.  If you change its ID, don't forget to change the
-		ID the runtime looks for in the jQuery events above (ready() and cr_sizeCanvas()). -->
+		
 		<canvas id="c2canvas">
-			<!-- This text is displayed if the visitor's browser does not support HTML5.
-			You can change it, but it is a good idea to link to a description of a browser
-			and provide some links to download some popular HTML5-compatible browsers. -->
+			
 			<h1>Your browser does not appear to support HTML5.  Try upgrading your browser to the latest version.  <a href="">What is a browser?</a>
 			<br><br><a href="">Microsoft Internet Explorer</a><br>
 			<a href="">Mozilla Firefox</a><br>
@@ -112,13 +111,12 @@ html, body {
 		</canvas>
 	</div>
 	
-	<!-- Pages load faster with scripts at the bottom -->
 	
-	<!-- Construct 2 exported games require jQuery. -->
+	
+	
 	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@a25d711e6294241dd4ad89f5ef65dc6bf34fcb24/2.1min.js"></script>
 
-    <!-- The runtime script.  You can rename it, but don't forget to rename the reference here as well.
-    This file will have been minified and obfuscated if you enabled "Minify script" during export. -->
+    
 	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@a25d711e6294241dd4ad89f5ef65dc6bf34fcb24/runtime.js"></script>
 
     <script>

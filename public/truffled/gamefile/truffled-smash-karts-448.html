@@ -3,11 +3,13 @@
 <html lang="en-us">
 
 <head>
+<base href="https://snoopylovestruffle.getinspiredflight.com/games/smashkarts/">
+
 	<script src="scripts/constants.js"></script>
 	
 	<meta charset="utf-8">
 	<link rel="icon" href="images/favicon.png" sizes="16x16">
-	<!-- og: Open graph meta tags allow you to control what content shows up when a page is shared on Facebook -->
+	
 	<meta property="og:site_name" content="SmashKarts.io">
 	<meta property="og:title" content="Smash Karts" />
 	<meta property="og:url" content="https://smashkarts.io/" />
@@ -42,15 +44,10 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<link rel="apple-touch-icon" href="images/icon-144.png">
 
-	<!-- <script type="text/javascript" src="xmlhttprequest-length-computable.js"></script> -->
-	<!--<script type="text/javascript" src="xmlhttprequest-length-computable.min.js"></script>
-	<script type="text/javascript">
-		window.xmlHTTPRequestLengthComputable = {
-			CONTENT_ENCODING_MULTIPLE: 3.0
-		}
-	</script> -->
 	
-	<!-- Youtube Game Schema -->
+	
+	
+	
 	<script type="application/ld+json">
 		{
 			"@context": "http://schema.org",
@@ -100,37 +97,37 @@
 		<div id="gameContainer">
 			<canvas id="gameCanvas"></canvas>
 
-			<!-- On canvas ad containers -->
-			<div id="adContainerLoadingLeft"> <!-- loading -->
-				<div id="smashkarts-io_300x600_2"></div> <!-- adinplay -->
-			</div>	
-			<div id="adContainerMainMenu"> <!-- main menu -->
-				<div id="smashkarts-io_300x250"></div> <!-- adinplay -->
 			
-				<!-- playwire -->
+			<div id="adContainerLoadingLeft"> 
+				<div id="smashkarts-io_300x600_2"></div> 
+			</div>	
+			<div id="adContainerMainMenu"> 
+				<div id="smashkarts-io_300x250"></div> 
+			
+				
 				<div id="pw_mainmenu"></div>
-				<!-- dummy placement to ensure rewarded videos init correctly when ads are disabled for season pass holders -->
+				
 				<div id="pw_mainmenu_dummy" data-pw-desk="med_rect_atf" data-pw-mobi="med_rect_atf"></div> 
 			</div>
-			<div id="adContainerWin"> <!-- win ceremony -->
-				<div id="smashkarts-io_300x250_2"></div> <!-- adinplay -->
+			<div id="adContainerWin"> 
+				<div id="smashkarts-io_300x250_2"></div> 
 
-				<!-- playwire -->
+				
 				<div id="pw_roundend"></div>
-				<!-- <div data-pw-desk="med_rect_btf" data-pw-mobi="med_rect_btf"></div> -->
+				
 			</div>
-			<div id="adContainerSpectate"> <!-- spectate -->
-				<div id="smashkarts-io_300x250_3"></div> <!-- adinplay -->
+			<div id="adContainerSpectate"> 
+				<div id="smashkarts-io_300x250_3"></div> 
 			</div>
-			<div id="adContainerDeath"> <!-- death -->
+			<div id="adContainerDeath"> 
 
-				<!-- adinplay -->
+				
 				<div id="smashkarts-io_728x90-new"></div>
 				<div id="smashkarts-io_320x100"></div>
 
-				<!-- playwire -->
+				
 				<div id="pw_ondeath"></div>
-				<!-- <div data-pw-desk="leaderboard_atf" data-pw-mobi="leaderboard_atf"></div> -->
+				
 			</div>
 		</div>
 		<div id="btmContainer">
@@ -143,10 +140,10 @@
 			</div>
 			<h1 id="btmAdResText">unset</h1>
 		</div>
-		<div id="pw-video-container"> <!-- playwire -->
+		<div id="pw-video-container"> 
 			<div id="pw-video-placeholder"></div>
 		</div>
-		<div id="preroll"></div> <!-- adinplay -->
+		<div id="preroll"></div> 
 		<iframe id="xsolla-iframe"></iframe>
 	</div>
 	<div id="rightContainer">

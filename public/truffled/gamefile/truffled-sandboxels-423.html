@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<title id="titleTag">Sandboxels - Experiment with Pixels</title>
 	
-	<!--Favicons-->
+	
 	<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=2">
 	<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png?v=2">
 	<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png?v=2">
@@ -27,7 +27,7 @@
 			display:block;padding-bottom:0.5em
 		}
 	</style>
-	<!-- Schema -->
+	
 	<script type="application/ld+json">
 		{
 		  "@context": "https://schema.org",
@@ -18684,7 +18684,7 @@ window.onload = function() {
 			<div id="stats"></div>
 			<div id="controls">
 				<div id="toolControls">
-					<button id="shiftButton" title="Toggle Shift key" class="controlButton" onclick='toggleShift();focusGame();' on="false" style="display:none">↑</button><button id="pauseButton" title="Pause/play the simulation" class="controlButton" onclick='togglePause();focusGame();' on="false">Pause</button><button id="frameButton" title="Pause and play one frame" class="controlButton" onclick='doFrame();focusGame();' on="false">&gt;</button><button id="sizeDownButton" title="Decrease the brush size" class="controlButton" onclick="mouseSize -= shiftDown?mouseSize-1:2;checkMouseSize(true);centerMouse();focusGame();">-</button><button id="sizeUpButton" title="Increase the brush size" class="controlButton" onclick="mouseSize += shiftDown?14:2;checkMouseSize(true);centerMouse();focusGame();">+</button><button id="resetButton" title="Clear the entire scene" class="controlButton" onclick="resetPrompt();">Reset</button><button id="replaceButton" title="Override existing pixels when placing" class="controlButton" onclick='if (mode == "replace") {mode = null;this.setAttribute("on","false");}else {mode = "replace";this.setAttribute("on","true");};focusGame();' on="false">Replace</button><button id="elemSelectButton" title="Select an element by name" class="controlButton" onclick='chooseElementPrompt();'>E</button><button id="tpsButton" title="Change the simulation Ticks Per Second (TPS)" class="controlButton" onclick='tpsPrompt()'>Tps</button><!--<button id="hideButton" title="Stops updating the scene to allow more resources towards simulation" class="controlButton" onclick='if (hiding) {hiding = false;this.setAttribute("on","false");}else {hiding = true;this.setAttribute("on","true");};focusGame();' on="false">Hide</button>--><button id="infoButton" title="Brings up the element info screen" class="controlButton" onclick='if (showingMenu!="info"){closeMenu();showInfo("")}else{closeMenu()};' on="false">Info</button><button id="savesButton" title="Brings up the Save & Load menu" class="controlButton" onclick='if (showingMenu!="saves"){closeMenu();showSaves()}else{closeMenu()};' on="false">Saves</button><button id="modsButton" title="Brings up the Mod Manager" class="controlButton" onclick='if (showingMenu!="mods"){closeMenu();showModManager()}else{closeMenu()};' on="false">Mods</button><button id="settingsButton" title="Brings up the settings screen" class="controlButton" onclick='if (showingMenu!="settings"){closeMenu();showSettings()}else{closeMenu()};' on="false">Settings</button>
+					<button id="shiftButton" title="Toggle Shift key" class="controlButton" onclick='toggleShift();focusGame();' on="false" style="display:none">↑</button><button id="pauseButton" title="Pause/play the simulation" class="controlButton" onclick='togglePause();focusGame();' on="false">Pause</button><button id="frameButton" title="Pause and play one frame" class="controlButton" onclick='doFrame();focusGame();' on="false">&gt;</button><button id="sizeDownButton" title="Decrease the brush size" class="controlButton" onclick="mouseSize -= shiftDown?mouseSize-1:2;checkMouseSize(true);centerMouse();focusGame();">-</button><button id="sizeUpButton" title="Increase the brush size" class="controlButton" onclick="mouseSize += shiftDown?14:2;checkMouseSize(true);centerMouse();focusGame();">+</button><button id="resetButton" title="Clear the entire scene" class="controlButton" onclick="resetPrompt();">Reset</button><button id="replaceButton" title="Override existing pixels when placing" class="controlButton" onclick='if (mode == "replace") {mode = null;this.setAttribute("on","false");}else {mode = "replace";this.setAttribute("on","true");};focusGame();' on="false">Replace</button><button id="elemSelectButton" title="Select an element by name" class="controlButton" onclick='chooseElementPrompt();'>E</button><button id="tpsButton" title="Change the simulation Ticks Per Second (TPS)" class="controlButton" onclick='tpsPrompt()'>Tps</button><button id="infoButton" title="Brings up the element info screen" class="controlButton" onclick='if (showingMenu!="info"){closeMenu();showInfo("")}else{closeMenu()};' on="false">Info</button><button id="savesButton" title="Brings up the Save & Load menu" class="controlButton" onclick='if (showingMenu!="saves"){closeMenu();showSaves()}else{closeMenu()};' on="false">Saves</button><button id="modsButton" title="Brings up the Mod Manager" class="controlButton" onclick='if (showingMenu!="mods"){closeMenu();showModManager()}else{closeMenu()};' on="false">Mods</button><button id="settingsButton" title="Brings up the settings screen" class="controlButton" onclick='if (showingMenu!="settings"){closeMenu();showSettings()}else{closeMenu()};' on="false">Settings</button>
 				</div>
 				<script>
 					// if it is the 1st of April, add a rainbow-colored button
@@ -18708,9 +18708,9 @@ window.onload = function() {
 				<div id="elementControls"></div>
 			</div>
 			<div id="extraInfo"><small><a href="https://sandboxels.r74n.com/changelog" id="changelogButton" target="_blank">Changelog</a> • <a href="https://sandboxels.R74n.com/feedback" target="_blank" style="color:lime;" id="feedbackButton">Feedback</a> • <a href="https://sandboxels.wiki.gg/" target="_blank" id="wikiButton" title="Official Sandboxels Wiki - wiki.gg" style="color:white;">Wiki</a> • <a id="moreSocial" href="https://twitter.com/R74nCom" rel="me" target="_blank">Twitter</a> • <a href="https://discord.gg/ejUc6YPQuS" target="_blank" style="color:#2f60ff;">Discord</a><span id="install-button" style="display:none">&nbsp;• <a onclick="deferredPrompt.prompt(); return false" href="#" style="text-shadow: 0px 2px 10px #ff00ff; cursor:pointer">Install Offline</a></span>
-				<!--<br><br><a style="color:lime" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeYMbngtbBHZ7hkz8jpbHl7TiAItqukrhtntKgAHjH30fY08A/viewform?usp=sf_link">FILL OUT THE CENSUS<span style="color:red">(NEW)</span></a>-->
+				
 				<br><br><a style="color:lime" target="_blank" href="https://store.steampowered.com/app/3664820/Sandboxels/">SANDBOXELS ON STEAM<span style="color:red">(NEW)</span></a>
-				<!--<br><br><a style="color:lime" target="_blank" href="https://r74n.com/">PLAY AD-FREE ON STEAM<span style="color:red">(NEW)</span></a>-->
+				
 			</small></div>
 			<script>
 				// version check
@@ -18748,7 +18748,7 @@ window.onload = function() {
 			</script>
 		</div>
 		<div id="infoParent">
-			<div id="infoScreen"> <!--Element Info Page-->
+			<div id="infoScreen"> 
 				<button class="XButton" onclick="closeMenu();">-</button>
 				<span class='infoLink noselect' id="infoBackButton" onclick='infoBack()' style='text-decoration:none!important;display:none'>←&nbsp;</span><span class="menuTitle" id="infoTitle">Title</span>
 				<div class="menuText" id="infoText">Text</div>
@@ -18756,7 +18756,7 @@ window.onload = function() {
 			<input type="text" id="infoSearch" placeholder="Element..." oninput="showInfo(this.value);" enterkeyhint="done"></input>
 		</div>
 	
-		<!--Mod Manager Page with the list of current mods and a url input box with a plus button to add it-->
+		
 		<div id="modParent">
 			<div id="modManager">
 				<button class="XButton" onclick="closeMenu();">-</button>
@@ -18781,7 +18781,7 @@ window.onload = function() {
 				See the <a href="https://sandboxels.R74n.com/mod-list" target="_blank">Mod List</a> or <a href="https://github.com/R74nCom/sandboxels/" target="_blank">GitHub</a>.
 				<input type="text" id="modManagerUrl" placeholder=".JS or URL..." onkeydown="if (event.keyCode == 13) {addMod(this.value);this.value = '';};this.focus();" enterkeyhint="done"></input>
 			</div>
-			<!-- <button id="modManagerAdd" onclick="addMod(document.getElementById('modManagerUrl').value); document.getElementById('modManagerUrl').value = '';">+</button> -->
+			
 		</div>
 
 		<div id="savesParent" class="menuParent">
@@ -18842,7 +18842,7 @@ window.onload = function() {
 			</div>
 		</div>
 	
-		<!--Settings Menu-->
+		
 		<div id="settingsParent">
 			<div id="settingsMenu">
 				<button class="XButton" onclick="closeMenu();">-</button>
@@ -18985,25 +18985,9 @@ Cancer, Landmine, Grenade, Smoke Grenade">?</span>
 
 <div id="bottomInfoBox">
 	<div id="bottomTopBox">
-		<!-- <iframe src="promo.html" style="border:none;width: 300px; height: 250px;"></iframe> -->
-		<!-- Affiliate Links -->
-		<!-- <p style="font-size:1.2em;display:none" id="aff"><a id="affLink" href="#" target="_blank" rel="sponsored">Loading...</a></p>
-		<script>
-			var aff = {};
-			var affRequest = new XMLHttpRequest();
-			affRequest.open("GET", "https://sandboxels.R74n.com/aff.json", true);
-			affRequest.onload = function() {
-				if (affRequest.status >= 200 && affRequest.status < 400) {
-					aff = JSON.parse(affRequest.responseText);
-					var affKeys = Object.keys(aff);
-					var randomAff = affKeys[Math.floor(Math.random() * affKeys.length)];
-					document.getElementById("affLink").innerHTML = aff[randomAff];
-					document.getElementById("affLink").href = randomAff;
-					document.getElementById("aff").style.display = "block";
-				}
-			};
-			affRequest.send();
-		</script> -->
+		
+		
+		
 		<p id="langSelectP">🌐 <span id="langSelectLabel">Language</span> <a href="https://sandboxels.R74n.com/translate" target="_blank">[BETA]</a>: <select onchange="if (this.value === 'en'){setSetting('lang',null)}else{setSetting('lang',this.value)}window.location.reload()" id="langSelect">
 			<option selected value="en">English (American)</option>
 			<option value="en_gb">English (British)</option>
@@ -19065,7 +19049,7 @@ Cancer, Landmine, Grenade, Smoke Grenade">?</span>
 				border: 2px solid rgba(255, 255, 255, 0.45);
 			}
 		</style>
-		<!-- <iframe id="newsletteriframe" width="450" height="250" style="border:1px solid #EEE; background:black; max-width:90%" frameborder="0" scrolling="no"></iframe> -->
+		
 		<script>
 			window.addEventListener('load', function() {
 				// document.getElementById("newsletteriframe").src = "https://news.r74n.com/embed";
@@ -19090,7 +19074,7 @@ Cancer, Landmine, Grenade, Smoke Grenade">?</span>
 		<img id="introImage" src="icons/wallpaper.webp" style="width:100%" alt="Rainforest landscape made in Sandboxels" title="Rainforest landscape made in Sandboxels">
 		<p id="intro5">Sandboxels has many <a href="https://sandboxels.R74n.com/education-use">applications in education</a>. With a hands-on experience, it can give students an understanding of emerging phenomena in many fields, such as biology, chemistry, ecology, geology, cooking, and even virology. There are countless aspects to discover.</p>
 		<p id="intro6">We have a thriving community on <a href="https://discord.gg/ejUc6YPQuS" target="_blank">Discord</a>! There you can post feedback or share your creations.</p>
-		<!-- <p>If you'd like to support us, consider donating on <a href="https://www.paypal.com/donate/?hosted_button_id=GCX4VHQ7SZWTN" target="_blank">PayPal</a> or <a href="https://cash.app/$emojiartist" target="_blank" title="$emojiartist">CashApp</a>, or subscribing on Discord.</p> -->
+		
 		<p id="intro7">Business inquiries? Education stories? Help needed? Email us at <a href="mailto:contact@R74n.com?subject=%5BSandboxels%5D">contact@R74n.com</a>!</p>
 		<p id="introLinks">More links: <a href="https://sandboxels.R74n.com/help" rel="help">Help</a> • <a href="https://sandboxels.R74n.com/tips">Tips</a> • <a href="https://sandboxels.R74n.com/mod-list">Mods</a> • <a href="https://sandboxels.R74n.com/mobile-use">Mobile</a> • <a href="https://sandboxels.R74n.com/offline-use">Offline</a> • <a href="https://sandboxels.R74n.com/presskit">Press</a> • <a href="https://store.steampowered.com/app/3664820/Sandboxels/" target="_blank">Steam</a> • <a href="https://R74n.com/privacy">Privacy</a></p>
 		<p><span id="patronThanks">Thanks to our Patrons</span>: Serioustar, ggod, personman, fnl4y, PitsPower, swagg boi, moss, Suss, epsiloneridani, Tempest the Slime, Midi_png, WeiChei, Trent, u2ce</p>
@@ -19208,7 +19192,7 @@ Cancer, Landmine, Grenade, Smoke Grenade">?</span>
 	}
 </script>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
+
 
 
 
