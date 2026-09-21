@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pong</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #090909;
+      color: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .scoreboard { display: flex; gap: 40px; font-size: 32px; font-weight: 800; }
+    canvas { background: #141414; border: 2px solid #282828; border-radius: 8px; }
+    .controls { display: flex; gap: 12px; font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="scoreboard">
+      <span id="p1-score">0</span>
+      <span id="p2-score">0</span>
+    </div>
+    <canvas id="pong" width="600" height="400"></canvas>
+    <div class="controls">
+      <span>P1: W/S</span>
+      <span>•</span>
+      <span>P2: Up/Down (or AI)</span>
+    </div>
+  </div>
+  <script>
+    const canvas = document.getElementById('pong');
+    const ctx = canvas.getContext('2d');
+    const p1ScoreEl = document.getElementById('p1-score');
+    const p2ScoreEl = document.getElementById('p2-score');
+
+    let p1 = { x: 20, y: 160, w: 10, h: 80, score: 0, vy: 0 };
+    let p2 = { x: 570, y: 160, w: 10, h: 80, score: 0, vy: 0 };
+    let ball = { x: 300, y: 200, r: 6, vx: 4, vy: 3 };
+
+    const keys = {};
+
+    window.addEventListener('keydown', e => keys[e.code] = true);
+    window.addEventListener('keyup', e => keys[e.code] = false);
+
+    function resetBall() {
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      ball.vx = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random());
+      ball.vy = (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 2);
+    }
+
+    function update() {
+      if (keys['KeyW']) p1.y -= 5;
+      if (keys['KeyS']) p1.y += 5;
+
+      if (keys['ArrowUp']) p2.y -= 5;
+      else if (keys['ArrowDown']) p2.y += 5;
+      else {
+        if (p2.y + p2.h / 2 < ball.y - 10) p2.y += 3.8;
+        else if (p2.y + p2.h / 2 > ball.y + 10) p2.y -= 3.8;
+      }
+
+      p1.y = Math.max(0, Math.min(canvas.height - p1.h, p1.y));
+      p2.y = Math.max(0, Math.min(canvas.height - p2.h, p2.y));
+
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      if (ball.y - ball.r <= 0 || ball.y + ball.r >= canvas.height) {
+        ball.vy = -ball.vy;
+      }
+
+      if (ball.x - ball.r <= p1.x + p1.w && ball.y >= p1.y && ball.y <= p1.y + p1.h) {
+        ball.vx = Math.abs(ball.vx) * 1.05;
+        const diff = (ball.y - (p1.y + p1.h / 2)) / (p1.h / 2);
+        ball.vy = diff * 5;
+      }
+
+      if (ball.x + ball.r >= p2.x && ball.y >= p2.y && ball.y <= p2.y + p2.h) {
+        ball.vx = -Math.abs(ball.vx) * 1.05;
+        const diff = (ball.y - (p2.y + p2.h / 2)) / (p2.h / 2);
+        ball.vy = diff * 5;
+      }
+
+      if (ball.x < 0) {
+        p2.score++;
+        p2ScoreEl.textContent = p2.score;
+        resetBall();
+      } else if (ball.x > canvas.width) {
+        p1.score++;
+        p1ScoreEl.textContent = p1.score;
+        resetBall();
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = '#141414';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = '#282828';
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#f5f5f5';
+      ctx.fillRect(p1.x, p1.y, p1.w, p1.h);
+      ctx.fillRect(p2.x, p2.y, p2.w, p2.h);
+
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #0a0a0a;
+      color: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .header { display: flex; justify-content: space-between; width: 360px; font-size: 16px; font-weight: 700; }
+    canvas { background: #121212; border: 2px solid #262626; border-radius: 8px; cursor: pointer; }
+    .hint { font-size: 12px; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <span>Flappy</span>
+      <span>Score: <span id="score">0</span></span>
+    </div>
+    <canvas id="canvas" width="360" height="500"></canvas>
+    <div class="hint">Press Space or Click to Jump</div>
+  </div>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+
+    let bird = { x: 60, y: 250, vy: 0, radius: 12 };
+    const gravity = 0.35;
+    const jump = -6.5;
+    let pipes = [];
+    let score = 0;
+    let state = 'start';
+    let frame = 0;
+
+    function reset() {
+      bird = { x: 60, y: 250, vy: 0, radius: 12 };
+      pipes = [];
+      score = 0;
+      scoreEl.textContent = '0';
+      state = 'play';
+      frame = 0;
+    }
+
+    function spawnPipe() {
+      const gap = 120;
+      const topHeight = Math.floor(Math.random() * (canvas.height - gap - 100)) + 40;
+      pipes.push({
+        x: canvas.width,
+        top: topHeight,
+        bottom: canvas.height - topHeight - gap,
+        passed: false
+      });
+    }
+
+    function loop() {
+      frame++;
+      ctx.fillStyle = '#121212';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (state === 'start') {
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.font = '700 20px sans-serif';
+        ctx.fillText('Click to Start', canvas.width / 2, canvas.height / 2);
+        drawBird();
+        requestAnimationFrame(loop);
+        return;
+      }
+
+      if (state === 'play') {
+        bird.vy += gravity;
+        bird.y += bird.vy;
+
+        if (frame % 90 === 0) spawnPipe();
+
+        for (let i = pipes.length - 1; i >= 0; i--) {
+          const p = pipes[i];
+          p.x -= 2.2;
+
+          ctx.fillStyle = '#282828';
+          ctx.strokeStyle = '#525252';
+          ctx.lineWidth = 2;
+
+          ctx.fillRect(p.x, 0, 48, p.top);
+          ctx.strokeRect(p.x, 0, 48, p.top);
+
+          ctx.fillRect(p.x, canvas.height - p.bottom, 48, p.bottom);
+          ctx.strokeRect(p.x, canvas.height - p.bottom, 48, p.bottom);
+
+          if (!p.passed && p.x + 48 < bird.x) {
+            p.passed = true;
+            score++;
+            scoreEl.textContent = score;
+          }
+
+          if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + 48) {
+            if (bird.y - bird.radius < p.top || bird.y + bird.radius > canvas.height - p.bottom) {
+              state = 'dead';
+            }
+          }
+
+          if (p.x < -60) pipes.splice(i, 1);
+        }
+
+        if (bird.y + bird.radius >= canvas.height || bird.y - bird.radius <= 0) {
+          state = 'dead';
+        }
+
+        drawBird();
+      }
+
+      if (state === 'dead') {
+        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.font = '700 22px sans-serif';
+        ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 10);
+        ctx.font = '500 14px sans-serif';
+        ctx.fillText('Click to Retry', canvas.width / 2, canvas.height / 2 + 20);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    function drawBird() {
+      ctx.fillStyle = '#f5f5f5';
+      ctx.beginPath();
+      ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function action() {
+      if (state === 'start' || state === 'dead') {
+        reset();
+      } else if (state === 'play') {
+        bird.vy = jump;
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+        e.preventDefault();
+        action();
+      }
+    });
+
+    canvas.addEventListener('click', action);
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

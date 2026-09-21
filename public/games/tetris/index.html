@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #0f1113;
+      color: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .wrapper { display: flex; gap: 20px; align-items: flex-start; padding: 20px; }
+    canvas { background: #181a1d; border: 2px solid #2b3137; border-radius: 6px; }
+    .panel { display: flex; flex-direction: column; gap: 16px; width: 140px; }
+    .title { font-size: 24px; font-weight: 800; }
+    .box { background: #1c2023; border: 1px solid #3c444b; padding: 10px; border-radius: 6px; }
+    .box-lbl { font-size: 11px; text-transform: uppercase; color: #a5adb5; font-weight: 700; margin-bottom: 4px; }
+    .box-val { font-size: 18px; font-weight: 700; color: #fff; }
+    .btn { background: #f5f5f5; color: #0a0a0a; border: none; padding: 10px; border-radius: 6px; font-weight: 700; cursor: pointer; text-align: center; }
+    .btn:hover { background: #e0e0e0; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <canvas id="tetris" width="240" height="400"></canvas>
+    <div class="panel">
+      <div class="title">Tetris</div>
+      <div class="box"><div class="box-lbl">Score</div><div class="box-val" id="score">0</div></div>
+      <div class="box"><div class="box-lbl">Lines</div><div class="box-val" id="lines">0</div></div>
+      <button class="btn" id="start-btn">Start</button>
+    </div>
+  </div>
+  <script>
+    const canvas = document.getElementById('tetris');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const linesEl = document.getElementById('lines');
+    const startBtn = document.getElementById('start-btn');
+
+    const COLS = 10;
+    const ROWS = 20;
+    const BLOCK_SIZE = 24;
+    let grid = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+    let score = 0;
+    let lines = 0;
+    let running = false;
+    let dropCounter = 0;
+    let dropInterval = 800;
+    let lastTime = 0;
+
+    const SHAPES = [
+      [[1, 1, 1, 1]],
+      [[1, 1], [1, 1]],
+      [[0, 1, 0], [1, 1, 1]],
+      [[1, 0, 0], [1, 1, 1]],
+      [[0, 0, 1], [1, 1, 1]],
+      [[0, 1, 1], [1, 1, 0]],
+      [[1, 1, 0], [0, 1, 1]]
+    ];
+
+    const COLORS = [null, '#ffffff', '#cccccc', '#999999', '#777777', '#bbbbbb', '#dddddd', '#aaaaaa'];
+
+    let piece = null;
+
+    function createPiece() {
+      const type = Math.floor(Math.random() * SHAPES.length);
+      const matrix = SHAPES[type];
+      return {
+        matrix: matrix.map(row => row.map(cell => cell ? type + 1 : 0)),
+        x: Math.floor(COLS / 2) - Math.floor(matrix[0].length / 2),
+        y: 0
+      };
+    }
+
+    function collide(grid, p) {
+      const m = p.matrix;
+      for (let r = 0; r < m.length; r++) {
+        for (let c = 0; c < m[r].length; c++) {
+          if (m[r][c] !== 0) {
+            const gy = p.y + r;
+            const gx = p.x + c;
+            if (gx < 0 || gx >= COLS || gy >= ROWS || (gy >= 0 && grid[gy][gx] !== 0)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+
+    function merge(grid, p) {
+      p.matrix.forEach((row, r) => {
+        row.forEach((value, c) => {
+          if (value !== 0 && p.y + r >= 0) {
+            grid[p.y + r][p.x + c] = value;
+          }
+        });
+      });
+    }
+
+    function rotate(matrix) {
+      const next = [];
+      for (let c = 0; c < matrix[0].length; c++) {
+        const row = [];
+        for (let r = matrix.length - 1; r >= 0; r--) {
+          row.push(matrix[r][c]);
+        }
+        next.push(row);
+      }
+      return next;
+    }
+
+    function clearLines() {
+      let rowCount = 0;
+      for (let r = ROWS - 1; r >= 0; r--) {
+        if (grid[r].every(v => v !== 0)) {
+          grid.splice(r, 1);
+          grid.unshift(Array(COLS).fill(0));
+          rowCount++;
+          r++;
+        }
+      }
+      if (rowCount > 0) {
+        lines += rowCount;
+        score += rowCount * 100 * rowCount;
+        scoreEl.textContent = score;
+        linesEl.textContent = lines;
+      }
+    }
+
+    function drop() {
+      piece.y++;
+      if (collide(grid, piece)) {
+        piece.y--;
+        merge(grid, piece);
+        clearLines();
+        piece = createPiece();
+        if (collide(grid, piece)) {
+          running = false;
+          startBtn.textContent = 'Play Again';
+        }
+      }
+      dropCounter = 0;
+    }
+
+    function update(time = 0) {
+      if (!running) {
+        draw();
+        return;
+      }
+      const dt = time - lastTime;
+      lastTime = time;
+      dropCounter += dt;
+      if (dropCounter > dropInterval) drop();
+      draw();
+      requestAnimationFrame(update);
+    }
+
+    function draw() {
+      ctx.fillStyle = '#181a1d';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      grid.forEach((row, r) => {
+        row.forEach((val, c) => {
+          if (val !== 0) {
+            ctx.fillStyle = COLORS[val];
+            ctx.fillRect(c * BLOCK_SIZE + 1, r * BLOCK_SIZE + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+          }
+        });
+      });
+
+      if (piece) {
+        piece.matrix.forEach((row, r) => {
+          row.forEach((val, c) => {
+            if (val !== 0) {
+              ctx.fillStyle = COLORS[val];
+              ctx.fillRect((piece.x + c) * BLOCK_SIZE + 1, (piece.y + r) * BLOCK_SIZE + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+            }
+          });
+        });
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (!running || !piece) return;
+      if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+        piece.x--;
+        if (collide(grid, piece)) piece.x++;
+      } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+        piece.x++;
+        if (collide(grid, piece)) piece.x--;
+      } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+        drop();
+      } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
+        const rotated = rotate(piece.matrix);
+        const old = piece.matrix;
+        piece.matrix = rotated;
+        if (collide(grid, piece)) piece.matrix = old;
+      }
+    });
+
+    startBtn.addEventListener('click', () => {
+      grid = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+      score = 0;
+      lines = 0;
+      scoreEl.textContent = '0';
+      linesEl.textContent = '0';
+      piece = createPiece();
+      running = true;
+      startBtn.textContent = 'Restart';
+      lastTime = performance.now();
+      requestAnimationFrame(update);
+    });
+
+    draw();
+  </script>
+</body>
+</html>

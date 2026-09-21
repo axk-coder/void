@@ -8,7 +8,18 @@ import { LegalModal } from './components/LegalModal.js';
 import { CreditsModal } from './components/CreditsModal.js';
 import { GamePlayer } from './components/GamePlayer.js';
 
-const games = [];
+const games = [
+  { id: '2048', title: '2048', category: 'puzzle', url: './games/2048/index.html' },
+  { id: 'snake', title: 'Snake', category: 'arcade', url: './games/snake/index.html' },
+  { id: 'tetris', title: 'Tetris', category: 'puzzle', url: './games/tetris/index.html' },
+  { id: 'flappy', title: 'Flappy Bird', category: 'arcade', url: './games/flappy/index.html' },
+  { id: 'pong', title: 'Pong', category: 'multiplayer', url: './games/pong/index.html' },
+  { id: 'breakout', title: 'Breakout', category: 'arcade', url: './games/breakout/index.html' },
+  { id: 'space-invaders', title: 'Space Invaders', category: 'action', url: './games/space-invaders/index.html' },
+  { id: 'minesweeper', title: 'Minesweeper', category: 'puzzle', url: './games/minesweeper/index.html' },
+  { id: 'asteroids', title: 'Asteroids', category: 'action', url: './games/asteroids/index.html' },
+  { id: 'tictactoe', title: 'Tic Tac Toe', category: 'multiplayer', url: './games/tictactoe/index.html' }
+];
 
 const CATEGORIES = [
   { id: 'all', name: 'All Games' },
@@ -175,7 +186,7 @@ class VoidApp {
             </div>
 
             <div class="top-navbar-actions">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-header">
+              <a href="https://github.com/axk-coder/void" target="_blank" rel="noopener noreferrer" class="btn-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                 </svg>
@@ -308,6 +319,7 @@ class VoidApp {
 
       const thumb = document.createElement('div');
       thumb.className = 'game-card-thumb';
+      thumb.innerHTML = `<span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono);">${this.escapeHtml(game.title)}</span>`;
 
       const body = document.createElement('div');
       body.className = 'game-card-body';
