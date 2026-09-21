@@ -14,23 +14,14 @@ export class MiniPulse {
 
     this.render();
     this.bindEvents();
+    this.setupDraggable();
     this.subscribeState();
   }
 
   render() {
     this.container.innerHTML = `
-      <div class="mini-pulse-pill" id="mini-pulse-pill" title="Toggle Pulse Chat">
-        <div class="mini-pulse-pill-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-          <span class="mini-pulse-badge" id="mini-pulse-badge" style="display: none;">0</span>
-        </div>
-        <span class="mini-pulse-pill-text">Pulse</span>
-      </div>
-
       <div class="mini-pulse-panel" id="mini-pulse-panel" style="display: none;">
-        <div class="mini-pulse-header">
+        <div class="mini-pulse-header" id="mini-pulse-header">
           <div class="mini-pulse-header-left">
             <div class="mini-pulse-header-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
@@ -77,7 +68,7 @@ export class MiniPulse {
                 <line x1="15" y1="3" x2="15" y2="21"></line>
               </svg>
             </button>
-            <button type="button" class="mp-icon-btn" id="mp-close-btn" title="Minimize">
+            <button type="button" class="mp-icon-btn" id="mp-close-btn" title="Close">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -170,13 +161,82 @@ export class MiniPulse {
     `;
   }
 
-  bindEvents() {
-    const pill = document.getElementById('mini-pulse-pill');
-    pill?.addEventListener('click', () => {
-      soundSynth.playClick();
-      appState.toggleMiniPulse();
-    });
+  setupDraggable() {
+    const header = document.getElementById('mini-pulse-header');
+    const panel = document.getElementById('mini-pulse-panel');
+    if (!header || !panel) return;
 
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialX = 0;
+    let initialY = 0;
+
+    const onPointerDown = (e) => {
+      const state = appState.getState();
+      if (state.miniPulseDocked) return;
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.mini-pulse-nav-tabs')) {
+        return;
+      }
+
+      isDragging = true;
+      const rect = panel.getBoundingClientRect();
+      startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      startY = e.clientY ?? (e.touches && e.touches[0]?.clientY) ?? 0;
+      initialX = rect.left;
+      initialY = rect.top;
+
+      panel.style.transition = 'none';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+      panel.style.left = `${initialX}px`;
+      panel.style.top = `${initialY}px`;
+      header.style.cursor = 'grabbing';
+
+      window.addEventListener('mousemove', onPointerMove, { passive: false });
+      window.addEventListener('mouseup', onPointerUp);
+      window.addEventListener('touchmove', onPointerMove, { passive: false });
+      window.addEventListener('touchend', onPointerUp);
+    };
+
+    const onPointerMove = (e) => {
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+
+      const curX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      const curY = e.clientY ?? (e.touches && e.touches[0]?.clientY) ?? 0;
+      const deltaX = curX - startX;
+      const deltaY = curY - startY;
+
+      let newLeft = initialX + deltaX;
+      let newTop = initialY + deltaY;
+
+      const maxLeft = Math.max(8, window.innerWidth - panel.offsetWidth - 8);
+      const maxTop = Math.max(8, window.innerHeight - panel.offsetHeight - 8);
+
+      newLeft = Math.max(8, Math.min(newLeft, maxLeft));
+      newTop = Math.max(8, Math.min(newTop, maxTop));
+
+      panel.style.left = `${newLeft}px`;
+      panel.style.top = `${newTop}px`;
+    };
+
+    const onPointerUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      header.style.cursor = 'grab';
+      panel.style.transition = '';
+      window.removeEventListener('mousemove', onPointerMove);
+      window.removeEventListener('mouseup', onPointerUp);
+      window.removeEventListener('touchmove', onPointerMove);
+      window.removeEventListener('touchend', onPointerUp);
+    };
+
+    header.addEventListener('mousedown', onPointerDown);
+    header.addEventListener('touchstart', onPointerDown, { passive: true });
+  }
+
+  bindEvents() {
     const closeBtn = document.getElementById('mp-close-btn');
     closeBtn?.addEventListener('click', () => {
       soundSynth.playClick();
@@ -255,9 +315,6 @@ export class MiniPulse {
       if (key === 'miniPulseOpen' || key === 'miniPulseDocked') {
         this.updateVisibility();
       }
-      if (key === 'unreadCount') {
-        this.updateBadge();
-      }
       if (key === 'user') {
         this.updateAuthGate();
         if (state.user) {
@@ -283,7 +340,6 @@ export class MiniPulse {
     });
 
     this.updateVisibility();
-    this.updateBadge();
     this.updateAuthGate();
     this.renderMessages();
     this.renderChannels();
@@ -318,16 +374,18 @@ export class MiniPulse {
   updateVisibility() {
     const state = appState.getState();
     const panel = document.getElementById('mini-pulse-panel');
-    const pill = document.getElementById('mini-pulse-pill');
     const voidLayout = document.querySelector('.void-layout');
 
-    if (!panel || !pill) return;
+    if (!panel) return;
 
     if (state.miniPulseOpen) {
       panel.style.display = 'flex';
-      pill.classList.add('active');
       if (state.miniPulseDocked) {
         panel.classList.add('docked');
+        panel.style.left = '';
+        panel.style.top = '';
+        panel.style.right = '';
+        panel.style.bottom = '';
         if (voidLayout) voidLayout.classList.add('with-docked-pulse');
       } else {
         panel.classList.remove('docked');
@@ -337,21 +395,7 @@ export class MiniPulse {
     } else {
       panel.style.display = 'none';
       panel.classList.remove('docked');
-      pill.classList.remove('active');
       if (voidLayout) voidLayout.classList.remove('with-docked-pulse');
-    }
-  }
-
-  updateBadge() {
-    const state = appState.getState();
-    const badge = document.getElementById('mini-pulse-badge');
-    if (!badge) return;
-
-    if (state.unreadCount > 0 && !state.miniPulseOpen) {
-      badge.textContent = state.unreadCount > 99 ? '99+' : state.unreadCount;
-      badge.style.display = 'inline-flex';
-    } else {
-      badge.style.display = 'none';
     }
   }
 

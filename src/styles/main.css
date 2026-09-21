@@ -995,75 +995,14 @@ html, body {
   margin-left: 4px;
 }
 
-.mini-pulse-pill {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  height: 44px;
-  padding: 0 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-primary);
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
-}
-
-.mini-pulse-pill:hover {
-  background: var(--bg-hover);
-  border-color: var(--border-focus);
-  transform: translateY(-2px);
-}
-
-.mini-pulse-pill.active {
-  background: var(--bg-active);
-  border-color: var(--border-focus);
-}
-
-.mini-pulse-pill-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mini-pulse-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: var(--text-primary);
-  color: var(--bg-primary);
-  font-size: 9px;
-  font-weight: 800;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 3px;
-  border: 2px solid var(--bg-primary);
-}
-
-.mini-pulse-pill-text {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
 .mini-pulse-panel {
   position: fixed;
-  bottom: 80px;
+  top: 70px;
   right: 24px;
   width: 360px;
-  height: 520px;
+  height: 540px;
   max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 90px);
   background: var(--bg-secondary);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
@@ -1072,14 +1011,16 @@ html, body {
   z-index: 1001;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
   overflow: hidden;
+  user-select: auto;
 }
 
 .mini-pulse-panel.docked {
-  bottom: 0;
-  right: 0;
-  top: 0;
-  height: 100vh;
-  max-height: 100vh;
+  bottom: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  left: auto !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
   border-radius: 0;
   border-top: none;
   border-bottom: none;
@@ -1096,6 +1037,9 @@ html, body {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 }
 
 .mini-pulse-header-left {

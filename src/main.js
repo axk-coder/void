@@ -161,16 +161,6 @@ class VoidApp {
                 </li>
               `).join('')}
             </ul>
-
-            <div class="nav-section-title" style="margin-top: 20px;">Network</div>
-            <ul class="category-list">
-              <li class="category-nav-item" id="sidebar-pulse-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="margin-right: 8px;">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-                <span>Pulse Chat</span>
-              </li>
-            </ul>
           </div>
 
           <div class="sidebar-footer">
@@ -431,12 +421,6 @@ class VoidApp {
         const catId = item.getAttribute('data-cat-id') || 'all';
         appState.setActiveCategory(catId);
       });
-    });
-
-    const sidebarPulseBtn = document.getElementById('sidebar-pulse-btn');
-    sidebarPulseBtn?.addEventListener('click', () => {
-      soundSynth.playClick();
-      appState.toggleMiniPulse();
     });
 
     const topPulseBtn = document.getElementById('top-pulse-btn');

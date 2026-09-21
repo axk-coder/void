@@ -25,3 +25,6 @@
 - [x] Task 23: Perform exploit checks (XSS escaping, payload limits, auth safety, secure storage)
 - [x] Task 24: Test and verify build and functionality
 - [x] Task 25: Update map.txt and deploy production build to GitHub
+- [x] Task 26: Make Mini Pulse window draggable from header with boundary constraints and position persistence
+- [x] Task 27: Remove redundant duplicate Pulse buttons (remove bottom-right floating pill and sidebar network item, keeping clean top-navbar button)
+- [x] Task 28: Test and verify build and push to GitHub
