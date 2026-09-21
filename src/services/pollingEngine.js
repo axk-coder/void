@@ -19,6 +19,14 @@ class PollingEngine {
   }
 
   setupListeners() {
+    appState.subscribe((state, key) => {
+      if (key === 'navigation' || key === 'channel') {
+        if (this.isRunning && !this.isTabHidden) {
+          this.pollNow();
+        }
+      }
+    });
+
     document.addEventListener("visibilitychange", () => {
       this.isTabHidden = document.visibilityState === "hidden";
       if (this.isTabHidden) {

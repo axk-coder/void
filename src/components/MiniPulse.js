@@ -7,11 +7,10 @@ export class MiniPulse {
   constructor(container, options = {}) {
     this.container = container;
     this.onOpenAuth = options.onOpenAuth || (() => {});
-    this.activeTab = 'chat';
     this.userCache = new Map();
     this.partnerProfiles = new Map();
     this.serverDetails = new Map();
-    this.expandedServers = new Set();
+    this.isSubpanelOpen = true;
     this.isScrolledToBottom = true;
     this.isSubmitting = false;
 
@@ -26,42 +25,16 @@ export class MiniPulse {
       <div class="mini-pulse-panel" id="mini-pulse-panel" style="display: none;">
         <div class="mini-pulse-header" id="mini-pulse-header">
           <div class="mini-pulse-header-left">
-            <div class="mini-pulse-header-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
-                <circle cx="12" cy="12" r="9"></circle>
-                <circle cx="12" cy="12" r="3"></circle>
+            <button type="button" class="mp-icon-btn" id="mp-toggle-subpanel-btn" title="Toggle Sidebar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
               </svg>
-            </div>
+            </button>
             <div class="mini-pulse-title-wrap">
               <span class="mini-pulse-title" id="mp-header-title">Pulse Global</span>
               <span class="mini-pulse-net-dot dot-live" id="mp-net-dot" title="Network Live"></span>
             </div>
-          </div>
-
-          <div class="mini-pulse-nav-tabs">
-            <button type="button" class="mp-tab-btn active" data-tab="chat" title="Chat Stream">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </button>
-            <button type="button" class="mp-tab-btn" data-tab="channels" title="Channels & DMs">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <line x1="8" y1="6" x2="21" y2="6"></line>
-                <line x1="8" y1="12" x2="21" y2="12"></line>
-                <line x1="8" y1="18" x2="21" y2="18"></line>
-                <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                <line x1="3" y1="18" x2="3.01" y2="18"></line>
-              </svg>
-            </button>
-            <button type="button" class="mp-tab-btn" data-tab="friends" title="Friends & Users">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-            </button>
           </div>
 
           <div class="mini-pulse-header-actions">
@@ -80,8 +53,35 @@ export class MiniPulse {
           </div>
         </div>
 
-        <div class="mini-pulse-body">
-          <div class="mp-tab-view" id="mp-view-chat">
+        <div class="mini-pulse-shell">
+          <aside class="mp-rail" id="mp-rail">
+            <button type="button" class="mp-rail-btn active" id="mp-rail-global-btn" title="Global Chat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </button>
+
+            <button type="button" class="mp-rail-btn" id="mp-rail-dm-btn" title="Direct Messages">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </button>
+
+            <div class="mp-rail-divider"></div>
+
+            <div class="mp-rail-servers" id="mp-rail-servers"></div>
+          </aside>
+
+          <aside class="mp-subpanel" id="mp-subpanel">
+            <div class="mp-subpanel-header" id="mp-subpanel-header">
+              <span class="mp-subpanel-title" id="mp-subpanel-title">Channels</span>
+            </div>
+            <div class="mp-subpanel-content" id="mp-subpanel-content"></div>
+          </aside>
+
+          <main class="mp-chat-column">
             <div class="mp-auth-required" id="mp-auth-gate" style="display: none;">
               <div class="mp-auth-box">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
@@ -116,49 +116,7 @@ export class MiniPulse {
                 </button>
               </div>
             </div>
-          </div>
-
-          <div class="mp-tab-view" id="mp-view-channels" style="display: none;">
-            <div class="mp-channels-container">
-              <div class="mp-channel-section">
-                <div class="mp-section-title">Streams</div>
-                <div class="mp-channel-item active" data-context="global">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                  </svg>
-                  <span>Global Stream</span>
-                </div>
-              </div>
-
-              <div class="mp-channel-section">
-                <div class="mp-section-title">Direct Messages</div>
-                <div class="mp-dm-list" id="mp-dm-list">
-                  <div class="mp-empty-note">No recent direct messages.</div>
-                </div>
-              </div>
-
-              <div class="mp-channel-section">
-                <div class="mp-section-title">Servers & Channels</div>
-                <div class="mp-server-list" id="mp-server-list">
-                  <div class="mp-empty-note">No servers joined.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mp-tab-view" id="mp-view-friends" style="display: none;">
-            <div class="mp-friends-container">
-              <div class="mp-add-friend-box">
-                <input type="text" id="mp-friend-input" class="mp-search-input" placeholder="Add friend by username..." />
-                <button type="button" class="mp-btn-action" id="mp-add-friend-btn">Add</button>
-              </div>
-              <div class="mp-section-title">Friends List</div>
-              <div class="mp-friends-list" id="mp-friends-list">
-                <div class="mp-empty-note">No friends added yet.</div>
-              </div>
-            </div>
-          </div>
+          </main>
         </div>
       </div>
     `;
@@ -178,7 +136,7 @@ export class MiniPulse {
     const onPointerDown = (e) => {
       const state = appState.getState();
       if (state.miniPulseDocked) return;
-      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.mini-pulse-nav-tabs')) {
+      if (e.target.closest('button') || e.target.closest('input')) {
         return;
       }
 
@@ -253,13 +211,37 @@ export class MiniPulse {
       appState.setMiniPulseDocked(!state.miniPulseDocked);
     });
 
-    const tabBtns = this.container.querySelectorAll('.mp-tab-btn');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        soundSynth.playClick();
-        const tab = btn.getAttribute('data-tab');
-        this.switchTab(tab);
-      });
+    const toggleSubpanelBtn = document.getElementById('mp-toggle-subpanel-btn');
+    toggleSubpanelBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      this.isSubpanelOpen = !this.isSubpanelOpen;
+      const sub = document.getElementById('mp-subpanel');
+      if (sub) {
+        sub.classList.toggle('collapsed', !this.isSubpanelOpen);
+      }
+    });
+
+    const railGlobal = document.getElementById('mp-rail-global-btn');
+    railGlobal?.addEventListener('click', () => {
+      soundSynth.playClick();
+      appState.setGlobalChat();
+    });
+
+    const railDm = document.getElementById('mp-rail-dm-btn');
+    railDm?.addEventListener('click', () => {
+      soundSynth.playClick();
+      const dms = appState.getState().dms || [];
+      if (dms.length > 0) {
+        const first = dms[0];
+        const pId = first.partnerId || (first.userId !== appState.getCurrentUserId() ? first.userId : null);
+        const pProf = pId ? this.partnerProfiles.get(pId) : null;
+        appState.setActiveDM(Object.assign({}, first, {
+          partnerId: pId,
+          partnerName: pProf?.displayName || first.partnerName || 'User'
+        }));
+      } else {
+        appState.setActiveDM({ dmId: 'dm_default', partnerId: null, partnerName: 'Friends' });
+      }
     });
 
     const gateLoginBtn = document.getElementById('mp-gate-login-btn');
@@ -285,27 +267,6 @@ export class MiniPulse {
       appState.clearReplyingTo();
     });
 
-    const globalItem = this.container.querySelector('[data-context="global"]');
-    globalItem?.addEventListener('click', () => {
-      soundSynth.playClick();
-      appState.setGlobalChat();
-      this.switchTab('chat');
-    });
-
-    const addFriendBtn = document.getElementById('mp-add-friend-btn');
-    const friendInput = document.getElementById('mp-friend-input');
-    addFriendBtn?.addEventListener('click', async () => {
-      const username = (friendInput?.value || '').trim();
-      if (!username) return;
-      try {
-        await playFabService.addFriend(username);
-        if (friendInput) friendInput.value = '';
-        pollingEngine.pollMeta();
-      } catch (err) {
-        alert(err.message || 'Failed to send request');
-      }
-    });
-
     const feed = document.getElementById('mp-messages-feed');
     feed?.addEventListener('scroll', () => {
       const threshold = 40;
@@ -324,19 +285,17 @@ export class MiniPulse {
           pollingEngine.start();
         }
       }
-      if (key === 'messages' || key === 'navigation' || key === 'channel') {
+      if (key === 'messages') {
         this.renderMessages();
+      }
+      if (key === 'navigation' || key === 'channel' || key === 'servers' || key === 'dms') {
+        this.updateRail();
+        this.updateSubpanel();
         this.updateHeaderTitle();
-        this.renderChannels();
+        this.renderMessages();
       }
       if (key === 'reply') {
         this.updateReplyBar();
-      }
-      if (key === 'dms' || key === 'servers') {
-        this.renderChannels();
-      }
-      if (key === 'friends') {
-        this.renderFriends();
       }
       if (key === 'network') {
         this.updateNetworkDot();
@@ -345,34 +304,10 @@ export class MiniPulse {
 
     this.updateVisibility();
     this.updateAuthGate();
-    this.renderMessages();
-    this.renderChannels();
-    this.renderFriends();
+    this.updateRail();
+    this.updateSubpanel();
     this.updateHeaderTitle();
-  }
-
-  switchTab(tabName) {
-    this.activeTab = tabName;
-    const tabBtns = this.container.querySelectorAll('.mp-tab-btn');
-    tabBtns.forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
-    });
-
-    const views = {
-      chat: document.getElementById('mp-view-chat'),
-      channels: document.getElementById('mp-view-channels'),
-      friends: document.getElementById('mp-view-friends')
-    };
-
-    Object.keys(views).forEach(k => {
-      if (views[k]) {
-        views[k].style.display = (k === tabName) ? 'flex' : 'none';
-      }
-    });
-
-    if (tabName === 'chat') {
-      this.scrollToBottom();
-    }
+    this.renderMessages();
   }
 
   updateVisibility() {
@@ -424,23 +359,222 @@ export class MiniPulse {
     dot.title = `Status: ${net.status || 'live'} (${net.latencyMs || 0}ms)`;
   }
 
+  updateRail() {
+    const state = appState.getState();
+    const railGlobal = document.getElementById('mp-rail-global-btn');
+    const railDm = document.getElementById('mp-rail-dm-btn');
+    const serverContainer = document.getElementById('mp-rail-servers');
+
+    if (railGlobal) {
+      railGlobal.classList.toggle('active', state.activeContext === 'global');
+    }
+    if (railDm) {
+      railDm.classList.toggle('active', state.activeContext === 'dm');
+    }
+
+    if (!serverContainer) return;
+    serverContainer.innerHTML = '';
+    const servers = state.servers || [];
+
+    servers.forEach(srv => {
+      const sId = srv.id || srv.serverId;
+      const isActive = state.activeContext === 'server' && state.activeServerId === sId;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `mp-rail-btn ${isActive ? 'active' : ''}`;
+      btn.title = srv.name || 'Server';
+
+      if (srv.iconUrl && (srv.iconUrl.startsWith('http://') || srv.iconUrl.startsWith('https://') || srv.iconUrl.startsWith('data:image/'))) {
+        btn.innerHTML = `<img src="${this.escapeHtml(srv.iconUrl)}" class="mp-rail-img" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><span class="mp-rail-fallback" style="display: none;">${(srv.name || 'S').charAt(0).toUpperCase()}</span>`;
+      } else {
+        btn.innerHTML = `<span class="mp-rail-fallback">${(srv.name || 'S').charAt(0).toUpperCase()}</span>`;
+      }
+
+      btn.addEventListener('click', () => {
+        soundSynth.playClick();
+        if (srv.channels && Array.isArray(srv.channels) && srv.channels.length > 0) {
+          appState.setActiveServer(srv);
+        } else {
+          appState.setActiveServer(Object.assign({}, srv, { channels: [{ id: 'chat', name: 'chat' }] }));
+          playFabService.getServer(sId).then(res => {
+            if (res && res.server) {
+              this.serverDetails.set(sId, res.server);
+              const current = appState.getState().activeServer;
+              if (current && (current.id || current.serverId) === sId) {
+                appState.setActiveServer(Object.assign({}, current, res.server));
+              }
+            }
+          });
+        }
+      });
+
+      serverContainer.appendChild(btn);
+    });
+  }
+
+  updateSubpanel() {
+    const state = appState.getState();
+    const titleEl = document.getElementById('mp-subpanel-title');
+    const contentEl = document.getElementById('mp-subpanel-content');
+    if (!titleEl || !contentEl) return;
+
+    contentEl.innerHTML = '';
+
+    if (state.activeContext === 'global') {
+      titleEl.textContent = 'Global';
+      contentEl.innerHTML = `
+        <div class="mp-subpanel-section-title">Streams</div>
+        <div class="mp-channel-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+          </svg>
+          <span>Global Stream</span>
+        </div>
+      `;
+    } else if (state.activeContext === 'dm') {
+      titleEl.textContent = 'Direct Messages';
+      const dms = state.dms || [];
+
+      const secTitle = document.createElement('div');
+      secTitle.className = 'mp-subpanel-section-title';
+      secTitle.textContent = 'Conversations';
+      contentEl.appendChild(secTitle);
+
+      if (dms.length === 0) {
+        contentEl.innerHTML += '<div class="mp-empty-note">No recent direct messages.</div>';
+      } else {
+        dms.forEach(dm => {
+          const item = document.createElement('div');
+          item.className = 'mp-channel-item';
+          const isActive = state.activeDM && state.activeDM.dmId === dm.dmId;
+          if (isActive) item.classList.add('active');
+
+          const partnerId = dm.partnerId || (dm.userId !== appState.getCurrentUserId() ? dm.userId : null);
+          let initialName = dm.name || dm.partnerName || 'User';
+          let initialUser = dm.partnerUsername ? `@${dm.partnerUsername}` : '';
+          let initialChar = initialName.charAt(0).toUpperCase();
+
+          const cached = partnerId ? this.partnerProfiles.get(partnerId) : null;
+          if (cached) {
+            initialName = cached.displayName || initialName;
+            initialUser = cached.username ? `@${cached.username}` : '';
+            initialChar = initialName.charAt(0).toUpperCase();
+          }
+
+          item.innerHTML = `
+            <div class="mp-channel-avatar" id="dm-sub-av-${this.escapeHtml(dm.dmId)}">${initialChar}</div>
+            <div class="mp-dm-info">
+              <span class="mp-dm-title" id="dm-sub-name-${this.escapeHtml(dm.dmId)}">${this.escapeHtml(initialName)}</span>
+              <span class="mp-dm-user" id="dm-sub-user-${this.escapeHtml(dm.dmId)}">${this.escapeHtml(initialUser)}</span>
+            </div>
+          `;
+
+          if (partnerId && !cached) {
+            playFabService.resolveUser(partnerId).then(profile => {
+              if (profile) {
+                this.partnerProfiles.set(partnerId, profile);
+                const nameEl = item.querySelector(`#dm-sub-name-${dm.dmId}`);
+                const userEl = item.querySelector(`#dm-sub-user-${dm.dmId}`);
+                const avEl = item.querySelector(`#dm-sub-av-${dm.dmId}`);
+                if (nameEl) nameEl.textContent = profile.displayName || 'User';
+                if (userEl) userEl.textContent = profile.username ? `@${profile.username}` : '';
+                if (avEl) {
+                  if (profile.avatarUrl && (profile.avatarUrl.startsWith('http://') || profile.avatarUrl.startsWith('https://') || profile.avatarUrl.startsWith('data:image/'))) {
+                    avEl.innerHTML = `<img src="${this.escapeHtml(profile.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" />`;
+                  } else {
+                    avEl.textContent = (profile.displayName || 'U').charAt(0).toUpperCase();
+                  }
+                }
+              }
+            });
+          }
+
+          item.addEventListener('click', () => {
+            soundSynth.playClick();
+            const pProf = partnerId ? this.partnerProfiles.get(partnerId) : null;
+            appState.setActiveDM(Object.assign({}, dm, {
+              partnerId: partnerId,
+              partnerName: pProf?.displayName || dm.partnerName || 'User',
+              partnerUsername: pProf?.username || dm.partnerUsername || ''
+            }));
+          });
+
+          contentEl.appendChild(item);
+        });
+      }
+    } else if (state.activeContext === 'server' && state.activeServer) {
+      const srv = state.activeServer;
+      titleEl.textContent = srv.name || 'Server';
+
+      const secTitle = document.createElement('div');
+      secTitle.className = 'mp-subpanel-section-title';
+      secTitle.textContent = 'Text Channels';
+      contentEl.appendChild(secTitle);
+
+      const sId = srv.id || srv.serverId;
+      let channels = srv.channels;
+      if (!Array.isArray(channels) || channels.length === 0) {
+        if (this.serverDetails.has(sId)) {
+          channels = this.serverDetails.get(sId).channels;
+        } else {
+          channels = [{ id: 'chat', name: 'chat' }];
+          playFabService.getServer(sId).then(res => {
+            if (res && res.server) {
+              this.serverDetails.set(sId, res.server);
+              const cur = appState.getState().activeServer;
+              if (cur && (cur.id || cur.serverId) === sId) {
+                appState.setActiveServer(Object.assign({}, cur, res.server));
+              }
+            }
+          });
+        }
+      }
+
+      channels.forEach(ch => {
+        const chId = typeof ch === 'object' ? ch.id : ch;
+        const chName = typeof ch === 'object' ? (ch.name || ch.id) : ch;
+        const isChActive = state.activeChannelId === chId || (!state.activeChannelId && chId === 'chat');
+
+        const chBtn = document.createElement('div');
+        chBtn.className = `mp-channel-item ${isChActive ? 'active' : ''}`;
+        chBtn.innerHTML = `
+          <span class="mp-channel-hash">#</span>
+          <span class="mp-channel-name">${this.escapeHtml(chName)}</span>
+        `;
+
+        chBtn.addEventListener('click', () => {
+          soundSynth.playClick();
+          appState.setActiveChannel(chId);
+        });
+
+        contentEl.appendChild(chBtn);
+      });
+    }
+  }
+
   updateHeaderTitle() {
     const state = appState.getState();
     const titleEl = document.getElementById('mp-header-title');
+    const inputField = document.getElementById('mp-composer-input');
     if (!titleEl) return;
 
     if (state.activeContext === 'global') {
       titleEl.textContent = 'Pulse Global';
+      if (inputField) inputField.placeholder = 'Message #global...';
     } else if (state.activeContext === 'dm' && state.activeDM) {
       const pProfile = state.activeDM.partnerId ? this.partnerProfiles.get(state.activeDM.partnerId) : null;
-      const dName = pProfile?.displayName || state.activeDM.name || state.activeDM.partnerName || state.activeDM.partnerUsername || 'Direct Message';
+      const dName = pProfile?.displayName || state.activeDM.name || state.activeDM.partnerName || 'Direct Message';
       titleEl.textContent = `DM: ${dName}`;
+      if (inputField) inputField.placeholder = `Message @${pProfile?.username || dName}...`;
     } else if (state.activeContext === 'server' && state.activeServer) {
       const srvName = state.activeServer.name || 'Server';
       const chName = state.activeChannelId || 'chat';
       titleEl.textContent = `${srvName} #${chName}`;
+      if (inputField) inputField.placeholder = `Message #${chName}...`;
     } else {
       titleEl.textContent = 'Pulse Chat';
+      if (inputField) inputField.placeholder = 'Send a message...';
     }
   }
 
@@ -458,7 +592,7 @@ export class MiniPulse {
     }
   }
 
-  async renderMessages() {
+  renderMessages() {
     const feed = document.getElementById('mp-messages-feed');
     const emptyState = document.getElementById('mp-feed-empty');
     if (!feed || !emptyState) return;
@@ -477,21 +611,27 @@ export class MiniPulse {
 
     emptyState.style.display = 'none';
 
-    for (const msg of messages) {
+    messages.forEach(msg => {
       const row = document.createElement('div');
       row.className = 'mp-message-row';
+      row.setAttribute('data-sender-id', msg.senderId);
       if (msg.senderId === currentUserId) {
         row.classList.add('mp-msg-mine');
       }
 
-      const sender = await this.resolveSender(msg.senderId);
+      const cachedSender = this.userCache.get(msg.senderId);
+      const isCurrent = currentUserId && msg.senderId === currentUserId;
+      const curUser = playFabService.getCurrentUser();
+      const displayName = cachedSender?.displayName || (isCurrent ? curUser?.displayName : null) || 'Member';
+      const avatarUrl = cachedSender?.avatarUrl || (isCurrent ? curUser?.avatarUrl : '') || '';
+      const appRank = cachedSender?.appRank || (isCurrent ? curUser?.appRank : null) || null;
 
       const avatar = document.createElement('div');
       avatar.className = 'mp-msg-avatar';
-      if (sender.avatarUrl && (sender.avatarUrl.startsWith('http://') || sender.avatarUrl.startsWith('https://') || sender.avatarUrl.startsWith('data:image/'))) {
-        avatar.innerHTML = `<img src="${this.escapeHtml(sender.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" />`;
+      if (avatarUrl && (avatarUrl.startsWith('http://') || avatarUrl.startsWith('https://') || avatarUrl.startsWith('data:image/'))) {
+        avatar.innerHTML = `<img src="${this.escapeHtml(avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" />`;
       } else {
-        avatar.textContent = (sender.displayName || 'U').charAt(0).toUpperCase();
+        avatar.textContent = (displayName || 'U').charAt(0).toUpperCase();
       }
 
       const content = document.createElement('div');
@@ -502,15 +642,15 @@ export class MiniPulse {
 
       const name = document.createElement('span');
       name.className = 'mp-msg-name';
-      name.textContent = sender.displayName || 'Member';
+      name.textContent = displayName;
 
-      if (sender.appRank && !sender.appRank.hidden) {
+      if (appRank && !appRank.hidden) {
         const badge = document.createElement('span');
         badge.className = 'mp-rank-badge';
-        badge.textContent = sender.appRank.name;
-        if (sender.appRank.color) {
-          badge.style.borderColor = sender.appRank.color;
-          badge.style.color = sender.appRank.color;
+        badge.textContent = appRank.name;
+        if (appRank.color) {
+          badge.style.borderColor = appRank.color;
+          badge.style.color = appRank.color;
         }
         meta.appendChild(badge);
       }
@@ -590,275 +730,43 @@ export class MiniPulse {
       row.appendChild(actions);
 
       feed.appendChild(row);
-    }
+
+      if (!cachedSender && msg.senderId) {
+        playFabService.resolveUser(msg.senderId).then(profile => {
+          if (profile) {
+            this.userCache.set(msg.senderId, profile);
+            const cards = feed.querySelectorAll(`[data-sender-id="${msg.senderId}"]`);
+            cards.forEach(card => {
+              const nSpan = card.querySelector('.mp-msg-name');
+              const avBox = card.querySelector('.mp-msg-avatar');
+              const mDiv = card.querySelector('.mp-msg-meta');
+              if (nSpan) nSpan.textContent = profile.displayName || 'Member';
+              if (avBox) {
+                if (profile.avatarUrl && (profile.avatarUrl.startsWith('http://') || profile.avatarUrl.startsWith('https://') || profile.avatarUrl.startsWith('data:image/'))) {
+                  avBox.innerHTML = `<img src="${this.escapeHtml(profile.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" />`;
+                } else {
+                  avBox.textContent = (profile.displayName || 'U').charAt(0).toUpperCase();
+                }
+              }
+              if (mDiv && profile.appRank && !profile.appRank.hidden && !mDiv.querySelector('.mp-rank-badge')) {
+                const badgeEl = document.createElement('span');
+                badgeEl.className = 'mp-rank-badge';
+                badgeEl.textContent = profile.appRank.name;
+                if (profile.appRank.color) {
+                  badgeEl.style.borderColor = profile.appRank.color;
+                  badgeEl.style.color = profile.appRank.color;
+                }
+                mDiv.appendChild(badgeEl);
+              }
+            });
+          }
+        });
+      }
+    });
 
     if (this.isScrolledToBottom) {
       this.scrollToBottom();
     }
-  }
-
-  async resolveSender(senderId) {
-    if (!senderId) return { displayName: 'Member', avatarUrl: '', appRank: null };
-    if (this.userCache.has(senderId)) {
-      return this.userCache.get(senderId);
-    }
-    const current = playFabService.getCurrentUser();
-    if (current && current.playFabId === senderId) {
-      this.userCache.set(senderId, current);
-      return current;
-    }
-    try {
-      const resolved = await playFabService.resolveUser(senderId);
-      this.userCache.set(senderId, resolved);
-      return resolved;
-    } catch {
-      return { displayName: 'Member', avatarUrl: '', appRank: null };
-    }
-  }
-
-  async renderChannels() {
-    const dmList = document.getElementById('mp-dm-list');
-    const srvList = document.getElementById('mp-server-list');
-    const state = appState.getState();
-    const dms = state.dms || [];
-    const servers = state.servers || [];
-
-    if (dmList) {
-      dmList.innerHTML = '';
-      if (dms.length === 0) {
-        dmList.innerHTML = '<div class="mp-empty-note">No recent direct messages.</div>';
-      } else {
-        dms.forEach(dm => {
-          const item = document.createElement('div');
-          item.className = 'mp-channel-item';
-          const isActive = state.activeContext === 'dm' && state.activeDM && state.activeDM.dmId === dm.dmId;
-          if (isActive) item.classList.add('active');
-
-          if (dm.isGroup) {
-            const gName = dm.name || 'Group Chat';
-            item.innerHTML = `
-              <div class="mp-channel-avatar">G</div>
-              <div class="mp-dm-info">
-                <span class="mp-dm-title">${this.escapeHtml(gName)}</span>
-                <span class="mp-dm-user">Group</span>
-              </div>
-            `;
-            item.addEventListener('click', () => {
-              soundSynth.playClick();
-              appState.setActiveDM(dm);
-              this.switchTab('chat');
-            });
-            dmList.appendChild(item);
-            return;
-          }
-
-          const partnerId = dm.partnerId || (dm.userId !== appState.getCurrentUserId() ? dm.userId : null);
-
-          let initialName = dm.partnerName || dm.partnerUsername || 'Direct Message';
-          let initialUser = dm.partnerUsername ? `@${dm.partnerUsername}` : '';
-          let initialChar = initialName.charAt(0).toUpperCase();
-
-          const cached = partnerId ? this.partnerProfiles.get(partnerId) : null;
-          if (cached) {
-            initialName = cached.displayName || initialName;
-            initialUser = cached.username ? `@${cached.username}` : '';
-            initialChar = initialName.charAt(0).toUpperCase();
-          }
-
-          item.innerHTML = `
-            <div class="mp-channel-avatar" id="dm-av-${this.escapeHtml(dm.dmId)}">${initialChar}</div>
-            <div class="mp-dm-info">
-              <span class="mp-dm-title" id="dm-name-${this.escapeHtml(dm.dmId)}">${this.escapeHtml(initialName)}</span>
-              <span class="mp-dm-user" id="dm-user-${this.escapeHtml(dm.dmId)}">${this.escapeHtml(initialUser)}</span>
-            </div>
-          `;
-
-          if (partnerId && !cached) {
-            playFabService.resolveUser(partnerId).then(profile => {
-              if (profile) {
-                this.partnerProfiles.set(partnerId, profile);
-                const nameEl = item.querySelector(`#dm-name-${dm.dmId}`);
-                const userEl = item.querySelector(`#dm-user-${dm.dmId}`);
-                const avEl = item.querySelector(`#dm-av-${dm.dmId}`);
-                if (nameEl) nameEl.textContent = profile.displayName || 'User';
-                if (userEl) userEl.textContent = profile.username ? `@${profile.username}` : '';
-                if (avEl) {
-                  if (profile.avatarUrl && (profile.avatarUrl.startsWith('http://') || profile.avatarUrl.startsWith('https://') || profile.avatarUrl.startsWith('data:image/'))) {
-                    avEl.innerHTML = `<img src="${this.escapeHtml(profile.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" />`;
-                  } else {
-                    avEl.textContent = (profile.displayName || 'U').charAt(0).toUpperCase();
-                  }
-                }
-              }
-            });
-          }
-
-          item.addEventListener('click', () => {
-            soundSynth.playClick();
-            const pProfile = partnerId ? this.partnerProfiles.get(partnerId) : null;
-            const fullDm = Object.assign({}, dm, {
-              partnerId: partnerId,
-              partnerName: pProfile?.displayName || dm.partnerName || 'User',
-              partnerUsername: pProfile?.username || dm.partnerUsername || ''
-            });
-            appState.setActiveDM(fullDm);
-            this.switchTab('chat');
-          });
-
-          dmList.appendChild(item);
-        });
-      }
-    }
-
-    if (srvList) {
-      srvList.innerHTML = '';
-      if (servers.length === 0) {
-        srvList.innerHTML = '<div class="mp-empty-note">No servers joined.</div>';
-      } else {
-        servers.forEach(srv => {
-          const sId = srv.id || srv.serverId;
-          const isCurrentServer = state.activeContext === 'server' && state.activeServerId === sId;
-          const isExpanded = this.expandedServers.has(sId) || isCurrentServer;
-
-          const srvWrapper = document.createElement('div');
-          srvWrapper.className = 'mp-server-accordion';
-
-          const srvHeader = document.createElement('div');
-          srvHeader.className = `mp-channel-item mp-server-header-btn ${isCurrentServer ? 'active' : ''}`;
-          srvHeader.innerHTML = `
-            <div class="mp-channel-avatar">${(srv.name || 'S').charAt(0).toUpperCase()}</div>
-            <span class="mp-server-name">${this.escapeHtml(srv.name || 'Server')}</span>
-            <svg class="mp-expand-icon ${isExpanded ? 'rotated' : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          `;
-
-          const channelsContainer = document.createElement('div');
-          channelsContainer.className = 'mp-server-channels';
-          channelsContainer.style.display = isExpanded ? 'flex' : 'none';
-
-          const populateChannels = (channels) => {
-            channelsContainer.innerHTML = '';
-            const chList = Array.isArray(channels) && channels.length > 0 ? channels : [{ id: 'chat', name: 'chat' }];
-            chList.forEach(ch => {
-              const chId = typeof ch === 'object' ? ch.id : ch;
-              const chName = typeof ch === 'object' ? (ch.name || ch.id) : ch;
-              const isChActive = isCurrentServer && (state.activeChannelId === chId || (!state.activeChannelId && chId === 'chat'));
-
-              const chItem = document.createElement('div');
-              chItem.className = `mp-server-channel-subitem ${isChActive ? 'active' : ''}`;
-              chItem.innerHTML = `
-                <span class="mp-channel-hash">#</span>
-                <span class="mp-channel-name">${this.escapeHtml(chName)}</span>
-              `;
-
-              chItem.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundSynth.playClick();
-                appState.setActiveServer(srv);
-                appState.setActiveChannel(chId);
-                this.switchTab('chat');
-              });
-
-              channelsContainer.appendChild(chItem);
-            });
-          };
-
-          if (srv.channels && Array.isArray(srv.channels) && srv.channels.length > 0) {
-            populateChannels(srv.channels);
-          } else if (this.serverDetails.has(sId)) {
-            populateChannels(this.serverDetails.get(sId).channels);
-          } else {
-            populateChannels([{ id: 'chat', name: 'chat' }]);
-            if (isExpanded) {
-              playFabService.getServer(sId).then(res => {
-                if (res && res.server) {
-                  this.serverDetails.set(sId, res.server);
-                  populateChannels(res.server.channels);
-                }
-              });
-            }
-          }
-
-          srvHeader.addEventListener('click', () => {
-            soundSynth.playClick();
-            if (this.expandedServers.has(sId)) {
-              this.expandedServers.delete(sId);
-            } else {
-              this.expandedServers.add(sId);
-            }
-            if (!this.serverDetails.has(sId)) {
-              playFabService.getServer(sId).then(res => {
-                if (res && res.server) {
-                  this.serverDetails.set(sId, res.server);
-                  populateChannels(res.server.channels);
-                }
-              });
-            }
-            this.renderChannels();
-          });
-
-          srvWrapper.appendChild(srvHeader);
-          srvWrapper.appendChild(channelsContainer);
-          srvList.appendChild(srvWrapper);
-        });
-      }
-    }
-  }
-
-  renderFriends() {
-    const list = document.getElementById('mp-friends-list');
-    if (!list) return;
-    const friends = appState.getState().friends || [];
-
-    list.innerHTML = '';
-    if (friends.length === 0) {
-      list.innerHTML = '<div class="mp-empty-note">No friends added yet.</div>';
-      return;
-    }
-
-    friends.forEach(f => {
-      const item = document.createElement('div');
-      item.className = 'mp-friend-item';
-      item.innerHTML = `
-        <div class="mp-friend-left">
-          <div class="mp-friend-avatar">${(f.displayName || 'F').charAt(0).toUpperCase()}</div>
-          <div class="mp-friend-info">
-            <span class="mp-friend-name">${this.escapeHtml(f.displayName || 'Friend')}</span>
-            <span class="mp-friend-user">@${this.escapeHtml(f.username || 'user')}</span>
-          </div>
-        </div>
-        <div class="mp-friend-actions">
-          <button type="button" class="mp-action-btn mp-btn-dm" title="Message">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-          </button>
-        </div>
-      `;
-
-      const dmBtn = item.querySelector('.mp-btn-dm');
-      dmBtn?.addEventListener('click', async () => {
-        soundSynth.playClick();
-        try {
-          const res = await playFabService.createOrGetDM(f.playFabId);
-          if (res && res.success && res.dm) {
-            const fullDm = Object.assign({}, res.dm, {
-              partnerId: f.playFabId,
-              partnerName: f.displayName,
-              partnerUsername: f.username
-            });
-            this.partnerProfiles.set(f.playFabId, f);
-            appState.setActiveDM(fullDm);
-            this.switchTab('chat');
-          }
-        } catch (err) {
-          alert(err.message || 'Could not open DM');
-        }
-      });
-
-      list.appendChild(item);
-    });
   }
 
   async handleSend() {
