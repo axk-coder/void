@@ -47,7 +47,7 @@ export class SettingsModal {
     this.container = container;
     this.callbacks = { onOpenLegal, onOpenCredits, onLogout, onProfileUpdated };
     this.isOpen = false;
-    this.tab = 'preferences';
+    this.tab = 'profile';
     this.isLoading = false;
     this.error = null;
     this.message = null;
@@ -57,7 +57,7 @@ export class SettingsModal {
     this.render();
   }
 
-  open(tab = 'preferences') {
+  open(tab = 'profile') {
     this.tab = tab;
     this.isOpen = true;
     this.error = null;
@@ -66,6 +66,11 @@ export class SettingsModal {
     this.panicKey = localStorage.getItem('void_panic_key') || '`';
     this.panicUrl = localStorage.getItem('void_panic_url') || 'https://www.google.com';
     this.render();
+    if (playFabService.isAuthenticated()) {
+      playFabService.syncCurrentUserProfile().then(() => {
+        if (this.isOpen) this.render();
+      }).catch(() => {});
+    }
   }
 
   close() {
@@ -80,12 +85,12 @@ export class SettingsModal {
     }
 
     const state = appState.getState();
-    const user = playFabService.getCurrentUser() || { displayName: "User", username: "user", email: "", presence: "online", statusMessage: "", avatarUrl: "" };
+    const user = playFabService.getCurrentUser() || { displayName: "User", username: "user", email: "", presence: "online", statusMessage: "", avatarUrl: "", appRank: null };
     const activeThemeObj = THEMES.find(t => t.key === this.currentTheme) || THEMES[0];
 
     this.container.innerHTML = `
       <div class="modal-overlay" id="settings-modal-overlay">
-        <div class="modal-card" style="max-width: 520px;">
+        <div class="modal-card" style="max-width: 540px;">
           <div class="modal-header">
             <div class="modal-title-box" style="display: flex; align-items: center; gap: 8px;">
               <h3 class="modal-title">Settings</h3>
@@ -122,7 +127,7 @@ export class SettingsModal {
             ${this.tab === 'profile' ? `
               <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 18px; padding: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
                 <div class="avatar-wrapper" id="settings-avatar-preview" style="width: 56px; height: 56px; min-width: 56px; position: relative; cursor: pointer;" title="Click to upload new avatar">
-                  <div class="avatar" style="width: 100%; height: 100%;">
+                  <div class="avatar" style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden;">
                     ${user.avatarUrl 
                       ? `<img src="${this.escapeHtml(user.avatarUrl)}" class="avatar-img" alt="" />`
                       : `<span style="font-size: 22px; font-weight: 700; color: #ffffff;">${(user.displayName || 'U').charAt(0).toUpperCase()}</span>`
@@ -131,10 +136,20 @@ export class SettingsModal {
                   <div class="presence-badge-dot dot-${user.presence || 'online'}" style="width: 12px; height: 12px; bottom: 0; right: 0;"></div>
                 </div>
                 <div style="display: flex; flex-direction: column; overflow: hidden; flex: 1;">
-                  <span id="settings-name-preview" style="font-size: 16px; font-weight: 700; color: #ffffff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${this.escapeHtml(user.displayName)}</span>
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span id="settings-name-preview" style="font-size: 16px; font-weight: 700; color: #ffffff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${this.escapeHtml(user.displayName)}</span>
+                    ${(user.appRank && !user.appRank.hidden) ? `
+                      <span class="app-rank-badge" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(255, 255, 255, 0.08); border: 1px solid ${this.escapeHtml(user.appRank.color || '#ffffff')}; color: ${this.escapeHtml(user.appRank.color || '#ffffff')};">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span>${this.escapeHtml(user.appRank.name)}</span>
+                      </span>
+                    ` : ''}
+                  </div>
                   <span style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">@${this.escapeHtml(user.username || user.displayName.toLowerCase().replace(/\\s+/g, ''))}</span>
                   <div style="display: flex; gap: 6px; margin-top: 8px;">
-                    <button type="button" class="form-btn-submit" id="btn-upload-pfp" style="padding: 4px 10px; font-size: 11px; width: auto;">Upload PFP</button>
+                    <button type="button" class="form-btn-submit" id="btn-upload-pfp" style="padding: 4px 10px; font-size: 11px; width: auto; margin: 0;">Upload PFP</button>
                     ${user.avatarUrl ? '<button type="button" id="btn-remove-pfp" style="padding: 4px 8px; font-size: 11px; background: transparent; border: 1px solid var(--border-medium); color: var(--text-muted); border-radius: var(--radius-sm); cursor: pointer;">Remove</button>' : ''}
                   </div>
                 </div>
@@ -143,7 +158,7 @@ export class SettingsModal {
 
               <form id="settings-profile-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 14px;">
                 <div class="form-group">
-                  <label class="form-label" for="set-presence">Presence Status</label>
+                  <label class="form-label" for="set-presence" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Presence Status</label>
                   <select id="set-presence" class="form-input" style="background: var(--bg-card); color: #fff; border: 1px solid var(--border-medium); cursor: pointer;" ${this.isLoading ? 'disabled' : ''}>
                     <option value="online" ${(user.presence === 'online' || !user.presence) ? 'selected' : ''}>Online (Active)</option>
                     <option value="idle" ${user.presence === 'idle' ? 'selected' : ''}>Idle (Away)</option>
@@ -153,7 +168,7 @@ export class SettingsModal {
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="set-status-msg">Status Message</label>
+                  <label class="form-label" for="set-status-msg" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Status Message</label>
                   <input
                     type="text"
                     id="set-status-msg"
@@ -166,7 +181,7 @@ export class SettingsModal {
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="set-avatar-url">Profile Picture URL</label>
+                  <label class="form-label" for="set-avatar-url" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Profile Picture URL</label>
                   <input
                     type="url"
                     id="set-avatar-url"
@@ -179,7 +194,7 @@ export class SettingsModal {
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="set-display-name">Display Name</label>
+                  <label class="form-label" for="set-display-name" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Display Name</label>
                   <input
                     type="text"
                     id="set-display-name"
@@ -191,7 +206,7 @@ export class SettingsModal {
                   />
                 </div>
 
-                <button type="submit" class="form-btn-submit" id="settings-save-profile-btn" ${this.isLoading ? 'disabled' : ''}>
+                <button type="submit" class="form-btn-submit" id="settings-save-profile-btn" ${this.isLoading ? 'disabled' : ''} style="margin-top: 6px;">
                   ${this.isLoading ? 'Saving Profile...' : 'Save Profile Changes'}
                 </button>
               </form>
@@ -423,15 +438,16 @@ export class SettingsModal {
         const u = playFabService.getCurrentUser() || { displayName: "User" };
         avatarPreview.innerHTML = `<span style="font-size: 22px; font-weight: 700; color: #ffffff;">${u.displayName.charAt(0).toUpperCase()}</span>`;
       }
+      this.isLoading = true;
+      this.render();
       try {
-        await playFabService.updateUserData({ avatarUrl: '' });
-        const cur = playFabService.getCurrentUser();
-        if (cur) cur.avatarUrl = '';
+        await playFabService.updateAvatarUrl('');
         this.message = 'Avatar removed';
         if (this.callbacks.onProfileUpdated) this.callbacks.onProfileUpdated();
-        this.render();
       } catch (err) {
         this.error = err.message || 'Failed to remove avatar';
+      } finally {
+        this.isLoading = false;
         this.render();
       }
     });
@@ -444,17 +460,9 @@ export class SettingsModal {
       this.message = null;
       this.render();
       try {
-        const reader = new FileReader();
-        const dataUrl = await new Promise((res, rej) => {
-          reader.onload = () => res(reader.result);
-          reader.onerror = rej;
-          reader.readAsDataURL(file);
-        });
+        const dataUrl = await playFabService.uploadAvatar(file);
         if (avatarUrlInput) avatarUrlInput.value = dataUrl;
-        await playFabService.updateUserData({ avatarUrl: dataUrl });
-        const cur = playFabService.getCurrentUser();
-        if (cur) cur.avatarUrl = dataUrl;
-        this.message = 'Avatar updated successfully!';
+        this.message = 'Avatar uploaded successfully!';
         if (this.callbacks.onProfileUpdated) this.callbacks.onProfileUpdated();
       } catch (err) {
         this.error = err.message || 'Failed to upload avatar';
@@ -485,7 +493,6 @@ export class SettingsModal {
 
     const profileForm = this.container.querySelector('#settings-profile-form');
     profileForm?.addEventListener('submit', async () => {
-      const user = playFabService.getCurrentUser() || {};
       const newAvatarUrl = avatarUrlInput ? avatarUrlInput.value.trim() : '';
       const newName = nameInput ? nameInput.value.trim().slice(0, 32) : '';
       const newPresence = presenceSelect ? presenceSelect.value : 'online';
@@ -503,20 +510,16 @@ export class SettingsModal {
       this.render();
 
       try {
-        await playFabService.updateUserData({
-          avatarUrl: newAvatarUrl,
-          presence: newPresence,
-          statusMessage: newStatusMsg
-        });
-        if (newName !== (user.displayName || '')) {
-          await playFabService.updateUserDisplayName(newName);
+        const user = playFabService.getCurrentUser() || {};
+        if (newAvatarUrl !== (user.avatarUrl || '')) {
+          await playFabService.updateAvatarUrl(newAvatarUrl);
         }
-
-        user.avatarUrl = newAvatarUrl;
-        user.displayName = newName;
-        user.presence = newPresence;
-        user.statusMessage = newStatusMsg;
-        appState.setUser(user);
+        if (newName !== (user.displayName || '')) {
+          await playFabService.updateDisplayName(newName);
+        }
+        if (newPresence !== (user.presence || 'online') || newStatusMsg !== (user.statusMessage || '')) {
+          await playFabService.updatePresence(newPresence, newStatusMsg);
+        }
 
         this.message = 'Profile changes saved successfully';
         if (this.callbacks.onProfileUpdated) {
@@ -532,8 +535,32 @@ export class SettingsModal {
 
     const accountForm = this.container.querySelector('#settings-account-form');
     accountForm?.addEventListener('submit', async () => {
-      this.message = 'Account settings saved';
+      const emailInput = this.container.querySelector('#set-account-email');
+      const newEmail = emailInput ? emailInput.value.trim().slice(0, 100) : '';
+
+      if (!newEmail || !newEmail.includes('@')) {
+        this.error = 'Valid email is required';
+        this.render();
+        return;
+      }
+
+      this.isLoading = true;
+      this.error = null;
+      this.message = null;
       this.render();
+
+      try {
+        await playFabService.updateEmail(newEmail);
+        this.message = 'Account email updated successfully';
+        if (this.callbacks.onProfileUpdated) {
+          this.callbacks.onProfileUpdated();
+        }
+      } catch (e) {
+        this.error = e.message || 'Failed to update email';
+      } finally {
+        this.isLoading = false;
+        this.render();
+      }
     });
 
     const audioToggle = this.container.querySelector('#set-audio-toggle');
