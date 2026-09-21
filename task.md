@@ -2,8 +2,11 @@
 
 - [x] Task 1: Initialize git repository and project foundation
 - [x] Task 2: Create project map (map.txt)
-- [x] Task 3: Build responsive grayscale web structure (HTML/CSS/JS)
-- [x] Task 4: Implement privacy policy, terms of service, and credits
-- [x] Task 5: Implement game launcher container and utility controls (panic key, cloaking, search layout)
-- [x] Task 6: Audit for exploits, security sandbox, and performance
-- [x] Task 7: Verify project functionality and complete checklist
+- [x] Task 3: Set up npm and Vite environment with package.json and vite.config.js
+- [x] Task 4: Integrate theme system and CSS variables from msg app (onyx, amoled, blurple, cyberpunk, emerald, crimson, sapphire, amethyst, amber, slate)
+- [x] Task 5: Implement axk-auth modal with PlayFab backend (Title ID: 133616), auto-login, cookie sharing with https://axk-coder.github.io/pulse-msg/
+- [x] Task 6: Implement logged-in user profile panel at bottom of sidebar/nav (as shown in image_0 with avatar, status, presence, audio mute, shortcuts, legal, version 6.0)
+- [x] Task 7: Implement legal modals (Privacy Policy, Terms of Service, Copyright) and Credits modal matching msg app
+- [x] Task 8: Implement game platform controls (cloaking, panic key, about:blank launcher, category filters, search) ready for game hosting with no games added
+- [x] Task 9: Check for exploits and verify security sandbox
+- [x] Task 10: Test Vite build and dev scripts

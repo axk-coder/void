@@ -1,12 +1,24 @@
-PROJECT MAP: void
+PROJECT MAP: void (Vite + Modular Vanilla JS)
 
 ROOT:
-- index.html: Main application interface, games browser shell, modal dialogs (terms, privacy, credits, settings).
-- style.css: Modern grayscale UI styling, responsive layout, minimal typography, focus states.
-- app.js: Core state management, game player iframe controller, search & category filtering, tab cloaking, panic key handler.
-- privacy.html: Privacy policy documentation.
-- terms.html: Terms of service documentation.
-- credits.html: Project credits and open source attribution.
-- task.md: Development roadmap and progress tracker.
-- map.txt: Project architecture and file reference for agents.
-- .agents/: Local agent customizations and RTK rules.
+- index.html: Root HTML template mounting application shell, fonts, styles, and scripts.
+- package.json: NPM configuration, Vite build/dev scripts.
+- vite.config.js: Vite configuration (no websockets, relative base).
+- src/
+  - main.js: App entry point, state orchestration, theme loader, auth check, shared cookie sync.
+  - services/
+    - playfab.js: PlayFab client SDK (Title ID 133616), auth endpoints, token persistence, cookie management.
+    - state.js: Reactive central application state store.
+    - soundEffects.js: Web Audio API sound synthesis.
+  - components/
+    - AuthModal.js: axk-auth modal supporting Login, Register, Forgot Password with PULSE branding.
+    - UserProfileModal.js: Modal for editing presence, status message, avatar, and sign out.
+    - SettingsModal.js: Settings dialog (themes, tab cloaking, panic key, panic URL, about:blank).
+    - LegalModal.js: Privacy Policy, Terms of Service, Copyright tabs.
+    - CreditsModal.js: Project and open source acknowledgements.
+    - GamePlayer.js: Sandboxed game player frame with fullscreen and reload controls.
+  - styles/
+    - variables.css: Theme variables (onyx, amoled, blurple, cyberpunk, emerald, crimson, sapphire, amethyst, amber, slate).
+    - main.css: Core application styles, layout, components, user profile panel, modals, animations.
+- task.md: Task checklist.
+- map.txt: Project architecture map.
