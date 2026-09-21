@@ -10,13 +10,17 @@ export class MiniPulse {
     this.userCache = new Map();
     this.partnerProfiles = new Map();
     this.serverDetails = new Map();
+    this.isRailOpen = true;
     this.isSubpanelOpen = true;
+    this.isChatOpen = true;
+    this.isMembersOpen = false;
     this.isScrolledToBottom = true;
     this.isSubmitting = false;
 
     this.render();
     this.bindEvents();
     this.setupDraggable();
+    this.setupResizable();
     this.subscribeState();
   }
 
@@ -25,10 +29,30 @@ export class MiniPulse {
       <div class="mini-pulse-panel" id="mini-pulse-panel" style="display: none;">
         <div class="mini-pulse-header" id="mini-pulse-header">
           <div class="mini-pulse-header-left">
-            <button type="button" class="mp-icon-btn" id="mp-toggle-subpanel-btn" title="Toggle Sidebar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <button type="button" class="mp-icon-btn active-toggle" id="mp-toggle-rail-btn" title="Toggle Server Rail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+            <button type="button" class="mp-icon-btn active-toggle" id="mp-toggle-subpanel-btn" title="Toggle Channels/DMs">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                 <line x1="9" y1="3" x2="9" y2="21"></line>
+              </svg>
+            </button>
+            <button type="button" class="mp-icon-btn active-toggle" id="mp-toggle-chat-btn" title="Toggle Chat Feed">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </button>
+            <button type="button" class="mp-icon-btn" id="mp-toggle-members-btn" title="Toggle People">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
             </button>
             <div class="mini-pulse-title-wrap">
@@ -81,7 +105,7 @@ export class MiniPulse {
             <div class="mp-subpanel-content" id="mp-subpanel-content"></div>
           </aside>
 
-          <main class="mp-chat-column">
+          <main class="mp-chat-column" id="mp-chat-column">
             <div class="mp-auth-required" id="mp-auth-gate" style="display: none;">
               <div class="mp-auth-box">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
@@ -117,6 +141,28 @@ export class MiniPulse {
               </div>
             </div>
           </main>
+
+          <aside class="mp-members-panel collapsed" id="mp-members-panel">
+            <div class="mp-members-header">
+              <span class="mp-members-title">People</span>
+              <button type="button" class="mp-icon-btn mp-members-close-btn" id="mp-members-close-btn" title="Close People">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="mp-members-content" id="mp-members-content">
+              <div class="mp-members-loading">Loading people...</div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mp-resize-handle" id="mp-resize-handle" title="Drag to Resize">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10">
+            <line x1="19" y1="13" x2="13" y2="19"></line>
+            <line x1="19" y1="7" x2="7" y2="19"></line>
+          </svg>
         </div>
       </div>
     `;
@@ -136,7 +182,7 @@ export class MiniPulse {
     const onPointerDown = (e) => {
       const state = appState.getState();
       if (state.miniPulseDocked) return;
-      if (e.target.closest('button') || e.target.closest('input')) {
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea')) {
         return;
       }
 
@@ -197,6 +243,71 @@ export class MiniPulse {
     header.addEventListener('touchstart', onPointerDown, { passive: true });
   }
 
+  setupResizable() {
+    const handle = document.getElementById('mp-resize-handle');
+    const panel = document.getElementById('mini-pulse-panel');
+    if (!handle || !panel) return;
+
+    let isResizing = false;
+    let startX = 0;
+    let startY = 0;
+    let startW = 0;
+    let startH = 0;
+
+    const onResizeDown = (e) => {
+      const state = appState.getState();
+      if (state.miniPulseDocked) return;
+      e.stopPropagation();
+      e.preventDefault();
+
+      isResizing = true;
+      startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      startY = e.clientY ?? (e.touches && e.touches[0]?.clientY) ?? 0;
+      startW = panel.offsetWidth;
+      startH = panel.offsetHeight;
+
+      panel.style.transition = 'none';
+
+      window.addEventListener('mousemove', onResizeMove, { passive: false });
+      window.addEventListener('mouseup', onResizeUp);
+      window.addEventListener('touchmove', onResizeMove, { passive: false });
+      window.addEventListener('touchend', onResizeUp);
+    };
+
+    const onResizeMove = (e) => {
+      if (!isResizing) return;
+      if (e.cancelable) e.preventDefault();
+
+      const curX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      const curY = e.clientY ?? (e.touches && e.touches[0]?.clientY) ?? 0;
+      const deltaX = curX - startX;
+      const deltaY = curY - startY;
+
+      const rect = panel.getBoundingClientRect();
+      const maxW = Math.max(260, window.innerWidth - rect.left - 8);
+      const maxH = Math.max(260, window.innerHeight - rect.top - 8);
+
+      const targetW = Math.max(260, Math.min(startW + deltaX, maxW));
+      const targetH = Math.max(260, Math.min(startH + deltaY, maxH));
+
+      panel.style.width = `${targetW}px`;
+      panel.style.height = `${targetH}px`;
+    };
+
+    const onResizeUp = () => {
+      if (!isResizing) return;
+      isResizing = false;
+      panel.style.transition = '';
+      window.removeEventListener('mousemove', onResizeMove);
+      window.removeEventListener('mouseup', onResizeUp);
+      window.removeEventListener('touchmove', onResizeMove);
+      window.removeEventListener('touchend', onResizeUp);
+    };
+
+    handle.addEventListener('mousedown', onResizeDown);
+    handle.addEventListener('touchstart', onResizeDown, { passive: false });
+  }
+
   bindEvents() {
     const closeBtn = document.getElementById('mp-close-btn');
     closeBtn?.addEventListener('click', () => {
@@ -211,6 +322,17 @@ export class MiniPulse {
       appState.setMiniPulseDocked(!state.miniPulseDocked);
     });
 
+    const toggleRailBtn = document.getElementById('mp-toggle-rail-btn');
+    toggleRailBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      this.isRailOpen = !this.isRailOpen;
+      const rail = document.getElementById('mp-rail');
+      if (rail) {
+        rail.classList.toggle('collapsed', !this.isRailOpen);
+      }
+      toggleRailBtn.classList.toggle('active-toggle', this.isRailOpen);
+    });
+
     const toggleSubpanelBtn = document.getElementById('mp-toggle-subpanel-btn');
     toggleSubpanelBtn?.addEventListener('click', () => {
       soundSynth.playClick();
@@ -219,6 +341,43 @@ export class MiniPulse {
       if (sub) {
         sub.classList.toggle('collapsed', !this.isSubpanelOpen);
       }
+      toggleSubpanelBtn.classList.toggle('active-toggle', this.isSubpanelOpen);
+    });
+
+    const toggleChatBtn = document.getElementById('mp-toggle-chat-btn');
+    toggleChatBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      this.isChatOpen = !this.isChatOpen;
+      const chat = document.getElementById('mp-chat-column');
+      if (chat) {
+        chat.classList.toggle('collapsed', !this.isChatOpen);
+      }
+      toggleChatBtn.classList.toggle('active-toggle', this.isChatOpen);
+    });
+
+    const toggleMembersBtn = document.getElementById('mp-toggle-members-btn');
+    toggleMembersBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      this.isMembersOpen = !this.isMembersOpen;
+      const members = document.getElementById('mp-members-panel');
+      if (members) {
+        members.classList.toggle('collapsed', !this.isMembersOpen);
+      }
+      toggleMembersBtn.classList.toggle('active-toggle', this.isMembersOpen);
+      if (this.isMembersOpen) {
+        this.renderMembers();
+      }
+    });
+
+    const membersCloseBtn = document.getElementById('mp-members-close-btn');
+    membersCloseBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      this.isMembersOpen = false;
+      const members = document.getElementById('mp-members-panel');
+      if (members) {
+        members.classList.add('collapsed');
+      }
+      toggleMembersBtn?.classList.remove('active-toggle');
     });
 
     const railGlobal = document.getElementById('mp-rail-global-btn');
@@ -284,15 +443,24 @@ export class MiniPulse {
         if (state.user) {
           pollingEngine.start();
         }
+        if (this.isMembersOpen) {
+          this.renderMembers();
+        }
       }
       if (key === 'messages') {
         this.renderMessages();
+        if (this.isMembersOpen) {
+          this.renderMembers();
+        }
       }
       if (key === 'navigation' || key === 'channel' || key === 'servers' || key === 'dms') {
         this.updateRail();
         this.updateSubpanel();
         this.updateHeaderTitle();
         this.renderMessages();
+        if (this.isMembersOpen) {
+          this.renderMembers();
+        }
       }
       if (key === 'reply') {
         this.updateReplyBar();
@@ -331,6 +499,9 @@ export class MiniPulse {
         if (voidLayout) voidLayout.classList.remove('with-docked-pulse');
       }
       this.scrollToBottom();
+      if (this.isMembersOpen) {
+        this.renderMembers();
+      }
     } else {
       panel.style.display = 'none';
       panel.classList.remove('docked');
@@ -769,6 +940,197 @@ export class MiniPulse {
     }
   }
 
+  async renderMembers() {
+    const contentEl = document.getElementById('mp-members-content');
+    if (!contentEl) return;
+
+    const state = appState.getState();
+    const currentUserId = playFabService.getCurrentUser()?.playFabId;
+    const memberMap = new Map();
+
+    const curUser = playFabService.getCurrentUser();
+    if (curUser) {
+      memberMap.set(curUser.playFabId, {
+        playFabId: curUser.playFabId,
+        displayName: curUser.displayName || 'You',
+        username: curUser.username || '',
+        avatarUrl: curUser.avatarUrl || '',
+        appRank: curUser.appRank || null,
+        presence: curUser.presence || 'online'
+      });
+    }
+
+    const streamKey = appState.getStreamKey();
+    const messages = state.messages[streamKey] || [];
+    messages.forEach(m => {
+      if (m.senderId && !memberMap.has(m.senderId)) {
+        const cached = this.userCache.get(m.senderId);
+        memberMap.set(m.senderId, {
+          playFabId: m.senderId,
+          displayName: cached?.displayName || 'Member',
+          username: cached?.username || '',
+          avatarUrl: cached?.avatarUrl || '',
+          appRank: cached?.appRank || null,
+          presence: cached?.presence || 'online'
+        });
+      }
+    });
+
+    if (state.activeContext === 'dm' && state.activeDM) {
+      const pId = state.activeDM.partnerId;
+      if (pId && !memberMap.has(pId)) {
+        const cached = this.partnerProfiles.get(pId) || this.userCache.get(pId);
+        memberMap.set(pId, {
+          playFabId: pId,
+          displayName: cached?.displayName || state.activeDM.name || 'User',
+          username: cached?.username || state.activeDM.partnerUsername || '',
+          avatarUrl: cached?.avatarUrl || '',
+          appRank: cached?.appRank || null,
+          presence: cached?.presence || 'online'
+        });
+      }
+    }
+
+    if (state.activeContext === 'server' && state.activeServer) {
+      const srv = state.activeServer;
+      const sId = srv.id || srv.serverId;
+      const details = this.serverDetails.get(sId);
+      const serverMembers = details?.members || srv.members;
+      if (Array.isArray(serverMembers)) {
+        serverMembers.forEach(mem => {
+          const mId = typeof mem === 'object' ? (mem.playFabId || mem.userId) : mem;
+          if (mId && !memberMap.has(mId)) {
+            const cached = this.userCache.get(mId);
+            memberMap.set(mId, {
+              playFabId: mId,
+              displayName: cached?.displayName || (typeof mem === 'object' ? mem.displayName : null) || 'Member',
+              username: cached?.username || (typeof mem === 'object' ? mem.username : null) || '',
+              avatarUrl: cached?.avatarUrl || (typeof mem === 'object' ? mem.avatarUrl : null) || '',
+              appRank: cached?.appRank || (typeof mem === 'object' ? mem.appRank : null) || null,
+              presence: cached?.presence || (typeof mem === 'object' ? mem.presence : 'online') || 'online'
+            });
+          }
+        });
+      }
+    }
+
+    try {
+      const friends = await playFabService.getFriendsList();
+      friends.forEach(f => {
+        if (!memberMap.has(f.playFabId)) {
+          memberMap.set(f.playFabId, {
+            playFabId: f.playFabId,
+            displayName: f.displayName || 'Friend',
+            username: f.username || '',
+            avatarUrl: f.avatarUrl || '',
+            appRank: null,
+            presence: 'online'
+          });
+        }
+      });
+    } catch {}
+
+    const members = Array.from(memberMap.values());
+    if (members.length === 0) {
+      contentEl.innerHTML = '<div class="mp-empty-note">No active members found.</div>';
+      return;
+    }
+
+    contentEl.innerHTML = '';
+    const group = document.createElement('div');
+    group.className = 'mp-members-group';
+
+    const groupTitle = document.createElement('div');
+    groupTitle.className = 'mp-subpanel-section-title';
+    groupTitle.textContent = `Online - ${members.length}`;
+    group.appendChild(groupTitle);
+
+    members.forEach(mem => {
+      const row = document.createElement('div');
+      row.className = 'mp-member-item';
+      row.setAttribute('data-member-id', mem.playFabId);
+
+      const avatar = document.createElement('div');
+      avatar.className = 'mp-member-avatar';
+      if (mem.avatarUrl && (mem.avatarUrl.startsWith('http://') || mem.avatarUrl.startsWith('https://') || mem.avatarUrl.startsWith('data:image/'))) {
+        avatar.innerHTML = `<img src="${this.escapeHtml(mem.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" /><span class="mp-status-indicator status-${mem.presence || 'online'}"></span>`;
+      } else {
+        avatar.innerHTML = `<span>${(mem.displayName || 'U').charAt(0).toUpperCase()}</span><span class="mp-status-indicator status-${mem.presence || 'online'}"></span>`;
+      }
+
+      const info = document.createElement('div');
+      info.className = 'mp-member-info';
+
+      const topRow = document.createElement('div');
+      topRow.className = 'mp-member-top';
+
+      const name = document.createElement('span');
+      name.className = 'mp-member-name';
+      name.textContent = mem.displayName || 'User';
+      topRow.appendChild(name);
+
+      if (mem.appRank && !mem.appRank.hidden) {
+        const badge = document.createElement('span');
+        badge.className = 'mp-rank-badge';
+        badge.textContent = mem.appRank.name;
+        if (mem.appRank.color) {
+          badge.style.borderColor = mem.appRank.color;
+          badge.style.color = mem.appRank.color;
+        }
+        topRow.appendChild(badge);
+      }
+
+      const user = document.createElement('span');
+      user.className = 'mp-member-username';
+      user.textContent = mem.username ? `@${mem.username}` : (mem.playFabId === currentUserId ? 'You' : '');
+
+      info.appendChild(topRow);
+      if (user.textContent) info.appendChild(user);
+
+      row.appendChild(avatar);
+      row.appendChild(info);
+
+      if (mem.playFabId !== currentUserId) {
+        row.style.cursor = 'pointer';
+        row.title = `Message ${mem.displayName}`;
+        row.addEventListener('click', () => {
+          soundSynth.playClick();
+          appState.setActiveDM({
+            dmId: `dm_${mem.playFabId}`,
+            partnerId: mem.playFabId,
+            partnerName: mem.displayName,
+            partnerUsername: mem.username
+          });
+        });
+      }
+
+      group.appendChild(row);
+
+      if (!this.userCache.has(mem.playFabId) && mem.playFabId) {
+        playFabService.resolveUser(mem.playFabId).then(resolved => {
+          if (resolved) {
+            this.userCache.set(mem.playFabId, resolved);
+            const rowEl = contentEl.querySelector(`[data-member-id="${mem.playFabId}"]`);
+            if (rowEl) {
+              const nEl = rowEl.querySelector('.mp-member-name');
+              const uEl = rowEl.querySelector('.mp-member-username');
+              const aEl = rowEl.querySelector('.mp-member-avatar');
+              if (nEl) nEl.textContent = resolved.displayName || 'User';
+              if (uEl && resolved.username) uEl.textContent = `@${resolved.username}`;
+              if (aEl) {
+                if (resolved.avatarUrl && (resolved.avatarUrl.startsWith('http://') || resolved.avatarUrl.startsWith('https://') || resolved.avatarUrl.startsWith('data:image/'))) {
+                  aEl.innerHTML = `<img src="${this.escapeHtml(resolved.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" /><span class="mp-status-indicator status-${resolved.presence || 'online'}"></span>`;
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+
+    contentEl.appendChild(group);
+  }
+
   async handleSend() {
     if (this.isSubmitting) return;
     if (!playFabService.isAuthenticated()) {
@@ -821,11 +1183,20 @@ export class MiniPulse {
 
   formatMessageText(rawText) {
     if (!rawText) return '';
+    const trimmed = rawText.trim();
+    const isOnlyMediaUrl = /^(https?:\/\/[^\s<]+)$/i.test(trimmed) && 
+      (/\.(jpeg|jpg|gif|png|webp|avif)($|\?)/i.test(trimmed) || /klipy\.com|giphy\.com|tenor\.com/i.test(trimmed));
+
+    if (isOnlyMediaUrl) {
+      const url = this.escapeHtml(trimmed);
+      return `<div class="mp-media-embed"><img src="${url}" class="mp-embed-img" loading="lazy" alt="" onerror="this.parentElement.style.display='none'" /></div>`;
+    }
+
     let escaped = this.escapeHtml(rawText);
 
     escaped = escaped.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
-      if (url.match(/\.(jpeg|jpg|gif|png|webp)($|\?)/i)) {
-        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="mp-link">${url}</a><div class="mp-media-embed"><img src="${url}" class="mp-embed-img" loading="lazy" alt="" onerror="this.parentElement.style.display='none'" /></div>`;
+      if (url.match(/\.(jpeg|jpg|gif|png|webp|avif)($|\?)/i) || url.match(/klipy\.com|giphy\.com|tenor\.com/i)) {
+        return `<div class="mp-media-embed"><img src="${url}" class="mp-embed-img" loading="lazy" alt="" onerror="this.parentElement.style.display='none'" /></div>`;
       }
       return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="mp-link">${url}</a>`;
     });

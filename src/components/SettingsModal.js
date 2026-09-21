@@ -54,6 +54,7 @@ export class SettingsModal {
     this.currentTheme = localStorage.getItem('pulse_theme') || 'onyx';
     this.panicKey = localStorage.getItem('void_panic_key') || '`';
     this.panicUrl = localStorage.getItem('void_panic_url') || 'https://www.google.com';
+    this.pulseToggleKey = localStorage.getItem('pulse_toggle_key') || ']';
     this.render();
   }
 
@@ -65,6 +66,7 @@ export class SettingsModal {
     this.currentTheme = localStorage.getItem('pulse_theme') || 'onyx';
     this.panicKey = localStorage.getItem('void_panic_key') || '`';
     this.panicUrl = localStorage.getItem('void_panic_url') || 'https://www.google.com';
+    this.pulseToggleKey = localStorage.getItem('pulse_toggle_key') || ']';
     this.render();
     if (playFabService.isAuthenticated()) {
       playFabService.syncCurrentUserProfile().then(() => {
@@ -316,6 +318,28 @@ export class SettingsModal {
                   </div>
                   <button type="button" class="form-btn-submit" id="set-save-panic-btn" style="margin: 0; padding: 8px; font-size: 12px;">
                     Save Keybind Settings
+                  </button>
+                </div>
+
+                <div style="padding: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 14px; font-weight: 600; color: #ffffff;">Pulse Toggle Keybind</span>
+                    <span style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Shortcuts</span>
+                  </div>
+                  <div class="form-group" style="margin: 0;">
+                    <label class="form-label" for="set-pulse-key" style="font-size: 11px;">Toggle Shortcut (Default: ] and })</label>
+                    <input
+                      type="text"
+                      id="set-pulse-key"
+                      class="form-input"
+                      placeholder="e.g. ]"
+                      value="${this.escapeHtml(this.pulseToggleKey || ']')}"
+                      maxlength="15"
+                      style="font-size: 12px; font-family: var(--font-mono);"
+                    />
+                  </div>
+                  <button type="button" class="form-btn-submit" id="set-save-pulse-key-btn" style="margin: 0; padding: 8px; font-size: 12px;">
+                    Save Pulse Keybind
                   </button>
                 </div>
 
@@ -596,6 +620,16 @@ export class SettingsModal {
       localStorage.setItem('void_panic_url', urlVal);
       appState.setPanicSettings(keyVal, urlVal);
       this.message = keyVal ? `Redirect keybind set to "${keyVal}"` : 'Redirect keybind disabled';
+      this.render();
+    });
+
+    const savePulseKeyBtn = this.container.querySelector('#set-save-pulse-key-btn');
+    savePulseKeyBtn?.addEventListener('click', () => {
+      const keyInput = this.container.querySelector('#set-pulse-key');
+      const keyVal = keyInput ? keyInput.value.trim() : ']';
+      this.pulseToggleKey = keyVal || ']';
+      localStorage.setItem('pulse_toggle_key', this.pulseToggleKey);
+      this.message = `Pulse toggle shortcut set to "${this.pulseToggleKey}"`;
       this.render();
     });
 

@@ -66,7 +66,7 @@ class VoidApp {
     const savedPanicUrl = localStorage.getItem('void_panic_url') || 'https://google.com';
     appState.setPanicSettings(savedPanicKey, savedPanicUrl);
 
-    this.setupPanicListener();
+    this.setupKeyboardShortcuts();
     this.setupSharedCookieBridge();
 
     this.renderShell();
@@ -116,16 +116,25 @@ class VoidApp {
     });
   }
 
-  setupPanicListener() {
+  setupKeyboardShortcuts() {
     window.addEventListener('keydown', (e) => {
       const activeEl = document.activeElement;
-      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
-        return;
-      }
+      const isInputActive = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
       const state = appState.getState();
-      if (e.key === state.panicKey) {
+      if (!isInputActive && e.key === state.panicKey) {
         e.preventDefault();
         window.location.replace(state.panicUrl || 'https://google.com');
+        return;
+      }
+
+      const configuredKey = localStorage.getItem('pulse_toggle_key') || ']';
+      const isToggleKey = (e.key === configuredKey) ||
+        ((configuredKey === ']' || configuredKey === '}') && (e.key === ']' || e.key === '}' || e.code === 'BracketRight'));
+
+      if (isToggleKey && !isInputActive) {
+        e.preventDefault();
+        appState.toggleMiniPulse();
       }
     });
   }
@@ -210,7 +219,7 @@ class VoidApp {
             </div>
 
             <div class="top-navbar-actions">
-              <button type="button" class="btn-header" id="top-pulse-btn" title="Open Pulse Chat">
+              <button type="button" class="btn-header" id="top-pulse-btn" title="Pulse Chat (Shortcut: ] or })">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>

@@ -31,3 +31,12 @@
 - [x] Task 29: Resolve and display actual partner names and avatars in DM list using playFabService.resolveUser
 - [x] Task 30: Implement channel selection and expandable channel list for servers in Mini Pulse
 - [x] Task 31: Test, verify build, update map.txt, and push to GitHub
+- [x] Task 32: Make Mini Pulse window resizable/rescaleable with bottom-right drag handle and boundary constraints
+- [x] Task 33: Add hide/toggle buttons for Server Rail, Channels/DMs Subpanel, and Chat Column
+- [x] Task 34: Implement People/Members tab with presence, ranks, friend/member list, and toggle button
+- [x] Task 35: Add configurable shortcut key (default: "]" and "}") with Settings UI to toggle Mini Pulse
+- [x] Task 36: Clean GIF/image embed formatting to hide raw URL text above media embeds
+- [x] Task 37: Perform exploit audits and grayscale UI polish
+- [x] Task 38: Test build, update map.txt, and push to GitHub
+
+
