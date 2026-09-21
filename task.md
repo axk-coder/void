@@ -18,3 +18,10 @@
 - [x] Task 16: Scrape 559 games from Truffled, add Truffled category tab, and integrate thumbnails
 - [x] Task 17: Multi-agent and automated audit of every game on http://localhost:5173/ to detect and download any missing assets or broken references
 - [x] Task 18: Implement TikTok Background Ball Maze Breaker game in public/games/tiktok-bounce/ matching screenshot exactly and register in catalog
+- [x] Task 19: Integrate messaging services (playfab message/server/dm methods, messageCache, pollingEngine) into void
+- [x] Task 20: Build Mini Pulse UI component (dockable/overlay drawer with Global, DMs, Servers, live chat feed, message composer, replies, embeds)
+- [x] Task 21: Integrate Mini Pulse into top navbar, sidebar, and game player overlay in void
+- [x] Task 22: Style Mini Pulse with grayscale aesthetic, clean layout, and responsive controls
+- [x] Task 23: Perform exploit checks (XSS escaping, payload limits, auth safety, secure storage)
+- [x] Task 24: Test and verify build and functionality
+- [x] Task 25: Update map.txt and deploy production build to GitHub

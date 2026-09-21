@@ -1,3 +1,6 @@
+import { appState } from '../services/state.js';
+import { soundSynth } from '../services/soundEffects.js';
+
 export class GamePlayer {
   constructor(container, { onClose }) {
     this.container = container;
@@ -34,6 +37,7 @@ export class GamePlayer {
             <span class="player-title">${this.escapeHtml(this.currentGame.title || 'Game')}</span>
           </div>
           <div class="player-actions">
+            <button type="button" class="btn-action" id="toggle-pulse-game-btn" title="Toggle Pulse Chat">Chat</button>
             <button type="button" class="btn-action" id="reload-game-btn">Reload</button>
             <button type="button" class="btn-action" id="fullscreen-game-btn">Fullscreen</button>
             <button type="button" class="btn-action" id="open-blank-btn">Popout</button>
@@ -51,10 +55,20 @@ export class GamePlayer {
 
   attachEvents() {
     const closeBtn = this.container.querySelector('#close-player-btn');
-    closeBtn?.addEventListener('click', () => this.close());
+    closeBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      this.close();
+    });
+
+    const chatBtn = this.container.querySelector('#toggle-pulse-game-btn');
+    chatBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      appState.toggleMiniPulse();
+    });
 
     const reloadBtn = this.container.querySelector('#reload-game-btn');
     reloadBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
       const frame = this.container.querySelector('#game-frame');
       if (frame && this.currentGame) {
         frame.src = this.currentGame.url;
@@ -63,6 +77,7 @@ export class GamePlayer {
 
     const fullscreenBtn = this.container.querySelector('#fullscreen-game-btn');
     fullscreenBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
       const container = this.container.querySelector('#player-frame-container');
       if (!container) return;
       if (!document.fullscreenElement) {
@@ -78,6 +93,7 @@ export class GamePlayer {
 
     const openBlankBtn = this.container.querySelector('#open-blank-btn');
     openBlankBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
       if (!this.currentGame || !this.currentGame.url) return;
       const win = window.open('about:blank', '_blank');
       if (win && !win.closed) {

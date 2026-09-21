@@ -5,8 +5,9 @@ const PLAYFAB_API_BASE = `https://${PLAYFAB_TITLE_ID}.playfabapi.com/Client`;
 
 function setCookie(name, value, days = 365) {
   try {
+    const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
     const expires = new Date(Date.now() + days * 864e5).toUTCString();
-    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax${isSecure ? '; Secure' : ''}`;
   } catch {}
 }
 
@@ -31,8 +32,12 @@ class PlayFabService {
     this.playFabId = localStorage.getItem("pulse_playfab_id") || getCookie("pulse_playfab_id") || null;
     this.currentUser = null;
     this.userCache = new Map();
+    this.serverCache = new Map();
+    this.lastSendTimestamp = 0;
+    this.pendingRequests = 0;
+    this.onSessionExpired = null;
 
-    const storedUser = localStorage.getItem("pulse_user") || getCookie("pulse_user");
+    const storedUser = localStorage.getItem("pulse_user") || getCookie("pulse_user") || getCookie("axk_auth_user");
     if (storedUser) {
       try {
         this.currentUser = JSON.parse(storedUser);
@@ -40,6 +45,24 @@ class PlayFabService {
         this.currentUser = null;
       }
     }
+
+    if (!this.sessionTicket || !this.currentUser) {
+      const sharedSessionRaw = getCookie("axk_auth_session") || getCookie("pulse_shared_auth");
+      if (sharedSessionRaw) {
+        try {
+          const parsed = JSON.parse(sharedSessionRaw);
+          if (parsed && parsed.sessionTicket) {
+            this.sessionTicket = parsed.sessionTicket;
+            this.playFabId = parsed.playFabId || this.playFabId;
+            this.currentUser = parsed.user || this.currentUser;
+            if (this.sessionTicket) localStorage.setItem("pulse_session_ticket", this.sessionTicket);
+            if (this.playFabId) localStorage.setItem("pulse_playfab_id", this.playFabId);
+            if (this.currentUser) localStorage.setItem("pulse_user", JSON.stringify(this.currentUser));
+          }
+        } catch {}
+      }
+    }
+
     if (this.currentUser) {
       appState.setUser(this.currentUser);
     }
@@ -79,6 +102,23 @@ class PlayFabService {
     setCookie("pulse_playfab_id", this.playFabId);
     setCookie("pulse_user", JSON.stringify(this.currentUser));
     setCookie("axk_auth_ticket", this.sessionTicket);
+    setCookie("axk_auth_session", JSON.stringify({
+      sessionTicket: this.sessionTicket,
+      playFabId: this.playFabId,
+      user: this.currentUser
+    }));
+
+    if (this.playFabId) {
+      this.userCache.set(this.playFabId, {
+        displayName: this.currentUser.displayName,
+        username: this.currentUser.username || "",
+        avatarUrl: this.currentUser.avatarUrl,
+        presence: this.currentUser.presence,
+        statusMessage: this.currentUser.statusMessage,
+        appRank: this.currentUser.appRank,
+        isFullProfile: true
+      });
+    }
 
     appState.setUser(this.currentUser);
   }
@@ -98,6 +138,10 @@ class PlayFabService {
     deleteCookie("pulse_user");
     deleteCookie("pulse_auth_store");
     deleteCookie("axk_auth_ticket");
+    deleteCookie("axk_auth_session");
+    deleteCookie("axk_auth_store");
+    deleteCookie("axk_auth_user");
+    deleteCookie("pulse_shared_auth");
 
     appState.setUser(null);
   }
@@ -122,11 +166,24 @@ class PlayFabService {
     return null;
   }
 
+  async validateSession() {
+    if (!this.sessionTicket) return false;
+    try {
+      const res = await this.post("GetAccountInfo", {}, true);
+      return !!(res && res.AccountInfo);
+    } catch {
+      return false;
+    }
+  }
+
   async tryAutoLogin() {
     if (this.sessionTicket && this.currentUser) {
       try {
-        await this.syncCurrentUserProfile();
-        return true;
+        const valid = await this.validateSession();
+        if (valid) {
+          await this.syncCurrentUserProfile();
+          return true;
+        }
       } catch {}
     }
     const creds = this.getSavedCredentials();
@@ -139,7 +196,7 @@ class PlayFabService {
     return false;
   }
 
-  async post(endpoint, payload, useAuth = false) {
+  async post(endpoint, payload, useAuth = false, attempt = 0) {
     const url = `${PLAYFAB_API_BASE}/${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
@@ -150,25 +207,65 @@ class PlayFabService {
       headers["X-Authentication"] = this.sessionTicket;
     }
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(payload)
-    });
+    let res;
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(payload)
+      });
+    } catch (networkErr) {
+      if (attempt < 5) {
+        await new Promise(r => setTimeout(r, Math.min(250 * Math.pow(2, attempt), 2000)));
+        return await this.post(endpoint, payload, useAuth, attempt + 1);
+      }
+      throw networkErr;
+    }
+
+    if (!res.ok) {
+      if ((res.status === 429 || res.status === 503 || res.status === 504) && attempt < 5) {
+        await new Promise(r => setTimeout(r, Math.min(250 * Math.pow(2, attempt), 2000)));
+        return await this.post(endpoint, payload, useAuth, attempt + 1);
+      }
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
 
     const data = await res.json();
-    if (data.code !== 200 || (data.status && data.status !== "OK")) {
-      const msg = data.errorMessage || data.error || "Request failed";
-      const err = new Error(msg);
-      err.playFabData = data;
-      throw err;
+    if (data.code !== 200) {
+      const errMessage = String(data.errorMessage || data.status || "PlayFab API Error");
+      const errLower = errMessage.toLowerCase();
+      const isRateLimit = data.code === 429 || data.code === 1199 || errLower.includes("rate limit") || errLower.includes("over limit") || errLower.includes("too many requests") || errLower.includes("throttle");
+
+      if (isRateLimit && attempt < 5) {
+        await new Promise(r => setTimeout(r, Math.min(250 * Math.pow(2, attempt), 2000)));
+        return await this.post(endpoint, payload, useAuth, attempt + 1);
+      }
+
+      if (useAuth && attempt === 0 && (data.code === 401 || errLower.includes("ticket") || errLower.includes("authenticated") || errLower.includes("expired") || data.errorCode === 1074)) {
+        const reauthed = await this.tryAutoLogin();
+        if (reauthed) {
+          return await this.post(endpoint, payload, useAuth, attempt + 1);
+        }
+        if (typeof this.onSessionExpired === 'function') {
+          this.onSessionExpired();
+        }
+      }
+
+      const errorObj = new Error(errMessage);
+      errorObj.playFabData = data;
+      throw errorObj;
     }
 
     return data.data;
   }
 
-  async executeScript(functionName, functionParameter = {}) {
+  async executeScript(functionName, functionParameter = {}, options = {}, attempt = 0) {
     if (!this.sessionTicket) throw new Error("Not authenticated");
+    const isSilent = Boolean(options && options.silent);
+    if (!isSilent && attempt === 0) {
+      this.pendingRequests++;
+      appState.setCloudScriptPending(true);
+    }
     try {
       const payload = {
         FunctionName: functionName,
@@ -177,11 +274,30 @@ class PlayFabService {
       };
       const res = await this.post("ExecuteCloudScript", payload, true);
       if (res && res.FunctionResult) {
+        if (typeof res.FunctionResult === 'object' && res.FunctionResult.error) {
+          const errLower = String(res.FunctionResult.error).toLowerCase();
+          if ((errLower.includes("rate limit") || errLower.includes("too many requests") || errLower.includes("429")) && attempt < 5) {
+            await new Promise(r => setTimeout(r, Math.min(250 * Math.pow(2, attempt), 2000)));
+            return await this.executeScript(functionName, functionParameter, options, attempt + 1);
+          }
+        }
         return res.FunctionResult;
       }
       return { success: false };
     } catch (err) {
-      return { success: false };
+      const errLower = String(err.message || "").toLowerCase();
+      if ((errLower.includes("rate limit") || errLower.includes("too many requests") || errLower.includes("429")) && attempt < 5) {
+        await new Promise(r => setTimeout(r, Math.min(250 * Math.pow(2, attempt), 2000)));
+        return await this.executeScript(functionName, functionParameter, options, attempt + 1);
+      }
+      throw err;
+    } finally {
+      if (!isSilent && attempt === 0) {
+        this.pendingRequests = Math.max(0, this.pendingRequests - 1);
+        if (this.pendingRequests === 0) {
+          appState.setCloudScriptPending(false);
+        }
+      }
     }
   }
 
@@ -227,7 +343,7 @@ class PlayFabService {
     } catch {}
 
     try {
-      const cloudRes = await this.executeScript("getUserProfile", { userId: this.playFabId });
+      const cloudRes = await this.executeScript("getUserProfile", { userId: this.playFabId }, { silent: true });
       if (cloudRes && cloudRes.success && cloudRes.profile) {
         if (cloudRes.profile.displayName) this.currentUser.displayName = cloudRes.profile.displayName;
         if (cloudRes.profile.avatarUrl) this.currentUser.avatarUrl = cloudRes.profile.avatarUrl;
@@ -240,6 +356,17 @@ class PlayFabService {
 
     localStorage.setItem("pulse_user", JSON.stringify(this.currentUser));
     setCookie("pulse_user", JSON.stringify(this.currentUser));
+    if (this.playFabId) {
+      this.userCache.set(this.playFabId, {
+        displayName: this.currentUser.displayName,
+        username: this.currentUser.username || "",
+        avatarUrl: this.currentUser.avatarUrl || "",
+        presence: this.currentUser.presence || "online",
+        statusMessage: this.currentUser.statusMessage || "",
+        appRank: this.currentUser.appRank || null,
+        isFullProfile: true
+      });
+    }
     appState.setUser(this.currentUser);
   }
 
@@ -447,6 +574,214 @@ class PlayFabService {
     });
 
     return await this.updateAvatarUrl(compressedDataUrl);
+  }
+
+  async resolveUser(playFabId, force = false) {
+    if (!playFabId) return { displayName: "User", username: "", avatarUrl: "", presence: "offline", statusMessage: "", appRank: null };
+    if (this.currentUser && this.currentUser.playFabId === playFabId) {
+      return {
+        displayName: this.currentUser.displayName,
+        username: this.currentUser.username || "",
+        avatarUrl: this.currentUser.avatarUrl || "",
+        presence: this.currentUser.presence || "online",
+        statusMessage: this.currentUser.statusMessage || "",
+        appRank: this.currentUser.appRank || null,
+        isFullProfile: true
+      };
+    }
+    if (!force && this.userCache.has(playFabId)) {
+      const cached = this.userCache.get(playFabId);
+      if (cached && cached.isFullProfile) {
+        return cached;
+      }
+    }
+
+    let resolvedData = {
+      playFabId: playFabId,
+      displayName: "Member",
+      username: "",
+      avatarUrl: "",
+      presence: "offline",
+      statusMessage: "",
+      appRank: null,
+      isFullProfile: true
+    };
+
+    try {
+      const cloudRes = await this.executeScript("getUserProfile", { userId: playFabId }, { silent: true });
+      if (cloudRes && cloudRes.success && cloudRes.profile) {
+        const p = cloudRes.profile;
+        if (p.displayName) resolvedData.displayName = p.displayName;
+        if (p.username) resolvedData.username = p.username;
+        if (p.avatarUrl) resolvedData.avatarUrl = p.avatarUrl;
+        if (p.presence) resolvedData.presence = p.presence;
+        if (p.statusMessage !== undefined) resolvedData.statusMessage = p.statusMessage;
+        if (p.appRank) resolvedData.appRank = p.appRank;
+      }
+    } catch {}
+
+    if (!resolvedData.username || !resolvedData.appRank) {
+      try {
+        const res = await this.post("GetPlayerProfile", {
+          PlayFabId: playFabId,
+          ProfileConstraints: { ShowDisplayName: true, ShowAvatarUrl: true, ShowUsername: true }
+        }, true);
+        const profile = res && res.PlayerProfile ? res.PlayerProfile : {};
+        if (profile.DisplayName && resolvedData.displayName === "Member") resolvedData.displayName = profile.DisplayName;
+        if (profile.Username && !resolvedData.username) resolvedData.username = profile.Username;
+        if (profile.AvatarUrl && !resolvedData.avatarUrl) resolvedData.avatarUrl = profile.AvatarUrl;
+      } catch {}
+
+      try {
+        const readOnlyData = await this.post("GetUserReadOnlyData", {
+          PlayFabId: playFabId,
+          Keys: ["RankName", "RankColor", "RankPerms", "Rankhidden"]
+        }, true);
+        if (readOnlyData && readOnlyData.Data) {
+          const d = readOnlyData.Data;
+          const rName = d.RankName ? d.RankName.Value : "";
+          const rColor = d.RankColor ? d.RankColor.Value : "";
+          const rPermsRaw = d.RankPerms ? d.RankPerms.Value : "";
+          const rHidden = d.Rankhidden ? (d.Rankhidden.Value === "true" || d.Rankhidden.Value === true) : false;
+          let perms = {};
+          if (rPermsRaw) {
+            try { perms = JSON.parse(rPermsRaw); } catch {}
+          }
+          if (rName) {
+            resolvedData.appRank = {
+              name: rName,
+              color: rColor || "#ffffff",
+              perms: perms,
+              hidden: rHidden
+            };
+          }
+        }
+      } catch {}
+    }
+
+    this.userCache.set(playFabId, resolvedData);
+    return resolvedData;
+  }
+
+  async getFriendsList() {
+    if (!this.sessionTicket) return [];
+    try {
+      const res = await this.post("GetFriendsList", {
+        IncludeFacebookFriends: false,
+        IncludeSteamFriends: false,
+        ProfileConstraints: { ShowDisplayName: true, ShowAvatarUrl: true }
+      }, true);
+
+      const rawFriends = res.Friends || [];
+      const confirmedFriends = [];
+
+      for (const f of rawFriends) {
+        const prof = f.Profile || {};
+        const friendData = {
+          playFabId: f.FriendPlayFabId,
+          displayName: prof.DisplayName || f.TitleDisplayName || f.Username || "Friend",
+          avatarUrl: prof.AvatarUrl || "",
+          username: f.Username || "",
+          tags: Array.isArray(f.Tags) ? f.Tags : []
+        };
+        confirmedFriends.push(friendData);
+      }
+      return confirmedFriends;
+    } catch {
+      return [];
+    }
+  }
+
+  async addFriend(identifier) {
+    if (!this.sessionTicket) throw new Error("Not authenticated");
+    const cleanTarget = String(identifier || "").trim();
+    if (!cleanTarget) throw new Error("Username or ID required");
+    const res = await this.executeScript("sendFriendRequest", { target: cleanTarget });
+    if (!res || !res.success) {
+      throw new Error(res?.error || "Failed to send friend request");
+    }
+    return res;
+  }
+
+  async removeFriend(friendPlayFabId) {
+    if (!this.sessionTicket) throw new Error("Not authenticated");
+    try {
+      await this.executeScript("removeFriend", { friendId: friendPlayFabId });
+    } catch {}
+    try {
+      await this.post("RemoveFriend", { FriendPlayFabId: friendPlayFabId }, true);
+    } catch {}
+    return { success: true };
+  }
+
+  async getMessages(target, silent = true) {
+    return await this.executeScript("getMessages", target, { silent });
+  }
+
+  async sendMessage(target, text, replyTo = null) {
+    const now = Date.now();
+    if (now - this.lastSendTimestamp < 1000) {
+      throw new Error("Sending too fast. Please wait a moment.");
+    }
+    this.lastSendTimestamp = now;
+
+    const payload = Object.assign({}, target, {
+      text: String(text || "").trim().slice(0, 2000),
+      replyTo: replyTo || undefined
+    });
+
+    return await this.executeScript("sendMessage", payload);
+  }
+
+  async editMessage(target, messageId, text) {
+    const payload = Object.assign({}, target, {
+      messageId: messageId,
+      text: String(text || "").trim().slice(0, 2000)
+    });
+    return await this.executeScript("editMessage", payload);
+  }
+
+  async deleteMessage(target, messageId) {
+    const payload = Object.assign({}, target, {
+      messageId: messageId
+    });
+    return await this.executeScript("deleteMessage", payload);
+  }
+
+  async getUserServers(silent = true) {
+    const res = await this.executeScript("getUserServers", {}, { silent });
+    if (res && res.success && Array.isArray(res.servers)) {
+      return res.servers;
+    }
+    return appState.getState().servers || [];
+  }
+
+  async createServer(name, iconUrl = "") {
+    return await this.executeScript("createServer", { name, iconUrl });
+  }
+
+  async getServer(serverId, silent = true) {
+    return await this.executeScript("getServer", { serverId }, { silent });
+  }
+
+  async joinServer(serverId) {
+    return await this.executeScript("joinServer", { serverId });
+  }
+
+  async leaveServer(serverId) {
+    return await this.executeScript("leaveServer", { serverId });
+  }
+
+  async getUserDMs(silent = true) {
+    const res = await this.executeScript("getUserDMs", {}, { silent });
+    if (res && res.success && Array.isArray(res.dms)) {
+      return res.dms;
+    }
+    return appState.getState().dms || [];
+  }
+
+  async createOrGetDM(partnerId) {
+    return await this.executeScript("createOrGetDM", { partnerId });
   }
 }
 

@@ -2,11 +2,13 @@ import './styles/main.css';
 import { appState } from './services/state.js';
 import { playFabService } from './services/playfab.js';
 import { soundSynth } from './services/soundEffects.js';
+import { pollingEngine } from './services/pollingEngine.js';
 import { AuthModal } from './components/AuthModal.js';
 import { SettingsModal, CLOAKS } from './components/SettingsModal.js';
 import { LegalModal } from './components/LegalModal.js';
 import { CreditsModal } from './components/CreditsModal.js';
 import { GamePlayer } from './components/GamePlayer.js';
+import { MiniPulse } from './components/MiniPulse.js';
 import truffledGames from './data/truffledGames.json';
 
 const builtInGames = [
@@ -51,6 +53,7 @@ class VoidApp {
     this.legalModal = null;
     this.creditsModal = null;
     this.gamePlayer = null;
+    this.miniPulse = null;
 
     this.init();
   }
@@ -74,6 +77,7 @@ class VoidApp {
       this.authModal.open('login');
     } else {
       this.updateUserProfilePanel();
+      pollingEngine.start();
     }
 
     this.renderCatalog();
@@ -82,9 +86,15 @@ class VoidApp {
     appState.subscribe((state, key) => {
       if (key === 'user') {
         this.updateUserProfilePanel();
+        if (state.user) {
+          pollingEngine.start();
+        }
       }
       if (key === 'category' || key === 'search' || key === 'sort') {
         this.renderCatalog();
+      }
+      if (key === 'unreadCount') {
+        this.updateHeaderBadge();
       }
     });
   }
@@ -100,6 +110,7 @@ class VoidApp {
             this.authModal.close();
           }
           this.updateUserProfilePanel();
+          pollingEngine.start();
         }
       }
     });
@@ -150,6 +161,16 @@ class VoidApp {
                 </li>
               `).join('')}
             </ul>
+
+            <div class="nav-section-title" style="margin-top: 20px;">Network</div>
+            <ul class="category-list">
+              <li class="category-nav-item" id="sidebar-pulse-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="margin-right: 8px;">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Pulse Chat</span>
+              </li>
+            </ul>
           </div>
 
           <div class="sidebar-footer">
@@ -199,6 +220,14 @@ class VoidApp {
             </div>
 
             <div class="top-navbar-actions">
+              <button type="button" class="btn-header" id="top-pulse-btn" title="Open Pulse Chat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Pulse</span>
+                <span class="header-unread-badge" id="top-pulse-badge" style="display: none;">0</span>
+              </button>
+
               <a href="https://github.com/axk-coder/void" target="_blank" rel="noopener noreferrer" class="btn-header">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -229,6 +258,7 @@ class VoidApp {
         </main>
       </div>
 
+      <div id="mini-pulse-host"></div>
       <div id="modal-container-auth"></div>
       <div id="modal-container-settings"></div>
       <div id="modal-container-legal"></div>
@@ -242,6 +272,7 @@ class VoidApp {
     const legalHost = document.getElementById('modal-container-legal');
     const creditsHost = document.getElementById('modal-container-credits');
     const playerHost = document.getElementById('game-player-host');
+    const pulseHost = document.getElementById('mini-pulse-host');
 
     this.legalModal = new LegalModal(legalHost);
     this.creditsModal = new CreditsModal(creditsHost);
@@ -251,6 +282,7 @@ class VoidApp {
       onOpenCredits: () => this.creditsModal.open(),
       onLogout: () => {
         this.updateUserProfilePanel();
+        pollingEngine.stop();
         this.authModal.open('login');
       }
     });
@@ -258,6 +290,7 @@ class VoidApp {
     this.authModal = new AuthModal(authHost, {
       onAuthSuccess: () => {
         this.updateUserProfilePanel();
+        pollingEngine.start();
       },
       onOpenLegal: (tab) => this.legalModal.open(tab),
       onOpenCredits: () => this.creditsModal.open()
@@ -268,6 +301,10 @@ class VoidApp {
         const catalog = document.getElementById('catalog-host');
         if (catalog) catalog.style.display = 'block';
       }
+    });
+
+    this.miniPulse = new MiniPulse(pulseHost, {
+      onOpenAuth: () => this.authModal.open('login')
     });
   }
 
@@ -297,6 +334,18 @@ class VoidApp {
       } else {
         avatarEl.textContent = (user.displayName || user.username || 'U').charAt(0).toUpperCase();
       }
+    }
+  }
+
+  updateHeaderBadge() {
+    const badge = document.getElementById('top-pulse-badge');
+    if (!badge) return;
+    const count = appState.getState().unreadCount;
+    if (count > 0 && !appState.getState().miniPulseOpen) {
+      badge.textContent = count > 99 ? '99+' : count;
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.style.display = 'none';
     }
   }
 
@@ -375,12 +424,25 @@ class VoidApp {
 
     const categoryItems = document.querySelectorAll('.category-nav-item');
     categoryItems.forEach(item => {
+      if (item.id === 'sidebar-pulse-btn') return;
       item.addEventListener('click', () => {
         categoryItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         const catId = item.getAttribute('data-cat-id') || 'all';
         appState.setActiveCategory(catId);
       });
+    });
+
+    const sidebarPulseBtn = document.getElementById('sidebar-pulse-btn');
+    sidebarPulseBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      appState.toggleMiniPulse();
+    });
+
+    const topPulseBtn = document.getElementById('top-pulse-btn');
+    topPulseBtn?.addEventListener('click', () => {
+      soundSynth.playClick();
+      appState.toggleMiniPulse();
     });
 
     const settingsBtn = document.getElementById('sidebar-settings-btn');
