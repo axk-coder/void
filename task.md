@@ -14,4 +14,6 @@
 - [x] Task 12: Add new high quality offline games (Dino Runner, Pacman, Connect Four, Stack Tower, Memory Cards, Geometry Jump, Helix Fall, Wordle)
 - [x] Task 13: Update catalog in src/main.js and test all newly added games
 - [x] Task 14: Build production dist and push commit to GitHub repository
+- [x] Task 15: Configure GitHub Actions Pages workflow (.github/workflows/deploy.yml) and push to master
+
 
