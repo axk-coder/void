@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<script>window.alert=window.prompt=window.confirm=function(){};</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Emily Is Away</title><meta name="robots" content="noindex"><link rel="canonical" href="https://kbhgames.com/game/emily-is-away">
+<link rel="shortcut icon" href="TemplateData/favicon.ico">
+<link rel="stylesheet" href="TemplateData/style.css">
+
+
+</head>
+<body>
+<div id="unity-container">
+<canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
+<div id="unity-loading-bar">
+<div id="unity-progress-bar-empty">
+<div id="unity-progress-bar-full"></div>
+</div>
+</div>
+<div id="unity-warning"></div>
+</div>
+<script>
+var canvas = document.querySelector("#unity-canvas");
+var loadingBar = document.querySelector("#unity-loading-bar");
+var progressBarFull = document.querySelector("#unity-progress-bar-full");
+var warningBanner = document.querySelector("#unity-warning");
+var container = document.querySelector("#unity-container");
+var ASPECT_W = 960;
+var ASPECT_H = 600;
+var ASPECT = ASPECT_W / ASPECT_H;
+function unityShowBanner(msg, type) {
+function updateBannerVisibility() { warningBanner.style.display = warningBanner.children.length ? 'block' : 'none'; }
+var div = document.createElement('div');
+div.innerHTML = msg;
+warningBanner.appendChild(div);
+if (type == 'error') div.style = 'background: red; padding: 10px;';
+else {
+if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+setTimeout(function () { warningBanner.removeChild(div); updateBannerVisibility(); }, 5000);
+}
+updateBannerVisibility();
+}
+function fitCanvas() {
+var w = container.clientWidth;
+var h = container.clientHeight;
+if (w <= 0 || h <= 0) return;
+var cw, ch;
+if (w / h > ASPECT) { ch = h; cw = Math.round(h * ASPECT); }
+else { cw = w; ch = Math.round(w / ASPECT); }
+canvas.style.width = cw + "px";
+canvas.style.height = ch + "px";
+}
+window.addEventListener("resize", fitCanvas);
+window.addEventListener("orientationchange", function () { setTimeout(fitCanvas, 150); });
+if (window.visualViewport) window.visualViewport.addEventListener("resize", fitCanvas);
+document.addEventListener("gesturestart", function (e) { e.preventDefault(); }, { passive: false });
+document.addEventListener("gesturechange", function (e) { e.preventDefault(); }, { passive: false });
+document.addEventListener("gestureend", function (e) { e.preventDefault(); }, { passive: false });
+document.addEventListener("touchmove", function (e) {
+if (e.scale !== undefined && e.scale !== 1) e.preventDefault();
+if (e.touches && e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+document.addEventListener("dblclick", function (e) { e.preventDefault(); }, { passive: false });
+document.addEventListener("wheel", function (e) { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+fitCanvas();
+var buildUrl = "Build";
+var loaderUrl = buildUrl + "/webgl.loader.js";
+var config = {
+dataUrl: buildUrl + "/webgl.data",
+frameworkUrl: buildUrl + "/webgl.framework.js",
+codeUrl: buildUrl + "/webgl.wasm",
+streamingAssetsUrl: "StreamingAssets",
+companyName: "Kyle Seeley",
+productName: "Emily Is Away",
+productVersion: "",
+showBanner: unityShowBanner
+};
+loadingBar.style.display = "block";
+var script = document.createElement("script");
+script.src = loaderUrl;
+script.onload = function () {
+createUnityInstance(canvas, config, function (progress) {
+progressBarFull.style.width = (100 * progress) + "%";
+}).then(function () {
+loadingBar.style.display = "none";
+fitCanvas();
+}).catch(function (message) { alert(message); });
+};
+document.body.appendChild(script);
+</script>
+<script src="TemplateData/vk.js" defer></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a106c9df3c4438c3',t:'MTc4MjI1MjI2Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

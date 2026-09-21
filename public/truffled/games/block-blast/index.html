@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
  <head>
+<script>window.alert=window.prompt=window.confirm=function(){};</script>
+
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui, shrink-to-fit=no">
-  <meta name="apple-mobile-web-app-capable" content="yes"> <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes"> 
   <title>blocky-puzzle 1.0</title>
   <style type="text/css">
 	/* Disable user selection to avoid strange bug in Chrome on Windows:
@@ -267,17 +269,10 @@
 		background: #52AAEC;
 	}
 	</style>
-  <script src="data:text/javascript;base64,KGZ1bmN0aW9uKCl7d2luZG93LlBva2lTREs9e2luaXQ6KCk9PlByb21pc2UucmVzb2x2ZSgpLGdhbWVMb2FkaW5nU3RhcnQ6KClAPnt9LGdhbWVMb2FkaW5nRmluaXNoZWQ6KClAPnt9LGdhbWVwbGF5U3RhcnQ6KClAPnt9LGdhbWVwbGF5U3RvcDoxKT0+e319fSkoKTs="></script>
+  <script src="//game-cdn.poki.com/scripts/v2/poki-sdk.js"></script>
   <script type="text/javascript" src="GameAnalytics.js"></script>
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", "G-PXHK7Q7G3Z");
-</script>
+
 </head>
  <body>
   <div id="app-container" class="canvas-app-container">
@@ -295,7 +290,7 @@
    </div>
    <div class="buttons-background">
    </div>
-  </div> <!-- -->
+  </div> 
   <script id="engine-loader" type="text/javascript" src="dmloader.js"></script>
   <script id="engine-setup" type="text/javascript"></script>
   <script id="custom-progress-bar" type="text/javascript">

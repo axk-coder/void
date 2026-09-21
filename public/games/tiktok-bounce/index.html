@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ball Maze Breaker</title>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+body {
+  background: #020611;
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+#game-container {
+  position: relative;
+  width: 100vw;
+  max-width: 420px;
+  height: 100vh;
+  max-height: 750px;
+  background: #04091a;
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(4,9,26,0.95);
+  z-index: 10;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-val {
+  color: #e52e3d;
+}
+.controls {
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  background: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover {
+  background: #334155;
+  color: #fff;
+}
+.btn.active {
+  background: #e52e3d;
+  color: #fff;
+  border-color: #e52e3d;
+}
+#canvas {
+  width: 100%;
+  flex: 1;
+  display: block;
+  touch-action: none;
+  cursor: crosshair;
+}
+</style>
+</head>
+<body>
+<div id="game-container">
+  <div id="top-bar">
+    <div class="stat">
+      <span>BLOCKS:</span>
+      <span id="blocks-left" class="stat-val">0</span>
+    </div>
+    <div class="stat">
+      <span>BALLS:</span>
+      <span id="ball-count" class="stat-val">1</span>
+    </div>
+    <div class="controls">
+      <button id="btn-auto" class="btn active">AUTO</button>
+      <button id="btn-reset" class="btn">RESET</button>
+    </div>
+  </div>
+  <canvas id="canvas"></canvas>
+</div>
+
+<script>
+window.alert = window.prompt = window.confirm = function(){};
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const blocksEl = document.getElementById('blocks-left');
+const ballCountEl = document.getElementById('ball-count');
+const btnAuto = document.getElementById('btn-auto');
+const btnReset = document.getElementById('btn-reset');
+
+let audioCtx = null;
+function playTone(freq, duration = 0.035) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch (e) {}
+}
+
+let width, height;
+let cols = 33;
+let rows = 40;
+let cellSize = 10;
+let gridOffsetX = 0;
+let gridOffsetY = 0;
+
+let grid = [];
+let balls = [];
+let particles = [];
+let paddle = { x: 0, y: 0, w: 70, h: 12, targetX: 0 };
+let isAiming = false;
+let aimStart = { x: 0, y: 0 };
+let aimEnd = { x: 0, y: 0 };
+let autoPlay = true;
+let launchTimer = 0;
+
+const TYPE_EMPTY = 0;
+const TYPE_RED = 1;
+const TYPE_GREY = 2;
+const TYPE_POWER_GREEN = 3;
+const TYPE_POWER_YELLOW = 4;
+const TYPE_POWER_LIME = 5;
+const TYPE_POWER_ORANGE = 6;
+
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  width = canvas.width;
+  height = canvas.height;
+  
+  cellSize = Math.floor((width - 24) / cols);
+  gridOffsetX = Math.floor((width - cols * cellSize) / 2);
+  gridOffsetY = 15;
+  
+  paddle.w = cellSize * 7.5;
+  paddle.h = cellSize * 1.3;
+  paddle.y = height - cellSize * 7.5;
+  paddle.x = (width - paddle.w) / 2;
+  paddle.targetX = paddle.x;
+}
+
+function initGrid() {
+  grid = [];
+  for (let r = 0; r < rows; r++) {
+    grid[r] = [];
+    for (let c = 0; c < cols; c++) {
+      if (r === 0 || c === 0 || c === cols - 1) {
+        grid[r][c] = TYPE_GREY;
+      } else if (r === rows - 1) {
+        if (c >= Math.floor(cols / 2) - 1 && c <= Math.floor(cols / 2) + 1) {
+          grid[r][c] = TYPE_EMPTY;
+        } else {
+          grid[r][c] = TYPE_GREY;
+        }
+      } else {
+        grid[r][c] = TYPE_RED;
+      }
+    }
+  }
+
+  const midC = Math.floor(cols / 2);
+  const midR = Math.floor(rows / 2);
+
+  for (let r = 1; r < rows - 1; r++) {
+    for (let c = midC - 1; c <= midC + 1; c++) {
+      if (c === midC) {
+        grid[r][c] = TYPE_EMPTY;
+      } else {
+        grid[r][c] = TYPE_GREY;
+      }
+    }
+  }
+
+  for (let c = 7; c < cols - 7; c++) {
+    if (grid[midR - 1][c] !== undefined) grid[midR - 1][c] = TYPE_GREY;
+    if (grid[midR][c] !== undefined) grid[midR][c] = TYPE_EMPTY;
+    if (grid[midR + 1][c] !== undefined) grid[midR + 1][c] = TYPE_GREY;
+  }
+
+  for (let r = midR; r < midR + 6; r++) {
+    grid[r][7] = TYPE_GREY;
+    grid[r][8] = TYPE_EMPTY;
+    grid[r][9] = TYPE_GREY;
+  }
+
+  for (let r = midR - 6; r <= midR; r++) {
+    grid[r][cols - 10] = TYPE_GREY;
+    grid[r][cols - 9] = TYPE_EMPTY;
+    grid[r][cols - 8] = TYPE_GREY;
+  }
+
+  grid[midR][midC] = TYPE_POWER_GREEN;
+  grid[midR][midC + 1] = TYPE_POWER_YELLOW;
+  grid[midR + 1][midC] = TYPE_POWER_LIME;
+  grid[midR + 1][midC + 1] = TYPE_POWER_ORANGE;
+
+  balls = [];
+  spawnBall(width / 2, paddle.y - 20, -2.5, -6.5);
+  updateStats();
+}
+
+function spawnBall(x, y, vx, vy) {
+  balls.push({
+    x: x,
+    y: y,
+    vx: vx,
+    vy: vy,
+    radius: Math.max(2.5, cellSize * 0.30),
+    trail: []
+  });
+}
+
+function updateStats() {
+  let redCount = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === TYPE_RED) redCount++;
+    }
+  }
+  blocksEl.textContent = redCount;
+  ballCountEl.textContent = balls.length;
+}
+
+function createExplosion(x, y, color) {
+  for (let i = 0; i < 5; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1 + Math.random() * 3.5;
+    particles.push({
+      x: x,
+      y: y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1.0,
+      color: color,
+      size: 2 + Math.random() * 2.5
+    });
+  }
+}
+
+function resolveTileCollision(b) {
+  const minC = Math.max(0, Math.floor((b.x - b.radius - gridOffsetX) / cellSize));
+  const maxC = Math.min(cols - 1, Math.floor((b.x + b.radius - gridOffsetX) / cellSize));
+  const minR = Math.max(0, Math.floor((b.y - b.radius - gridOffsetY) / cellSize));
+  const maxR = Math.min(rows - 1, Math.floor((b.y + b.radius - gridOffsetY) / cellSize));
+
+  for (let r = minR; r <= maxR; r++) {
+    for (let c = minC; c <= maxC; c++) {
+      const type = grid[r][c];
+      if (type === TYPE_EMPTY) continue;
+
+      const cellL = gridOffsetX + c * cellSize;
+      const cellT = gridOffsetY + r * cellSize;
+      const cellR = cellL + cellSize;
+      const cellB = cellT + cellSize;
+
+      const nearX = Math.max(cellL, Math.min(b.x, cellR));
+      const nearY = Math.max(cellT, Math.min(b.y, cellB));
+
+      const diffX = b.x - nearX;
+      const diffY = b.y - nearY;
+      const distSq = diffX * diffX + diffY * diffY;
+
+      if (distSq < b.radius * b.radius) {
+        const dist = Math.sqrt(distSq);
+        let normX = 0;
+        let normY = 0;
+
+        if (dist > 0.0001) {
+          normX = diffX / dist;
+          normY = diffY / dist;
+          const penetration = b.radius - dist;
+          b.x += normX * penetration;
+          b.y += normY * penetration;
+        } else {
+          const overlapL = (b.x + b.radius) - cellL;
+          const overlapR = cellR - (b.x - b.radius);
+          const overlapT = (b.y + b.radius) - cellT;
+          const overlapB = cellB - (b.y - b.radius);
+          const minO = Math.min(overlapL, overlapR, overlapT, overlapB);
+
+          if (minO === overlapL) {
+            normX = -1;
+            b.x = cellL - b.radius - 0.1;
+          } else if (minO === overlapR) {
+            normX = 1;
+            b.x = cellR + b.radius + 0.1;
+          } else if (minO === overlapT) {
+            normY = -1;
+            b.y = cellT - b.radius - 0.1;
+          } else {
+            normY = 1;
+            b.y = cellB + b.radius + 0.1;
+          }
+        }
+
+        const dot = b.vx * normX + b.vy * normY;
+        if (dot < 0) {
+          b.vx -= 2 * dot * normX;
+          b.vy -= 2 * dot * normY;
+        }
+
+        if (type === TYPE_RED) {
+          grid[r][c] = TYPE_EMPTY;
+          createExplosion(cellL + cellSize / 2, cellT + cellSize / 2, '#e52e3d');
+          playTone(420 + Math.random() * 220);
+          updateStats();
+        } else if (type >= TYPE_POWER_GREEN) {
+          grid[r][c] = TYPE_EMPTY;
+          createExplosion(cellL + cellSize / 2, cellT + cellSize / 2, '#22c55e');
+          playTone(880, 0.08);
+          for (let k = 0; k < 4; k++) {
+            const angle = Math.random() * Math.PI * 2;
+            spawnBall(b.x, b.y, Math.cos(angle) * 6.5, Math.sin(angle) * 6.5);
+          }
+          updateStats();
+        } else if (type === TYPE_GREY) {
+          playTone(280);
+        }
+      }
+    }
+  }
+}
+
+function update() {
+  if (autoPlay) {
+    launchTimer++;
+    if (balls.length > 0) {
+      let lowestBall = balls[0];
+      for (let b of balls) {
+        if (b.y > lowestBall.y) lowestBall = b;
+      }
+      paddle.targetX = lowestBall.x - paddle.w / 2;
+    } else {
+      paddle.targetX = (width - paddle.w) / 2;
+      spawnBall(width / 2, paddle.y - 20, (Math.random() - 0.5) * 5, -6.5);
+    }
+    if (launchTimer % 400 === 0 && balls.length < 8) {
+      spawnBall(paddle.x + paddle.w / 2, paddle.y - 20, (Math.random() - 0.5) * 6, -7);
+    }
+  }
+
+  paddle.x += (paddle.targetX - paddle.x) * 0.22;
+  paddle.x = Math.max(gridOffsetX, Math.min(width - gridOffsetX - paddle.w, paddle.x));
+
+  const SUB_STEPS = 6;
+
+  for (let i = balls.length - 1; i >= 0; i--) {
+    const b = balls[i];
+    b.trail.push({ x: b.x, y: b.y });
+    if (b.trail.length > 10) b.trail.shift();
+
+    const stepVx = b.vx / SUB_STEPS;
+    const stepVy = b.vy / SUB_STEPS;
+
+    for (let step = 0; step < SUB_STEPS; step++) {
+      b.x += stepVx;
+      b.y += stepVy;
+
+      if (b.x - b.radius < gridOffsetX) {
+        b.x = gridOffsetX + b.radius;
+        b.vx = Math.abs(b.vx);
+        playTone(320);
+      } else if (b.x + b.radius > width - gridOffsetX) {
+        b.x = width - gridOffsetX - b.radius;
+        b.vx = -Math.abs(b.vx);
+        playTone(320);
+      }
+
+      if (b.y - b.radius < gridOffsetY) {
+        b.y = gridOffsetY + b.radius;
+        b.vy = Math.abs(b.vy);
+        playTone(320);
+      }
+
+      if (
+        b.y + b.radius >= paddle.y &&
+        b.y - b.radius <= paddle.y + paddle.h &&
+        b.x >= paddle.x - b.radius &&
+        b.x <= paddle.x + paddle.w + b.radius &&
+        b.vy > 0
+      ) {
+        const hitOffset = (b.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2);
+        const clampedOffset = Math.max(-0.95, Math.min(0.95, hitOffset));
+        const angle = clampedOffset * (Math.PI / 3);
+        const speed = Math.max(6.5, Math.sqrt(b.vx * b.vx + b.vy * b.vy));
+        b.vx = Math.sin(angle) * speed;
+        b.vy = -Math.cos(angle) * speed;
+        b.y = paddle.y - b.radius - 0.5;
+        playTone(480);
+        createExplosion(b.x, b.y, '#7b8cde');
+      }
+
+      resolveTileCollision(b);
+    }
+
+    if (b.y > height + 60) {
+      balls.splice(i, 1);
+      updateStats();
+    }
+  }
+
+  if (balls.length === 0) {
+    spawnBall(paddle.x + paddle.w / 2, paddle.y - 20, (Math.random() - 0.5) * 5, -6.5);
+    updateStats();
+  }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life -= 0.04;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+}
+
+function drawAimTrajectory() {
+  if (!isAiming) return;
+  const startX = paddle.x + paddle.w / 2;
+  const startY = paddle.y - 12;
+  const dx = aimStart.x - aimEnd.x;
+  const dy = aimStart.y - aimEnd.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  if (len < 10) return;
+
+  const dirX = (dx / len) * 7.5;
+  const dirY = (dy / len) * 7.5;
+
+  let simX = startX;
+  let simY = startY;
+  let simVx = dirX;
+  let simVy = dirY;
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+  for (let step = 0; step < 50; step++) {
+    simX += simVx;
+    simY += simVy;
+
+    if (simX < gridOffsetX || simX > width - gridOffsetX) {
+      simVx = -simVx;
+    }
+    if (simY < gridOffsetY) {
+      simVy = -simVy;
+    }
+
+    if (step % 2 === 0) {
+      ctx.beginPath();
+      ctx.arc(simX, simY, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  ctx.save();
+  ctx.translate(aimEnd.x, aimEnd.y);
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(0, 0, 14, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#7b8cde';
+  ctx.beginPath();
+  ctx.arc(0, -5, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function render() {
+  ctx.fillStyle = '#04091a';
+  ctx.fillRect(0, 0, width, height);
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const type = grid[r][c];
+      if (type === TYPE_EMPTY) continue;
+
+      const x = gridOffsetX + c * cellSize;
+      const y = gridOffsetY + r * cellSize;
+      const w = cellSize - 1;
+      const h = cellSize - 1;
+
+      if (type === TYPE_RED) {
+        ctx.fillStyle = '#e52e3d';
+        ctx.fillRect(x, y, w, h);
+      } else if (type === TYPE_GREY) {
+        ctx.fillStyle = '#8c92a4';
+        ctx.fillRect(x, y, w, h);
+      } else if (type === TYPE_POWER_GREEN) {
+        ctx.fillStyle = '#22c55e';
+        ctx.fillRect(x, y, w, h);
+      } else if (type === TYPE_POWER_YELLOW) {
+        ctx.fillStyle = '#eab308';
+        ctx.fillRect(x, y, w, h);
+      } else if (type === TYPE_POWER_LIME) {
+        ctx.fillStyle = '#84cc16';
+        ctx.fillRect(x, y, w, h);
+      } else if (type === TYPE_POWER_ORANGE) {
+        ctx.fillStyle = '#f97316';
+        ctx.fillRect(x, y, w, h);
+      }
+    }
+  }
+
+  for (let p of particles) {
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillRect(p.x, p.y, p.size, p.size);
+  }
+  ctx.globalAlpha = 1.0;
+
+  for (let b of balls) {
+    for (let i = 0; i < b.trail.length; i++) {
+      const t = b.trail[i];
+      const alpha = (i + 1) / b.trail.length * 0.35;
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, b.radius * (0.4 + 0.6 * (i / b.trail.length)), 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = '#7b8cde';
+  ctx.beginPath();
+  ctx.roundRect(paddle.x, paddle.y, paddle.w, paddle.h, paddle.h / 2);
+  ctx.fill();
+
+  drawAimTrajectory();
+}
+
+function loop() {
+  update();
+  render();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', () => {
+  resize();
+  initGrid();
+});
+
+canvas.addEventListener('pointerdown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+  const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+  isAiming = true;
+  aimStart = { x, y };
+  aimEnd = { x, y };
+  if (!autoPlay) {
+    paddle.targetX = x - paddle.w / 2;
+  }
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+  const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+  if (isAiming) {
+    aimEnd = { x, y };
+  }
+  if (!autoPlay) {
+    paddle.targetX = x - paddle.w / 2;
+  }
+});
+
+window.addEventListener('pointerup', (e) => {
+  if (isAiming) {
+    const dx = aimStart.x - aimEnd.x;
+    const dy = aimStart.y - aimEnd.y;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    if (len > 15) {
+      const speed = 7.5;
+      const vx = (dx / len) * speed;
+      const vy = (dy / len) * speed;
+      spawnBall(paddle.x + paddle.w / 2, paddle.y - 20, vx, vy);
+      playTone(520);
+    }
+    isAiming = false;
+  }
+});
+
+btnAuto.addEventListener('click', () => {
+  autoPlay = !autoPlay;
+  btnAuto.classList.toggle('active', autoPlay);
+});
+
+btnReset.addEventListener('click', () => {
+  initGrid();
+});
+
+resize();
+initGrid();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

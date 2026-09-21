@@ -1,0 +1,25 @@
+.web-mod-compatibility-warning {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  z-index: 10000;
+  max-width: min(46rem, calc(100vw - 2rem));
+  padding: 0.7rem 1rem;
+  transform: translateX(-50%);
+  border: 2px solid #fff4dc;
+  border-radius: 0.45rem;
+  background: #ff4b45;
+  box-shadow: 0 0.35rem 0 #80241f;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.web-mod-compatibility-warning--leaving {
+  opacity: 0;
+  transform: translate(-50%, -0.5rem);
+}

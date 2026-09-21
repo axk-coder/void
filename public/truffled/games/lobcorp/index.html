@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<script>window.alert=window.prompt=window.confirm=function(){};</script>
+
+    <meta charset="utf-8">
+    <title>Lobotomy Corporation</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; text-align: center; overflow: hidden; }
+        #unityContainer { width: 100vw; height: 100vh; }
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 99;
+        }
+        .bar-container { width: 200px; height: 10px; border: 1px solid #fff; margin: 10px; }
+        .bar-fill { width: 0%; height: 100%; background: #fff; }
+        #fullscreen-btn { position: absolute; bottom: 10px; right: 10px; display: none; }
+    </style>
+
+
+</head>
+<body>
+
+    <div id="unityContainer"></div>
+
+    <div id="loader">
+        <div></div>
+        <div class="bar-container"><div id="bar" class="bar-fill"></div></div>
+        <div id="status">loading</div>
+    </div>
+
+    <button id="fullscreen-btn">FULLSCREEN</button>
+
+    <script>
+        (function () {
+            const status = document.getElementById('status');
+            const bar = document.getElementById('bar');
+            const loader = document.getElementById('loader');
+            const btn = document.getElementById('fullscreen-btn');
+            const cdn = 'Build/';
+                        function loadUnityScript(url) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+            const tasks = [
+                { name: 'web.json', size: 501, type: 'text' },
+                { name: 'web.wasm.framework.unityweb', size: 95575, type: 'blob' },
+                { name: 'web.wasm.code.unityweb', size: 8211250, type: 'blob' }
+            ];
+            for (let i = 0; i < 58; i++) {
+                tasks.push({
+                    name: 'web.data.unityweb' + String(i).padStart(2, '0'),
+                    size: i === 57 ? 11890053 : 20971520,
+                    type: 'blob'
+                });
+            }
+            let loadedBytes = 0;
+            const totalBytes = tasks.reduce((sum, t) => sum + t.size, 0);
+            const assetDownload = Promise.all(tasks.map(task => {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', cdn + task.name);
+                    xhr.responseType = task.type;
+                    let last = 0;
+                    xhr.onprogress = (e) => {
+                        loadedBytes += (e.loaded - last);
+                        last = e.loaded;
+                        let pct = Math.round((loadedBytes / totalBytes) * 100);
+                        status.textContent = 'Downloading Assets: ' + pct + '%';
+                        bar.style.width = pct + '%';
+                    };
+                    xhr.onload = () => (xhr.status < 400) ? resolve(xhr.response) : reject();
+                    xhr.onerror = () => reject();
+                    xhr.send();
+                });
+            }));
+            status.textContent = "loading";
+            loadUnityScript(cdn + 'UnityLoader.js')
+                .catch(() => {
+                    return loadUnityScript('UnityLoader.js');
+                })
+                .then(() => {
+                    return assetDownload;
+                })
+                .then(results => {
+                    status.textContent = "loading";
+                    const jsonUrl = URL.createObjectURL(new Blob([results[0]], {type: 'application/json'}));
+                    const frameworkUrl = URL.createObjectURL(new Blob([results[1]], {type: 'application/wasm'}));
+                    const codeUrl = URL.createObjectURL(new Blob([results[2]], {type: 'application/wasm'}));
+                    const dataUrl = URL.createObjectURL(new Blob(results.slice(3), {type: 'application/octet-stream'}));
+                    const oldOpen = XMLHttpRequest.prototype.open;
+                    XMLHttpRequest.prototype.open = function(method, url) {
+                        if (url.includes('web.json')) url = jsonUrl;
+                        else if (url.includes('web.data.unityweb')) url = dataUrl;
+                        else if (url.includes('web.wasm.code.unityweb')) url = codeUrl;
+                        else if (url.includes('web.wasm.framework.unityweb')) url = frameworkUrl;
+                        return oldOpen.apply(this, arguments);
+                    };
+                    const oldFetch = window.fetch;
+                    window.fetch = function(input, init) {
+                        let url = typeof input === 'string' ? input : input.url;
+                        if (url.includes('web.json')) return oldFetch(jsonUrl, init);
+                        if (url.includes('web.data.unityweb')) return oldFetch(dataUrl, init);
+                        if (url.includes('web.wasm.code.unityweb')) return oldFetch(codeUrl, init);
+                        if (url.includes('web.wasm.framework.unityweb')) return oldFetch(frameworkUrl, init);
+                        return oldFetch.apply(this, arguments);
+                    };
+                    const gameInstance = UnityLoader.instantiate("unityContainer", "Build/web.json", {
+                        onProgress: (instance, progress) => {
+                            if (progress === 1) {
+                                loader.style.display = 'none';
+                                btn.style.display = 'block';
+                            }
+                        }
+                    });
+                    btn.onclick = () => gameInstance.SetFullscreen(1);
+                })
+                .catch(err => {
+                    status.textContent = "failed";
+                    status.style.color = "red";
+                    console.error(err);
+                });
+        })();
+    </script>
+</body>
+</html>

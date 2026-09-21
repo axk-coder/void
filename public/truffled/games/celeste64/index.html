@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>window.alert=window.prompt=window.confirm=function(){};</script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Celeste 64</title>
+    <style>
+        /* 1. Center the game on the screen */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #030909;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 2. Make the canvas scale properly and stay sharp */
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            
+            /* Keeps the 16:9 ratio and prevents stretching */
+            object-fit: contain; 
+            
+            /* Keeps pixel art sharp (N64 look) */
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+
+            outline: none;
+            touch-action: none;
+        }
+    </style>
+
+
+</head>
+<body>
+    <canvas id="canvas" width="1280" height="720" tabindex="0"></canvas>
+
+    <script>
+        /**
+         * FIX FOR THE "SHATTERED" MOUNTAIN:
+         * This forces the graphics engine to disable transparency (alpha).
+         * This stops the background from leaking through the 3D models.
+         */
+        (function() {
+            const canvas = document.getElementById('canvas');
+            const oldGetContext = canvas.getContext;
+            canvas.getContext = function(type, attributes) {
+                if (type.includes('webgl')) {
+                    attributes = attributes || {};
+                    attributes.alpha = false;      // Fixes the visual glitch
+                    attributes.antialias = false;  // Keeps edges sharp
+                }
+                return oldGetContext.call(this, type, attributes);
+            };
+        })();
+    </script>
+
+    
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

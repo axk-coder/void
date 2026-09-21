@@ -27,7 +27,8 @@ const builtInGames = [
   { id: 'memory', title: 'Memory Match', category: 'puzzle', url: './games/memory/index.html' },
   { id: 'geometry', title: 'Geometry Jump', category: 'action', url: './games/geometry/index.html' },
   { id: 'helix', title: 'Helix Fall', category: 'arcade', url: './games/helix/index.html' },
-  { id: 'wordle', title: 'Word Guess', category: 'puzzle', url: './games/wordle/index.html' }
+  { id: 'wordle', title: 'Word Guess', category: 'puzzle', url: './games/wordle/index.html' },
+  { id: 'tiktok-bounce', title: 'Ball Maze Breaker', category: 'arcade', url: './games/tiktok-bounce/index.html' }
 ];
 
 const games = [...builtInGames, ...truffledGames];

@@ -3,7 +3,7 @@
     "id": "truffled-1-0",
     "title": "1",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-1-0.html",
+    "url": "./truffled/games/1/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-1-0-1.webp",
     "frameType": "iframe"
   },
@@ -11,7 +11,7 @@
     "id": "truffled-1-on-1-soccer-1",
     "title": "1 on 1 Soccer",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-1-on-1-soccer-1.html",
+    "url": "./truffled/games/1on1soccer/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-1-on-1-soccer-1-12.webp",
     "frameType": "iframe"
   },
@@ -19,7 +19,7 @@
     "id": "truffled-10-minutes-till-dawn-2",
     "title": "10 Minutes Till Dawn",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-10-minutes-till-dawn-2.html",
+    "url": "./truffled/games/10minutestilldawn/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-10-minutes-till-dawn-2-10.webp",
     "frameType": "unity"
   },
@@ -35,7 +35,7 @@
     "id": "truffled-2048-4",
     "title": "2048",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-2048-4.html",
+    "url": "./truffled/games/2048/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-2048-4-2048.webp",
     "frameType": "iframe"
   },
@@ -43,7 +43,7 @@
     "id": "truffled-20-minutes-till-dawn-5",
     "title": "20 Minutes Till Dawn",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-20-minutes-till-dawn-5.html",
+    "url": "./truffled/games/20minutesbog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-20-minutes-till-dawn-5-20mtd.webp",
     "frameType": "unity"
   },
@@ -51,7 +51,7 @@
     "id": "truffled-30-6",
     "title": "30",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-30-6.html",
+    "url": "./truffled/games/30dolar/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-30-6-30.webp",
     "frameType": "iframe"
   },
@@ -59,7 +59,7 @@
     "id": "truffled-60-seconds-webport-7",
     "title": "60 Seconds, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-60-seconds-webport-7.html",
+    "url": "./truffled/games/60/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-60-seconds-webport-7-60.webp",
     "frameType": "iframe"
   },
@@ -67,7 +67,7 @@
     "id": "truffled-3-8",
     "title": "-3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-3-8.html",
+    "url": "./truffled/games/minus3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-3-8-minus3.webp",
     "frameType": "unity"
   },
@@ -75,7 +75,7 @@
     "id": "truffled-b-9",
     "title": "-b",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-b-9.html",
+    "url": "./truffled/games/minusbog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-b-9-qq.webp",
     "frameType": "unity"
   },
@@ -107,7 +107,7 @@
     "id": "truffled-academytale-webport-13",
     "title": "Academytale, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-academytale-webport-13.html",
+    "url": "./truffled/games/academytale/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-academytale-webport-13-academytale.webp",
     "frameType": "iframe"
   },
@@ -115,7 +115,7 @@
     "id": "truffled-achievement-unlocked-14",
     "title": "Achievement Unlocked",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-achievement-unlocked-14.html",
+    "url": "./truffled/games/achieveunlocked/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-achievement-unlocked-14-achieve.webp",
     "frameType": "iframe"
   },
@@ -123,7 +123,7 @@
     "id": "truffled-achievement-unlocked-2-15",
     "title": "Achievement Unlocked 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-achievement-unlocked-2-15.html",
+    "url": "./truffled/games/achivement2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-achievement-unlocked-2-15-au2.webp",
     "frameType": "iframe"
   },
@@ -131,7 +131,7 @@
     "id": "truffled-achievement-unlocked-3-16",
     "title": "Achievement Unlocked 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-achievement-unlocked-3-16.html",
+    "url": "./truffled/games/achivement3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-achievement-unlocked-3-16-au3.webp",
     "frameType": "iframe"
   },
@@ -139,7 +139,7 @@
     "id": "truffled-adofai-17",
     "title": "ADOFAI",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-adofai-17.html",
+    "url": "./truffled/games/a-dance-of-fire-and-ice/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-adofai-17-adofai.webp",
     "frameType": "iframe"
   },
@@ -147,7 +147,7 @@
     "id": "truffled-adventure-capitalist-18",
     "title": "Adventure Capitalist",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-adventure-capitalist-18.html",
+    "url": "./truffled/games/adventure/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-adventure-capitalist-18-adventure.webp",
     "frameType": "iframe"
   },
@@ -155,7 +155,7 @@
     "id": "truffled-alien-hominid-19",
     "title": "Alien Hominid",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-alien-hominid-19.html",
+    "url": "./truffled/games/alien/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-alien-hominid-19-alien.webp",
     "frameType": "iframe"
   },
@@ -163,7 +163,7 @@
     "id": "truffled-amanda-the-adventurer-webport-20",
     "title": "Amanda the adventurer, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-amanda-the-adventurer-webport-20.html",
+    "url": "./truffled/games/amanda-the-adventurer/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-amanda-the-adventurer-webport-20-aman.webp",
     "frameType": "unity"
   },
@@ -171,7 +171,7 @@
     "id": "truffled-among-us-21",
     "title": "Among us",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-among-us-21.html",
+    "url": "./truffled/games/amongus/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-among-us-21-among.webp",
     "frameType": "iframe"
   },
@@ -179,7 +179,7 @@
     "id": "truffled-amaze-22",
     "title": "Amaze",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-amaze-22.html",
+    "url": "./truffled/games/amaze/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-amaze-22-amaze.webp",
     "frameType": "iframe"
   },
@@ -195,7 +195,7 @@
     "id": "truffled-angry-birds-2-24",
     "title": "Angry Birds 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-angry-birds-2-24.html",
+    "url": "./truffled/games/angrybirds2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-angry-birds-2-24-ab2.webp",
     "frameType": "unity"
   },
@@ -203,7 +203,7 @@
     "id": "truffled-angry-birds-epic-webport-25",
     "title": "Angry Birds Epic, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-angry-birds-epic-webport-25.html",
+    "url": "./truffled/games/Epic/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-angry-birds-epic-webport-25-epic.webp",
     "frameType": "iframe"
   },
@@ -219,7 +219,7 @@
     "id": "truffled-animal-crossing-population-growing-webport-27",
     "title": "Animal Crossing Population: Growing!, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-animal-crossing-population-growing-webport-27.html",
+    "url": "./truffled/games/slider/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-animal-crossing-population-growing-webport-27-acpg.webp",
     "frameType": "iframe"
   },
@@ -235,7 +235,7 @@
     "id": "truffled-antonblast-29",
     "title": "Antonblast",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-antonblast-29.html",
+    "url": "./truffled/games/antonblast/runner.html",
     "thumbnail": "./truffled/thumbnails/truffled-antonblast-29-anton.webp",
     "frameType": "iframe"
   },
@@ -243,7 +243,7 @@
     "id": "truffled-antonblast-64-webport-30",
     "title": "Antonblast 64, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-antonblast-64-webport-30.html",
+    "url": "./truffled/games/antonblast64/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-antonblast-64-webport-30-an64.webp",
     "frameType": "iframe"
   },
@@ -251,7 +251,7 @@
     "id": "truffled-apes-vs-helium-webport-31",
     "title": "Apes Vs Helium, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-apes-vs-helium-webport-31.html",
+    "url": "./truffled/games/AVHPort/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-apes-vs-helium-webport-31-avh.webp",
     "frameType": "unity"
   },
@@ -291,7 +291,7 @@
     "id": "truffled-bad-parenting-webport-36",
     "title": "Bad Parenting, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bad-parenting-webport-36.html",
+    "url": "./truffled/games/bad/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bad-parenting-webport-36-bad.webp",
     "frameType": "unity"
   },
@@ -307,7 +307,7 @@
     "id": "truffled-bad-time-simulator-38",
     "title": "Bad time Simulator",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bad-time-simulator-38.html",
+    "url": "./truffled/games/bts/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bad-time-simulator-38-badt.webp",
     "frameType": "iframe"
   },
@@ -315,7 +315,7 @@
     "id": "truffled-balatro-webport-39",
     "title": "Balatro, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-balatro-webport-39.html",
+    "url": "./truffled/games/balatro/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-balatro-webport-39-bal.webp",
     "frameType": "iframe"
   },
@@ -323,7 +323,7 @@
     "id": "truffled-balatro-modded-webport-40",
     "title": "Balatro Modded, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-balatro-modded-webport-40.html",
+    "url": "./truffled/games/balatromodded/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-balatro-modded-webport-40-balatromodded.webp",
     "frameType": "iframe"
   },
@@ -331,7 +331,7 @@
     "id": "truffled-baldi-s-basics-41",
     "title": "Baldi's Basics",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-baldi-s-basics-41.html",
+    "url": "./truffled/games/baldis-basics/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-baldi-s-basics-41-baldi.webp",
     "frameType": "iframe"
   },
@@ -339,7 +339,7 @@
     "id": "truffled-baldi-s-basics-birthday-bash-webport-42",
     "title": "Baldi's Basics Birthday Bash, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-baldi-s-basics-birthday-bash-webport-42.html",
+    "url": "./truffled/games/bday/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-baldi-s-basics-birthday-bash-webport-42-bday.webp",
     "frameType": "iframe"
   },
@@ -347,7 +347,7 @@
     "id": "truffled-baldi-s-basics-classic-remastered-webport-43",
     "title": "Baldi's Basics Classic Remastered, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-baldi-s-basics-classic-remastered-webport-43.html",
+    "url": "./truffled/games/BBCR/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-baldi-s-basics-classic-remastered-webport-43-baldire.webp",
     "frameType": "iframe"
   },
@@ -363,7 +363,7 @@
     "id": "truffled-baldi-s-fun-new-school-plus-ultimate-edition-45",
     "title": "Baldi's Fun New School Plus Ultimate Edition",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-baldi-s-fun-new-school-plus-ultimate-edition-45.html",
+    "url": "./truffled/games/bfs/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-baldi-s-fun-new-school-plus-ultimate-edition-45-bfs.webp",
     "frameType": "iframe"
   },
@@ -379,7 +379,7 @@
     "id": "truffled-baldurs-gate-2-webport-47",
     "title": "Baldurs Gate 2, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-baldurs-gate-2-webport-47.html",
+    "url": "./truffled/games/baldurs-gate-2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-baldurs-gate-2-webport-47-gate2.webp",
     "frameType": "iframe"
   },
@@ -411,7 +411,7 @@
     "id": "truffled-baseball-bros-51",
     "title": "Baseball Bros",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-baseball-bros-51.html",
+    "url": "./truffled/games/baseballbros/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-baseball-bros-51-basebros.webp",
     "frameType": "iframe"
   },
@@ -427,7 +427,7 @@
     "id": "truffled-basket-random-53",
     "title": "Basket Random",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-basket-random-53.html",
+    "url": "./truffled/games/basket-random/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-basket-random-53-basket.webp",
     "frameType": "iframe"
   },
@@ -435,7 +435,7 @@
     "id": "truffled-basketball-stars-54",
     "title": "Basketball stars",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-basketball-stars-54.html",
+    "url": "./truffled/games/basketballstars/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-basketball-stars-54-basketstars.webp",
     "frameType": "iframe"
   },
@@ -443,7 +443,7 @@
     "id": "truffled-beatblock-webport-55",
     "title": "Beatblock, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-beatblock-webport-55.html",
+    "url": "./truffled/games/beatblock/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-beatblock-webport-55-beatblock.webp",
     "frameType": "iframe"
   },
@@ -451,7 +451,7 @@
     "id": "truffled-bee-movie-game-56",
     "title": "Bee Movie Game",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bee-movie-game-56.html",
+    "url": "./truffled/games/beemovie/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bee-movie-game-56-bee.webp",
     "frameType": "iframe"
   },
@@ -459,7 +459,7 @@
     "id": "truffled-bendy-and-the-ink-machine-webport-57",
     "title": "Bendy And The Ink Machine, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bendy-and-the-ink-machine-webport-57.html",
+    "url": "./truffled/games/bendy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bendy-and-the-ink-machine-webport-57-bendy.webp",
     "frameType": "iframe"
   },
@@ -467,7 +467,7 @@
     "id": "truffled-bergentruck-webport-58",
     "title": "Bergentruck, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bergentruck-webport-58.html",
+    "url": "./truffled/games/bergentruck/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bergentruck-webport-58-ber.webp",
     "frameType": "iframe"
   },
@@ -483,7 +483,7 @@
     "id": "truffled-big-tower-tiny-square-60",
     "title": "Big Tower Tiny Square",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-big-tower-tiny-square-60.html",
+    "url": "./truffled/games/btts/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-big-tower-tiny-square-60-btt.webp",
     "frameType": "iframe"
   },
@@ -491,7 +491,7 @@
     "id": "truffled-bitlife-61",
     "title": "Bitlife",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bitlife-61.html",
+    "url": "./truffled/games/bitlife/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bitlife-61-bit.webp",
     "frameType": "iframe"
   },
@@ -515,7 +515,7 @@
     "id": "truffled-bloodmoney-webport-64",
     "title": "Bloodmoney, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloodmoney-webport-64.html",
+    "url": "./truffled/games/bloodmoney/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloodmoney-webport-64-blood.webp",
     "frameType": "iframe"
   },
@@ -523,7 +523,7 @@
     "id": "truffled-bloon-td1-65",
     "title": "Bloon TD1",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloon-td1-65.html",
+    "url": "./truffled/games/bloonstd/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloon-td1-65-bloons.webp",
     "frameType": "iframe"
   },
@@ -531,7 +531,7 @@
     "id": "truffled-bloon-td2-66",
     "title": "Bloon TD2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloon-td2-66.html",
+    "url": "./truffled/games/bloonstd2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloon-td2-66-blo2.webp",
     "frameType": "iframe"
   },
@@ -539,7 +539,7 @@
     "id": "truffled-bloon-td3-67",
     "title": "Bloon TD3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloon-td3-67.html",
+    "url": "./truffled/games/btd3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloon-td3-67-blo3.webp",
     "frameType": "iframe"
   },
@@ -555,7 +555,7 @@
     "id": "truffled-bloons-td5-69",
     "title": "Bloons TD5",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloons-td5-69.html",
+    "url": "./truffled/games/btd5/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloons-td5-69-blo5.webp",
     "frameType": "iframe"
   },
@@ -563,7 +563,7 @@
     "id": "truffled-bloons-td6-70",
     "title": "Bloons TD6",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloons-td6-70.html",
+    "url": "./truffled/games/btd6/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloons-td6-70-blo6.webp",
     "frameType": "iframe"
   },
@@ -579,7 +579,7 @@
     "id": "truffled-bloxors-72",
     "title": "Bloxors",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-bloxors-72.html",
+    "url": "./truffled/games/bloxors/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-bloxors-72-bloxorz.webp",
     "frameType": "iframe"
   },
@@ -611,7 +611,7 @@
     "id": "truffled-brotato-paws-and-claws-webport-76",
     "title": "Brotato Paws And Claws, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-brotato-paws-and-claws-webport-76.html",
+    "url": "./truffled/games/brotato2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-brotato-paws-and-claws-webport-76-paws.webp",
     "frameType": "iframe"
   },
@@ -619,7 +619,7 @@
     "id": "truffled-buckshot-roulette-webport-77",
     "title": "Buckshot Roulette, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-buckshot-roulette-webport-77.html",
+    "url": "./truffled/games/buckshot/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-buckshot-roulette-webport-77-buck.webp",
     "frameType": "iframe"
   },
@@ -627,7 +627,7 @@
     "id": "truffled-burrito-bison-78",
     "title": "Burrito Bison",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-burrito-bison-78.html",
+    "url": "./truffled/games/burrito/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-burrito-bison-78-burrito.webp",
     "frameType": "iframe"
   },
@@ -651,7 +651,7 @@
     "id": "truffled-capuchin-webport-81",
     "title": "Capuchin, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-capuchin-webport-81.html",
+    "url": "./truffled/games/CapuchinBog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-capuchin-webport-81-capuchin.webp",
     "frameType": "unity"
   },
@@ -667,7 +667,7 @@
     "id": "truffled-celeste-webport-83",
     "title": "Celeste, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-celeste-webport-83.html",
+    "url": "./truffled/games/celeste/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-celeste-webport-83-celeste.webp",
     "frameType": "iframe"
   },
@@ -675,7 +675,7 @@
     "id": "truffled-celeste-64-webport-84",
     "title": "Celeste 64, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-celeste-64-webport-84.html",
+    "url": "./truffled/games/celeste64/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-celeste-64-webport-84-celeste64.webp",
     "frameType": "iframe"
   },
@@ -699,7 +699,7 @@
     "id": "truffled-class-of-09-webport-87",
     "title": "Class Of 09, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-class-of-09-webport-87.html",
+    "url": "./truffled/games/C09/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-class-of-09-webport-87-class.webp",
     "frameType": "iframe"
   },
@@ -707,7 +707,7 @@
     "id": "truffled-class-of-09-flipside-webport-88",
     "title": "Class Of 09 Flipside, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-class-of-09-flipside-webport-88.html",
+    "url": "./truffled/games/C09FS/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-class-of-09-flipside-webport-88-flip.webp",
     "frameType": "iframe"
   },
@@ -715,7 +715,7 @@
     "id": "truffled-class-of-09-re-up-webport-89",
     "title": "Class Of 09 Re-Up, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-class-of-09-re-up-webport-89.html",
+    "url": "./truffled/games/C09RU/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-class-of-09-re-up-webport-89-reup.webp",
     "frameType": "iframe"
   },
@@ -731,7 +731,7 @@
     "id": "truffled-cluster-rush-91",
     "title": "Cluster Rush",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-cluster-rush-91.html",
+    "url": "./truffled/games/cluster/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-cluster-rush-91-cluster.webp",
     "frameType": "iframe"
   },
@@ -739,7 +739,7 @@
     "id": "truffled-coffee-talk-92",
     "title": "Coffee Talk",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-coffee-talk-92.html",
+    "url": "./truffled/games/coffee/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-coffee-talk-92-coffee.webp",
     "frameType": "iframe"
   },
@@ -747,7 +747,7 @@
     "id": "truffled-cookie-clicker-93",
     "title": "Cookie Clicker",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-cookie-clicker-93.html",
+    "url": "./truffled/games/cookie-clicker/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-cookie-clicker-93-cookie.webp",
     "frameType": "iframe"
   },
@@ -787,7 +787,7 @@
     "id": "truffled-counter-stike-0-8-98",
     "title": "Counter Stike 0.8",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-counter-stike-0-8-98.html",
+    "url": "./truffled/games/psp/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-counter-stike-0-8-98-cs08.webp",
     "frameType": "iframe"
   },
@@ -827,7 +827,7 @@
     "id": "truffled-crazycattle3d-webport-103",
     "title": "CrazyCattle3D, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-crazycattle3d-webport-103.html",
+    "url": "./truffled/games/cattle3d/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-crazycattle3d-webport-103-crazyca.webp",
     "frameType": "iframe"
   },
@@ -843,7 +843,7 @@
     "id": "truffled-cruelty-squad-webport-105",
     "title": "Cruelty Squad, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-cruelty-squad-webport-105.html",
+    "url": "./truffled/games/cruelty/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-cruelty-squad-webport-105-cruelty.webp",
     "frameType": "iframe"
   },
@@ -851,7 +851,7 @@
     "id": "truffled-csgo-clicker-106",
     "title": "Csgo Clicker",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-csgo-clicker-106.html",
+    "url": "./truffled/games/csgo-clicker/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-csgo-clicker-106-csbox.webp",
     "frameType": "iframe"
   },
@@ -859,7 +859,7 @@
     "id": "truffled-cuphead-webport-107",
     "title": "Cuphead, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-cuphead-webport-107.html",
+    "url": "./truffled/games/Cuphead/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-cuphead-webport-107-cup.webp",
     "frameType": "unity"
   },
@@ -867,7 +867,7 @@
     "id": "truffled-customer-support-webport-108",
     "title": "Customer Support, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-customer-support-webport-108.html",
+    "url": "./truffled/games/CustomerSupport/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-customer-support-webport-108-cus.webp",
     "frameType": "unity"
   },
@@ -939,7 +939,7 @@
     "id": "truffled-danganronpa-117",
     "title": "Danganronpa",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-danganronpa-117.html",
+    "url": "./truffled/games/danganronpa/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-danganronpa-117-dan.webp",
     "frameType": "iframe"
   },
@@ -955,7 +955,7 @@
     "id": "truffled-dead-tapes-119",
     "title": "Dead Tapes",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-dead-tapes-119.html",
+    "url": "./truffled/games/deadtapesfinal/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-dead-tapes-119-deadta.webp",
     "frameType": "iframe"
   },
@@ -963,7 +963,7 @@
     "id": "truffled-deadseat-webport-120",
     "title": "Deadseat, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-deadseat-webport-120.html",
+    "url": "./truffled/games/deadseat/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-deadseat-webport-120-deadseat.webp",
     "frameType": "iframe"
   },
@@ -971,7 +971,7 @@
     "id": "truffled-death-run-3d-121",
     "title": "Death Run 3D",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-death-run-3d-121.html",
+    "url": "./truffled/games/death-run-3d/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-death-run-3d-121-death.webp",
     "frameType": "iframe"
   },
@@ -979,7 +979,7 @@
     "id": "truffled-deltarune-webport-122",
     "title": "Deltarune, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-deltarune-webport-122.html",
+    "url": "./truffled/games/deltarune/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-deltarune-webport-122-deltarune.webp",
     "frameType": "iframe"
   },
@@ -995,7 +995,7 @@
     "id": "truffled-diablo-124",
     "title": "Diablo",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-diablo-124.html",
+    "url": "./truffled/games/diablo/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-diablo-124-diablo.webp",
     "frameType": "iframe"
   },
@@ -1011,7 +1011,7 @@
     "id": "truffled-dinosaur-126",
     "title": "Dinosaur",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-dinosaur-126.html",
+    "url": "./truffled/games/dinosaur/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-dinosaur-126-dino.webp",
     "frameType": "iframe"
   },
@@ -1019,7 +1019,7 @@
     "id": "truffled-do-not-take-this-cat-home-webport-127",
     "title": "Do Not Take This Cat Home, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-do-not-take-this-cat-home-webport-127.html",
+    "url": "./truffled/games/donottakethiscathome/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-do-not-take-this-cat-home-webport-127-dont.webp",
     "frameType": "iframe"
   },
@@ -1043,7 +1043,7 @@
     "id": "truffled-dome-keeper-webport-130",
     "title": "Dome Keeper, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-dome-keeper-webport-130.html",
+    "url": "./truffled/games/domekeeper/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-dome-keeper-webport-130-domekeeper.webp",
     "frameType": "iframe"
   },
@@ -1059,7 +1059,7 @@
     "id": "truffled-doom-132",
     "title": "Doom",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-doom-132.html",
+    "url": "./truffled/games/doom/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-doom-132-doom.webp",
     "frameType": "iframe"
   },
@@ -1075,7 +1075,7 @@
     "id": "truffled-doom-3-134",
     "title": "Doom 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-doom-3-134.html",
+    "url": "./truffled/games/doom3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-doom-3-134-doom3.webp",
     "frameType": "iframe"
   },
@@ -1107,7 +1107,7 @@
     "id": "truffled-drift-boss-138",
     "title": "Drift Boss",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-drift-boss-138.html",
+    "url": "./truffled/games/drift-boss/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-drift-boss-138-driftboss.webp",
     "frameType": "iframe"
   },
@@ -1123,7 +1123,7 @@
     "id": "truffled-drive-mad-140",
     "title": "Drive Mad",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-drive-mad-140.html",
+    "url": "./truffled/games/drive-mad/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-drive-mad-140-drive.webp",
     "frameType": "iframe"
   },
@@ -1131,7 +1131,7 @@
     "id": "truffled-duck-life-1-141",
     "title": "Duck Life 1",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-1-141.html",
+    "url": "./truffled/games/ducklife1/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-1-141-duck1.webp",
     "frameType": "iframe"
   },
@@ -1139,7 +1139,7 @@
     "id": "truffled-duck-life-2-142",
     "title": "Duck Life 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-2-142.html",
+    "url": "./truffled/games/ducklife2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-2-142-duck2.webp",
     "frameType": "iframe"
   },
@@ -1147,7 +1147,7 @@
     "id": "truffled-duck-life-3-143",
     "title": "Duck Life 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-3-143.html",
+    "url": "./truffled/games/ducklife3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-3-143-duck3.webp",
     "frameType": "iframe"
   },
@@ -1155,7 +1155,7 @@
     "id": "truffled-duck-life-4-144",
     "title": "Duck Life 4",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-4-144.html",
+    "url": "./truffled/games/ducklife4/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-4-144-duck4.webp",
     "frameType": "iframe"
   },
@@ -1163,7 +1163,7 @@
     "id": "truffled-duck-life-5-145",
     "title": "Duck Life 5",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-5-145.html",
+    "url": "./truffled/games/ducklife5/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-5-145-duck5.webp",
     "frameType": "iframe"
   },
@@ -1171,7 +1171,7 @@
     "id": "truffled-duck-life-6-146",
     "title": "Duck Life 6",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-6-146.html",
+    "url": "./truffled/games/ducklife6/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-6-146-ducklife6.webp",
     "frameType": "iframe"
   },
@@ -1179,7 +1179,7 @@
     "id": "truffled-duck-life-7-147",
     "title": "Duck Life 7",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-7-147.html",
+    "url": "./truffled/games/ducklife7/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-7-147-ducklife7.webp",
     "frameType": "iframe"
   },
@@ -1187,7 +1187,7 @@
     "id": "truffled-duck-life-8-webport-148",
     "title": "Duck Life 8, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-duck-life-8-webport-148.html",
+    "url": "./truffled/games/ducklifeadv/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-duck-life-8-webport-148-ducklifeadc.webp",
     "frameType": "iframe"
   },
@@ -1195,7 +1195,7 @@
     "id": "truffled-dumb-ways-to-die-149",
     "title": "Dumb Ways To Die",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-dumb-ways-to-die-149.html",
+    "url": "./truffled/games/dumb/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-dumb-ways-to-die-149-dumb.webp",
     "frameType": "iframe"
   },
@@ -1219,7 +1219,7 @@
     "id": "truffled-emily-is-away-152",
     "title": "Emily Is Away",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-emily-is-away-152.html",
+    "url": "./truffled/games/emily/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-emily-is-away-152-emily.webp",
     "frameType": "iframe"
   },
@@ -1259,7 +1259,7 @@
     "id": "truffled-falling-fred-157",
     "title": "Falling Fred",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-falling-fred-157.html",
+    "url": "./truffled/games/falling/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-falling-fred-157-super-falling-fred.webp",
     "frameType": "iframe"
   },
@@ -1275,7 +1275,7 @@
     "id": "truffled-fallout-2-webport-159",
     "title": "Fallout 2, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fallout-2-webport-159.html",
+    "url": "./truffled/games/fo2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fallout-2-webport-159-fallout2.webp",
     "frameType": "iframe"
   },
@@ -1283,7 +1283,7 @@
     "id": "truffled-fancy-pants-adventures-160",
     "title": "Fancy Pants Adventures",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fancy-pants-adventures-160.html",
+    "url": "./truffled/games/fancypantsadventures/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fancy-pants-adventures-160-fpa1.webp",
     "frameType": "iframe"
   },
@@ -1291,7 +1291,7 @@
     "id": "truffled-fancy-pants-adventures-2-161",
     "title": "Fancy Pants Adventures 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fancy-pants-adventures-2-161.html",
+    "url": "./truffled/games/fancypantsadventures2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fancy-pants-adventures-2-161-fancy2.webp",
     "frameType": "iframe"
   },
@@ -1307,7 +1307,7 @@
     "id": "truffled-fears-to-fathom-home-alone-webport-163",
     "title": "Fears To Fathom: Home Alone, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fears-to-fathom-home-alone-webport-163.html",
+    "url": "./truffled/games/ftf/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fears-to-fathom-home-alone-webport-163-fear.webp",
     "frameType": "iframe"
   },
@@ -1315,7 +1315,7 @@
     "id": "truffled-fez-webport-164",
     "title": "FEZ, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fez-webport-164.html",
+    "url": "./truffled/games/FEZ/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fez-webport-164-fez.webp",
     "frameType": "iframe"
   },
@@ -1331,7 +1331,7 @@
     "id": "truffled-fireboy-and-watergirl-166",
     "title": "Fireboy and Watergirl",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fireboy-and-watergirl-166.html",
+    "url": "./truffled/games/watergirl-1/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fireboy-and-watergirl-166-fire1.webp",
     "frameType": "iframe"
   },
@@ -1339,7 +1339,7 @@
     "id": "truffled-fireboy-and-watergirl-2-167",
     "title": "Fireboy and Watergirl 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fireboy-and-watergirl-2-167.html",
+    "url": "./truffled/games/watergirl-2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fireboy-and-watergirl-2-167-fire2.webp",
     "frameType": "iframe"
   },
@@ -1347,7 +1347,7 @@
     "id": "truffled-fireboy-and-watergirl-3-168",
     "title": "Fireboy and Watergirl 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fireboy-and-watergirl-3-168.html",
+    "url": "./truffled/games/watergirl-3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fireboy-and-watergirl-3-168-fire3.webp",
     "frameType": "iframe"
   },
@@ -1355,7 +1355,7 @@
     "id": "truffled-fireboy-and-watergirl-4-169",
     "title": "Fireboy and Watergirl 4",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fireboy-and-watergirl-4-169.html",
+    "url": "./truffled/games/watergirl-4/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fireboy-and-watergirl-4-169-fire4.webp",
     "frameType": "iframe"
   },
@@ -1403,7 +1403,7 @@
     "id": "truffled-five-nights-at-frickbears-3-webport-175",
     "title": "Five Nights At Frickbears 3, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-five-nights-at-frickbears-3-webport-175.html",
+    "url": "./truffled/games/fb3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-five-nights-at-frickbears-3-webport-175-fnafb3.webp",
     "frameType": "iframe"
   },
@@ -1419,7 +1419,7 @@
     "id": "truffled-flappy-bird-177",
     "title": "Flappy bird",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-flappy-bird-177.html",
+    "url": "./truffled/games/flappybird/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-flappy-bird-177-flapp.webp",
     "frameType": "iframe"
   },
@@ -1435,7 +1435,7 @@
     "id": "truffled-fnaf-179",
     "title": "FNAF",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fnaf-179.html",
+    "url": "./truffled/games/fnaf/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fnaf-179-splash.webp",
     "frameType": "iframe"
   },
@@ -1467,7 +1467,7 @@
     "id": "truffled-fnaf-world-refreshed-183",
     "title": "FNAF World Refreshed",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fnaf-world-refreshed-183.html",
+    "url": "./truffled/games/fnw/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fnaf-world-refreshed-183-fne.webp",
     "frameType": "iframe"
   },
@@ -1475,7 +1475,7 @@
     "id": "truffled-fnaf2-184",
     "title": "FNAF2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fnaf2-184.html",
+    "url": "./truffled/games/2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fnaf2-184-fnaf2.webp",
     "frameType": "iframe"
   },
@@ -1483,7 +1483,7 @@
     "id": "truffled-fnaf3-185",
     "title": "FNAF3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fnaf3-185.html",
+    "url": "./truffled/games/3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fnaf3-185-3f.webp",
     "frameType": "iframe"
   },
@@ -1491,7 +1491,7 @@
     "id": "truffled-fnaf4-186",
     "title": "FNAF4",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fnaf4-186.html",
+    "url": "./truffled/games/fnaf4/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fnaf4-186-fnaf4.webp",
     "frameType": "iframe"
   },
@@ -1515,7 +1515,7 @@
     "id": "truffled-fnf-friday-night-funkin-189",
     "title": "FNF, Friday Night Funkin",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fnf-friday-night-funkin-189.html",
+    "url": "./truffled/games/fnf/fnfog.html",
     "thumbnail": "./truffled/thumbnails/truffled-fnf-friday-night-funkin-189-fnf.webp",
     "frameType": "iframe"
   },
@@ -1523,7 +1523,7 @@
     "id": "truffled-friday-night-funkin-aethos-190",
     "title": "Friday Night Funkin Aethos",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-aethos-190.html",
+    "url": "./truffled/games/fnf/aethos.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-aethos-190-aethos.webp",
     "frameType": "iframe"
   },
@@ -1531,7 +1531,7 @@
     "id": "truffled-friday-night-funkin-atrocity-191",
     "title": "Friday Night Funkin Atrocity",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-atrocity-191.html",
+    "url": "./truffled/games/fnf/atrocity.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-atrocity-191-atrocity.webp",
     "frameType": "iframe"
   },
@@ -1539,7 +1539,7 @@
     "id": "truffled-friday-night-funkin-bfdi-26-192",
     "title": "Friday Night Funkin BFDI 26",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-bfdi-26-192.html",
+    "url": "./truffled/games/fnf/bfdi26.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-bfdi-26-192-bfdi26.webp",
     "frameType": "iframe"
   },
@@ -1547,7 +1547,7 @@
     "id": "truffled-friday-night-funkin-bop-city-193",
     "title": "Friday Night Funkin Bop City",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-bop-city-193.html",
+    "url": "./truffled/games/fnf/bopcity.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-bop-city-193-bopcity.webp",
     "frameType": "iframe"
   },
@@ -1555,7 +1555,7 @@
     "id": "truffled-friday-night-funkin-for-a-bfdi-194",
     "title": "Friday Night Funkin For A BFDI",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-for-a-bfdi-194.html",
+    "url": "./truffled/games/fnf/ffabfdi.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-for-a-bfdi-194-ffabfdi.webp",
     "frameType": "iframe"
   },
@@ -1563,7 +1563,7 @@
     "id": "truffled-friday-night-funkin-garcello-195",
     "title": "Friday Night Funkin Garcello",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-garcello-195.html",
+    "url": "./truffled/games/fnf/garcello.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-garcello-195-garcello.webp",
     "frameType": "iframe"
   },
@@ -1571,7 +1571,7 @@
     "id": "truffled-friday-night-funkin-get-digging-196",
     "title": "Friday Night Funkin Get Digging",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-get-digging-196.html",
+    "url": "./truffled/games/fnf/getdigging.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-get-digging-196-getdigging.webp",
     "frameType": "iframe"
   },
@@ -1579,7 +1579,7 @@
     "id": "truffled-friday-night-funkin-golden-apple-197",
     "title": "Friday Night Funkin Golden Apple",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-golden-apple-197.html",
+    "url": "./truffled/games/fnf/goldenapple.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-golden-apple-197-goldenapple.webp",
     "frameType": "iframe"
   },
@@ -1587,7 +1587,7 @@
     "id": "truffled-friday-night-funkin-hex-198",
     "title": "Friday Night Funkin Hex",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-hex-198.html",
+    "url": "./truffled/games/fnf/hex.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-hex-198-hex.webp",
     "frameType": "iframe"
   },
@@ -1595,7 +1595,7 @@
     "id": "truffled-friday-night-funkin-horkglorpgloop-199",
     "title": "Friday Night Funkin Horkglorpgloop",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-horkglorpgloop-199.html",
+    "url": "./truffled/games/fnf/horkglorpgloop.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-horkglorpgloop-199-infinite.webp",
     "frameType": "iframe"
   },
@@ -1603,7 +1603,7 @@
     "id": "truffled-friday-night-funkin-infinite-irida-200",
     "title": "Friday Night Funkin Infinite Irida",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-infinite-irida-200.html",
+    "url": "./truffled/games/fnf/infiniteiridra.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-infinite-irida-200-hork.webp",
     "frameType": "iframe"
   },
@@ -1611,7 +1611,7 @@
     "id": "truffled-friday-night-funkin-kapi-201",
     "title": "Friday Night Funkin Kapi",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-kapi-201.html",
+    "url": "./truffled/games/fnf/kapi.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-kapi-201-kapi.webp",
     "frameType": "iframe"
   },
@@ -1619,7 +1619,7 @@
     "id": "truffled-friday-night-funkin-mario-madness-202",
     "title": "Friday Night Funkin Mario Madness",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-mario-madness-202.html",
+    "url": "./truffled/games/fnf/mariomadness.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-mario-madness-202-mario.webp",
     "frameType": "iframe"
   },
@@ -1627,7 +1627,7 @@
     "id": "truffled-friday-night-funkin-hatsune-miku-203",
     "title": "Friday Night Funkin Hatsune Miku",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-hatsune-miku-203.html",
+    "url": "./truffled/games/fnf/miku.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-hatsune-miku-203-miku.webp",
     "frameType": "iframe"
   },
@@ -1635,7 +1635,7 @@
     "id": "truffled-friday-night-funkin-nonsense-204",
     "title": "Friday Night Funkin Nonsense",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-nonsense-204.html",
+    "url": "./truffled/games/fnf/nonsense.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-nonsense-204-nonsense.webp",
     "frameType": "iframe"
   },
@@ -1643,7 +1643,7 @@
     "id": "truffled-friday-night-funkin-rewrite-205",
     "title": "Friday Night Funkin Rewrite",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-rewrite-205.html",
+    "url": "./truffled/games/fnf/rewrite.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-rewrite-205-rewrite.webp",
     "frameType": "iframe"
   },
@@ -1651,7 +1651,7 @@
     "id": "truffled-friday-night-funkin-rewrite-2-206",
     "title": "Friday Night Funkin Rewrite 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-rewrite-2-206.html",
+    "url": "./truffled/games/fnf/rewrite2.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-rewrite-2-206-rewrite2.webp",
     "frameType": "iframe"
   },
@@ -1659,7 +1659,7 @@
     "id": "truffled-friday-night-funkin-ron-207",
     "title": "Friday Night Funkin Ron",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-ron-207.html",
+    "url": "./truffled/games/fnf/ron.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-ron-207-ron.webp",
     "frameType": "iframe"
   },
@@ -1667,7 +1667,7 @@
     "id": "truffled-friday-night-funkin-shaggy-208",
     "title": "Friday Night Funkin Shaggy",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-shaggy-208.html",
+    "url": "./truffled/games/fnf/shaggy.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-shaggy-208-shaggy.webp",
     "frameType": "iframe"
   },
@@ -1675,7 +1675,7 @@
     "id": "truffled-friday-night-funkin-shaggy-x-matt-209",
     "title": "Friday Night Funkin Shaggy X Matt",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-shaggy-x-matt-209.html",
+    "url": "./truffled/games/fnf/shaggyxmatt.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-shaggy-x-matt-209-sxm.webp",
     "frameType": "iframe"
   },
@@ -1683,7 +1683,7 @@
     "id": "truffled-friday-night-funkin-shucks-v2-210",
     "title": "Friday Night Funkin Shucks V2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-shucks-v2-210.html",
+    "url": "./truffled/games/fnf/shucksv2.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-shucks-v2-210-shucksv2.webp",
     "frameType": "iframe"
   },
@@ -1691,7 +1691,7 @@
     "id": "truffled-friday-night-funkin-vs-tord-211",
     "title": "Friday Night Funkin Vs. Tord",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-vs-tord-211.html",
+    "url": "./truffled/games/fnf/tord.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-vs-tord-211-tord.webp",
     "frameType": "iframe"
   },
@@ -1699,7 +1699,7 @@
     "id": "truffled-friday-night-funkin-tricky-212",
     "title": "Friday Night Funkin Tricky",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-tricky-212.html",
+    "url": "./truffled/games/fnf/tricky.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-tricky-212-tricky.webp",
     "frameType": "iframe"
   },
@@ -1707,7 +1707,7 @@
     "id": "truffled-friday-night-funkin-twiddlefinger-213",
     "title": "Friday Night Funkin TWIDDLEFINGER",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-twiddlefinger-213.html",
+    "url": "./truffled/games/fnf/TWIDDLEFINGER.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-twiddlefinger-213-twiddle.webp",
     "frameType": "iframe"
   },
@@ -1715,7 +1715,7 @@
     "id": "truffled-friday-night-funkin-whitty-214",
     "title": "Friday Night Funkin Whitty",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-whitty-214.html",
+    "url": "./truffled/games/fnf/whitty.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-whitty-214-whitty.webp",
     "frameType": "iframe"
   },
@@ -1723,7 +1723,7 @@
     "id": "truffled-friday-night-funkin-zardy-215",
     "title": "Friday Night Funkin Zardy",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-friday-night-funkin-zardy-215.html",
+    "url": "./truffled/games/fnf/zardy.html",
     "thumbnail": "./truffled/thumbnails/truffled-friday-night-funkin-zardy-215-zardy.webp",
     "frameType": "iframe"
   },
@@ -1739,7 +1739,7 @@
     "id": "truffled-football-bros-217",
     "title": "Football Bros",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-football-bros-217.html",
+    "url": "./truffled/games/footballbros/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-football-bros-217-footbros.webp",
     "frameType": "iframe"
   },
@@ -1747,7 +1747,7 @@
     "id": "truffled-fruit-ninja-218",
     "title": "Fruit Ninja",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fruit-ninja-218.html",
+    "url": "./truffled/games/fruitninja/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fruit-ninja-218-ninja.webp",
     "frameType": "iframe"
   },
@@ -1755,7 +1755,7 @@
     "id": "truffled-fused240-219",
     "title": "Fused240",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-fused240-219.html",
+    "url": "./truffled/games/fused240/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-fused240-219-fused240.webp",
     "frameType": "iframe"
   },
@@ -1795,7 +1795,7 @@
     "id": "truffled-getaway-shootout-224",
     "title": "Getaway Shootout",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-getaway-shootout-224.html",
+    "url": "./truffled/games/getaway-shootout/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-getaway-shootout-224-getaway.webp",
     "frameType": "iframe"
   },
@@ -1827,7 +1827,7 @@
     "id": "truffled-go-to-bed-webport-228",
     "title": "Go to bed, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-go-to-bed-webport-228.html",
+    "url": "./truffled/games/GTB/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-go-to-bed-webport-228-gotobed.webp",
     "frameType": "iframe"
   },
@@ -1843,7 +1843,7 @@
     "id": "truffled-gorilla-tag-webport-230",
     "title": "Gorilla Tag, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gorilla-tag-webport-230.html",
+    "url": "./truffled/games/gtag/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gorilla-tag-webport-230-gtag.webp",
     "frameType": "iframe"
   },
@@ -1867,7 +1867,7 @@
     "id": "truffled-granny-3-233",
     "title": "Granny 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-granny-3-233.html",
+    "url": "./truffled/games/granny3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-granny-3-233-gran3.webp",
     "frameType": "unity"
   },
@@ -1875,7 +1875,7 @@
     "id": "truffled-gravity-run-234",
     "title": "Gravity run",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gravity-run-234.html",
+    "url": "./truffled/games/gravity-run/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gravity-run-234-gravity.webp",
     "frameType": "iframe"
   },
@@ -1883,7 +1883,7 @@
     "id": "truffled-greybox-235",
     "title": "Greybox",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-greybox-235.html",
+    "url": "./truffled/games/graybox/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-greybox-235-grey.webp",
     "frameType": "unity"
   },
@@ -1891,7 +1891,7 @@
     "id": "truffled-gta-i-236",
     "title": "GTA I",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gta-i-236.html",
+    "url": "./truffled/games/gta/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gta-i-236-gta.webp",
     "frameType": "iframe"
   },
@@ -1899,7 +1899,7 @@
     "id": "truffled-gta-ii-237",
     "title": "GTA II",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gta-ii-237.html",
+    "url": "./truffled/games/gta2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gta-ii-237-gta2.webp",
     "frameType": "iframe"
   },
@@ -1915,7 +1915,7 @@
     "id": "truffled-gta-san-andreas-239",
     "title": "GTA San Andreas",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gta-san-andreas-239.html",
+    "url": "./truffled/games/gtasan/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gta-san-andreas-239-gtasan.webp",
     "frameType": "iframe"
   },
@@ -1923,7 +1923,7 @@
     "id": "truffled-gta-vice-city-webport-240",
     "title": "GTA Vice City, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gta-vice-city-webport-240.html",
+    "url": "./truffled/games/vicecity/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gta-vice-city-webport-240-vice.webp",
     "frameType": "iframe"
   },
@@ -1931,7 +1931,7 @@
     "id": "truffled-gun-mayhem-241",
     "title": "Gun Mayhem",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gun-mayhem-241.html",
+    "url": "./truffled/games/funmayhem/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gun-mayhem-241-gun.webp",
     "frameType": "iframe"
   },
@@ -1939,7 +1939,7 @@
     "id": "truffled-gun-mayhem-2-242",
     "title": "Gun Mayhem 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gun-mayhem-2-242.html",
+    "url": "./truffled/games/funmayhem2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gun-mayhem-2-242-gun2.webp",
     "frameType": "iframe"
   },
@@ -1947,7 +1947,7 @@
     "id": "truffled-gun-mayhem-redux-243",
     "title": "Gun Mayhem Redux",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gun-mayhem-redux-243.html",
+    "url": "./truffled/games/funmayhemredux/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gun-mayhem-redux-243-gun3.webp",
     "frameType": "iframe"
   },
@@ -1955,7 +1955,7 @@
     "id": "truffled-gunspin-244",
     "title": "Gunspin",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-gunspin-244.html",
+    "url": "./truffled/games/gunspin/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-gunspin-244-guns.webp",
     "frameType": "iframe"
   },
@@ -1963,7 +1963,7 @@
     "id": "truffled-half-life-245",
     "title": "Half life",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-half-life-245.html",
+    "url": "./truffled/games/hl-main/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-half-life-245-halflife.webp",
     "frameType": "iframe"
   },
@@ -1979,7 +1979,7 @@
     "id": "truffled-happy-wheels-247",
     "title": "Happy Wheels",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-happy-wheels-247.html",
+    "url": "./truffled/games/happywheels/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-happy-wheels-247-happy.webp",
     "frameType": "iframe"
   },
@@ -2051,7 +2051,7 @@
     "id": "truffled-hollow-knight-webport-256",
     "title": "Hollow Knight, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-hollow-knight-webport-256.html",
+    "url": "./truffled/games/hollowknight/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-hollow-knight-webport-256-hollow.webp",
     "frameType": "iframe"
   },
@@ -2067,7 +2067,7 @@
     "id": "truffled-hotline-miami-webport-258",
     "title": "Hotline Miami, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-hotline-miami-webport-258.html",
+    "url": "./truffled/games/whores/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-hotline-miami-webport-258-hot.webp",
     "frameType": "iframe"
   },
@@ -2075,7 +2075,7 @@
     "id": "truffled-house-of-hazards-259",
     "title": "House Of Hazards",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-house-of-hazards-259.html",
+    "url": "./truffled/games/houseofhazards/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-house-of-hazards-259-house.webp",
     "frameType": "iframe"
   },
@@ -2091,7 +2091,7 @@
     "id": "truffled-ice-baby-quest-2-261",
     "title": "Ice Baby Quest 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ice-baby-quest-2-261.html",
+    "url": "./truffled/games/icebaby2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ice-baby-quest-2-261-icebaby2.webp",
     "frameType": "iframe"
   },
@@ -2099,7 +2099,7 @@
     "id": "truffled-idle-breakout-262",
     "title": "Idle Breakout",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-idle-breakout-262.html",
+    "url": "./truffled/games/idle-breakout/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-idle-breakout-262-idle.webp",
     "frameType": "iframe"
   },
@@ -2107,7 +2107,7 @@
     "id": "truffled-iron-lung-webport-263",
     "title": "Iron Lung, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-iron-lung-webport-263.html",
+    "url": "./truffled/games/ironlung/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-iron-lung-webport-263-iroonlung.webp",
     "frameType": "iframe"
   },
@@ -2123,7 +2123,7 @@
     "id": "truffled-jeffys-basics-webport-265",
     "title": "Jeffys Basics, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-jeffys-basics-webport-265.html",
+    "url": "./truffled/games/JeffysBasicsBog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-jeffys-basics-webport-265-jeffys.webp",
     "frameType": "unity"
   },
@@ -2139,7 +2139,7 @@
     "id": "truffled-jetpack-joyride-267",
     "title": "Jetpack Joyride",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-jetpack-joyride-267.html",
+    "url": "./truffled/games/jetpackjoyride/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-jetpack-joyride-267-jet.webp",
     "frameType": "iframe"
   },
@@ -2147,7 +2147,7 @@
     "id": "truffled-jumbo-mario-268",
     "title": "Jumbo Mario",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-jumbo-mario-268.html",
+    "url": "./truffled/games/JumboMario/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-jumbo-mario-268-jumbo.webp",
     "frameType": "iframe"
   },
@@ -2163,7 +2163,7 @@
     "id": "truffled-karlson2d-webport-270",
     "title": "Karlson2D, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-karlson2d-webport-270.html",
+    "url": "./truffled/games/karlson2d/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-karlson2d-webport-270-karlson2d.webp",
     "frameType": "unity"
   },
@@ -2171,7 +2171,7 @@
     "id": "truffled-kick-the-buddy-webport-271",
     "title": "Kick The Buddy, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-kick-the-buddy-webport-271.html",
+    "url": "./truffled/games/kickthebuddy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-kick-the-buddy-webport-271-ktb.webp",
     "frameType": "unity"
   },
@@ -2179,7 +2179,7 @@
     "id": "truffled-kindergarten-1-webport-272",
     "title": "Kindergarten 1, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-kindergarten-1-webport-272.html",
+    "url": "./truffled/games/kindergarten/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-kindergarten-1-webport-272-kind1.webp",
     "frameType": "unity"
   },
@@ -2187,7 +2187,7 @@
     "id": "truffled-kindergarten-2-webport-273",
     "title": "Kindergarten 2, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-kindergarten-2-webport-273.html",
+    "url": "./truffled/games/kindergarten/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-kindergarten-2-webport-273-kind2.webp",
     "frameType": "unity"
   },
@@ -2195,7 +2195,7 @@
     "id": "truffled-kindergarten-3-webport-274",
     "title": "Kindergarten 3, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-kindergarten-3-webport-274.html",
+    "url": "./truffled/games/Kindergarten3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-kindergarten-3-webport-274-kind3.webp",
     "frameType": "unity"
   },
@@ -2203,7 +2203,7 @@
     "id": "truffled-kinito-pet-webport-275",
     "title": "Kinito Pet, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-kinito-pet-webport-275.html",
+    "url": "./truffled/games/kinitopet/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-kinito-pet-webport-275-kinto.webp",
     "frameType": "iframe"
   },
@@ -2219,7 +2219,7 @@
     "id": "truffled-klifur-277",
     "title": "Klifur",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-klifur-277.html",
+    "url": "./truffled/games/kilfur/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-klifur-277-kil.webp",
     "frameType": "unity"
   },
@@ -2227,7 +2227,7 @@
     "id": "truffled-krunker-278",
     "title": "Krunker",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-krunker-278.html",
+    "url": "./truffled/games/krunker/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-krunker-278-krunker.webp",
     "frameType": "iframe"
   },
@@ -2243,7 +2243,7 @@
     "id": "truffled-learn-to-fly-280",
     "title": "Learn To Fly",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-learn-to-fly-280.html",
+    "url": "./truffled/games/learntofly/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-learn-to-fly-280-learn1.webp",
     "frameType": "iframe"
   },
@@ -2251,7 +2251,7 @@
     "id": "truffled-learn-to-fly-2-281",
     "title": "Learn To Fly 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-learn-to-fly-2-281.html",
+    "url": "./truffled/games/learntofly2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-learn-to-fly-2-281-learn2.webp",
     "frameType": "iframe"
   },
@@ -2259,7 +2259,7 @@
     "id": "truffled-learn-to-fly-3-282",
     "title": "Learn To Fly 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-learn-to-fly-3-282.html",
+    "url": "./truffled/games/ltf3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-learn-to-fly-3-282-learn3.webp",
     "frameType": "iframe"
   },
@@ -2267,7 +2267,7 @@
     "id": "truffled-learn-to-fly-idle-283",
     "title": "Learn To Fly Idle",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-learn-to-fly-idle-283.html",
+    "url": "./truffled/games/learntoflyidle/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-learn-to-fly-idle-283-learni.webp",
     "frameType": "iframe"
   },
@@ -2283,7 +2283,7 @@
     "id": "truffled-level-devil-285",
     "title": "Level Devil",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-level-devil-285.html",
+    "url": "./truffled/games/lvldevil/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-level-devil-285-level.webp",
     "frameType": "iframe"
   },
@@ -2291,7 +2291,7 @@
     "id": "truffled-line-rider-286",
     "title": "Line Rider",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-line-rider-286.html",
+    "url": "./truffled/games/linerider/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-line-rider-286-line.webp",
     "frameType": "iframe"
   },
@@ -2299,7 +2299,7 @@
     "id": "truffled-little-alchemy-287",
     "title": "Little Alchemy",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-little-alchemy-287.html",
+    "url": "./truffled/games/littlealchemy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-little-alchemy-287-lil.webp",
     "frameType": "iframe"
   },
@@ -2315,7 +2315,7 @@
     "id": "truffled-little-big-planet-289",
     "title": "Little Big Planet",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-little-big-planet-289.html",
+    "url": "./truffled/games/lbp/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-little-big-planet-289-lbp.webp",
     "frameType": "iframe"
   },
@@ -2323,7 +2323,7 @@
     "id": "truffled-lobotomy-corporation-webport-290",
     "title": "Lobotomy Corporation, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-lobotomy-corporation-webport-290.html",
+    "url": "./truffled/games/lobcorp/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-lobotomy-corporation-webport-290-lobotomycorp.webp",
     "frameType": "unity"
   },
@@ -2347,7 +2347,7 @@
     "id": "truffled-madness-ambulation-293",
     "title": "Madness Ambulation",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-madness-ambulation-293.html",
+    "url": "./truffled/games/madnessambulation/madnessambulation.html",
     "thumbnail": "./truffled/thumbnails/truffled-madness-ambulation-293-madnessambulation.webp",
     "frameType": "iframe"
   },
@@ -2395,7 +2395,7 @@
     "id": "truffled-madness-melee-299",
     "title": "Madness Melee",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-madness-melee-299.html",
+    "url": "./truffled/games/bogtruffled/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-madness-melee-299-madness.webp",
     "frameType": "iframe"
   },
@@ -2435,7 +2435,7 @@
     "id": "truffled-mario-kart-64-304",
     "title": "Mario Kart 64",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-mario-kart-64-304.html",
+    "url": "./truffled/games/mk64/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-mario-kart-64-304-mk64.webp",
     "frameType": "iframe"
   },
@@ -2443,7 +2443,7 @@
     "id": "truffled-mario-kart-7-305",
     "title": "Mario Kart 7",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-mario-kart-7-305.html",
+    "url": "./truffled/games/mk7/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-mario-kart-7-305-mk7.webp",
     "frameType": "iframe"
   },
@@ -2451,7 +2451,7 @@
     "id": "truffled-mario-kart-ds-306",
     "title": "Mario Kart DS",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-mario-kart-ds-306.html",
+    "url": "./truffled/games/mkds/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-mario-kart-ds-306-mkds.webp",
     "frameType": "iframe"
   },
@@ -2491,7 +2491,7 @@
     "id": "truffled-melon-playground-311",
     "title": "Melon Playground",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-melon-playground-311.html",
+    "url": "./truffled/games/melon-playground/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-melon-playground-311-melon.webp",
     "frameType": "unity"
   },
@@ -2499,7 +2499,7 @@
     "id": "truffled-merge-rot-312",
     "title": "Merge Rot",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-merge-rot-312.html",
+    "url": "./truffled/games/mergerot/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-merge-rot-312-rot.webp",
     "frameType": "iframe"
   },
@@ -2507,7 +2507,7 @@
     "id": "truffled-milkman-karlson-webport-313",
     "title": "Milkman karlson, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-milkman-karlson-webport-313.html",
+    "url": "./truffled/games/milk/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-milkman-karlson-webport-313-milk.webp",
     "frameType": "unity"
   },
@@ -2515,7 +2515,7 @@
     "id": "truffled-minecraft-314",
     "title": "Minecraft",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-minecraft-314.html",
+    "url": "./truffled/games/wispcraft/eag.html",
     "thumbnail": "./truffled/thumbnails/truffled-minecraft-314-mc.webp",
     "frameType": "iframe"
   },
@@ -2523,7 +2523,7 @@
     "id": "truffled-minecraft-1-12-2-315",
     "title": "Minecraft 1.12.2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-minecraft-1-12-2-315.html",
+    "url": "./truffled/games/eglar/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-minecraft-1-12-2-315-1.12.webp",
     "frameType": "iframe"
   },
@@ -2531,7 +2531,7 @@
     "id": "truffled-minecraft-1-8-8-316",
     "title": "Minecraft 1.8.8",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-minecraft-1-8-8-316.html",
+    "url": "./truffled/games/eglar/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-minecraft-1-8-8-316-1.8.webp",
     "frameType": "iframe"
   },
@@ -2539,7 +2539,7 @@
     "id": "truffled-minecraft-legacy-console-edition-webport-317",
     "title": "Minecraft Legacy Console Edition, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-minecraft-legacy-console-edition-webport-317.html",
+    "url": "./truffled/games/lce/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-minecraft-legacy-console-edition-webport-317-mclce.webp",
     "frameType": "iframe"
   },
@@ -2547,7 +2547,7 @@
     "id": "truffled-minecraft-pocket-edition-webport-318",
     "title": "Minecraft Pocket Edition, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-minecraft-pocket-edition-webport-318.html",
+    "url": "./truffled/games/mcpe/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-minecraft-pocket-edition-webport-318-mcpe.webp",
     "frameType": "iframe"
   },
@@ -2555,7 +2555,7 @@
     "id": "truffled-minecraft-wurst-319",
     "title": "Minecraft Wurst",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-minecraft-wurst-319.html",
+    "url": "./truffled/games/eglar/clwurst.html",
     "thumbnail": "./truffled/thumbnails/truffled-minecraft-wurst-319-wurst.webp",
     "frameType": "iframe"
   },
@@ -2587,7 +2587,7 @@
     "id": "truffled-monkey-mart-323",
     "title": "Monkey Mart",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-monkey-mart-323.html",
+    "url": "./truffled/games/MonkeyMart/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-monkey-mart-323-monkey.webp",
     "frameType": "iframe"
   },
@@ -2595,7 +2595,7 @@
     "id": "truffled-monster-tracks-324",
     "title": "Monster Tracks",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-monster-tracks-324.html",
+    "url": "./truffled/games/monster-tracks/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-monster-tracks-324-monster.webp",
     "frameType": "iframe"
   },
@@ -2603,7 +2603,7 @@
     "id": "truffled-moto-x3m-325",
     "title": "Moto X3M",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-moto-x3m-325.html",
+    "url": "./truffled/games/motox3m/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-moto-x3m-325-moto.webp",
     "frameType": "iframe"
   },
@@ -2627,7 +2627,7 @@
     "id": "truffled-n-gon-328",
     "title": "n-gon",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-n-gon-328.html",
+    "url": "./truffled/games/n-gon/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-n-gon-328-ngon.webp",
     "frameType": "iframe"
   },
@@ -2643,7 +2643,7 @@
     "id": "truffled-needy-streamer-overload-webport-330",
     "title": "Needy Streamer Overload, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-needy-streamer-overload-webport-330.html",
+    "url": "./truffled/games/nso/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-needy-streamer-overload-webport-330-nso.webp",
     "frameType": "iframe"
   },
@@ -2651,7 +2651,7 @@
     "id": "truffled-new-super-mario-bros-331",
     "title": "New Super Mario Bros",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-new-super-mario-bros-331.html",
+    "url": "./truffled/games/nsmb/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-new-super-mario-bros-331-nsmb.webp",
     "frameType": "iframe"
   },
@@ -2659,7 +2659,7 @@
     "id": "truffled-node-buster-webport-332",
     "title": "Node Buster, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-node-buster-webport-332.html",
+    "url": "./truffled/games/nodebuster/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-node-buster-webport-332-nodebuster.webp",
     "frameType": "iframe"
   },
@@ -2699,7 +2699,7 @@
     "id": "truffled-oneshot-world-machine-edition-webport-337",
     "title": "Oneshot World Machine Edition, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-oneshot-world-machine-edition-webport-337.html",
+    "url": "./truffled/games/worldmachine/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-oneshot-world-machine-edition-webport-337-oneshotwm.webp",
     "frameType": "iframe"
   },
@@ -2723,7 +2723,7 @@
     "id": "truffled-osu-340",
     "title": "Osu!",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-osu-340.html",
+    "url": "./truffled/games/osu!/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-osu-340-osu.webp",
     "frameType": "iframe"
   },
@@ -2739,7 +2739,7 @@
     "id": "truffled-ovo-342",
     "title": "OvO",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ovo-342.html",
+    "url": "./truffled/games/ovo/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ovo-342-ovo.webp",
     "frameType": "iframe"
   },
@@ -2747,7 +2747,7 @@
     "id": "truffled-ovo-2-343",
     "title": "OvO 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ovo-2-343.html",
+    "url": "./truffled/games/OvO2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ovo-2-343-ovo2.webp",
     "frameType": "iframe"
   },
@@ -2755,7 +2755,7 @@
     "id": "truffled-ovo-dimensions-344",
     "title": "OvO Dimensions",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ovo-dimensions-344.html",
+    "url": "./truffled/games/OvoDimensions/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ovo-dimensions-344-ovodi.webp",
     "frameType": "iframe"
   },
@@ -2763,7 +2763,7 @@
     "id": "truffled-pacman-345",
     "title": "Pacman",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-pacman-345.html",
+    "url": "./truffled/games/pacman/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-pacman-345-pacman.webp",
     "frameType": "iframe"
   },
@@ -2795,7 +2795,7 @@
     "id": "truffled-papas-bakeria-349",
     "title": "Papas Bakeria",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-papas-bakeria-349.html",
+    "url": "./truffled/games/papasbakeria/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-papas-bakeria-349-bake.webp",
     "frameType": "iframe"
   },
@@ -2803,7 +2803,7 @@
     "id": "truffled-papas-burgeria-350",
     "title": "Papas Burgeria",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-papas-burgeria-350.html",
+    "url": "./truffled/games/papasburgeria/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-papas-burgeria-350-burger.webp",
     "frameType": "iframe"
   },
@@ -2811,7 +2811,7 @@
     "id": "truffled-papas-cheeseria-351",
     "title": "Papas Cheeseria",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-papas-cheeseria-351.html",
+    "url": "./truffled/games/papascheeseria/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-papas-cheeseria-351-cheese.webp",
     "frameType": "iframe"
   },
@@ -2819,7 +2819,7 @@
     "id": "truffled-papas-donuteria-352",
     "title": "Papas Donuteria",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-papas-donuteria-352.html",
+    "url": "./truffled/games/papasdonuteria/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-papas-donuteria-352-donut.webp",
     "frameType": "iframe"
   },
@@ -2827,7 +2827,7 @@
     "id": "truffled-papas-freezeria-353",
     "title": "Papas Freezeria",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-papas-freezeria-353.html",
+    "url": "./truffled/games/papasfreezeria/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-papas-freezeria-353-freeze.webp",
     "frameType": "iframe"
   },
@@ -2835,7 +2835,7 @@
     "id": "truffled-papas-pizzaeria-354",
     "title": "Papas Pizzaeria",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-papas-pizzaeria-354.html",
+    "url": "./truffled/games/papaspizza/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-papas-pizzaeria-354-pizza.webp",
     "frameType": "iframe"
   },
@@ -2851,7 +2851,7 @@
     "id": "truffled-paperio-2-356",
     "title": "Paperio 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-paperio-2-356.html",
+    "url": "./truffled/games/paperio2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-paperio-2-356-paperio2.webp",
     "frameType": "iframe"
   },
@@ -2867,7 +2867,7 @@
     "id": "truffled-parappa-the-rapper-358",
     "title": "Parappa The Rapper",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-parappa-the-rapper-358.html",
+    "url": "./truffled/games/paps/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-parappa-the-rapper-358-rapper.webp",
     "frameType": "iframe"
   },
@@ -2875,7 +2875,7 @@
     "id": "truffled-parappa-the-rapper-2-359",
     "title": "Parappa The Rapper 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-parappa-the-rapper-2-359.html",
+    "url": "./truffled/games/parappa2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-parappa-the-rapper-2-359-parappa2.webp",
     "frameType": "iframe"
   },
@@ -2899,7 +2899,7 @@
     "id": "truffled-people-playground-webport-362",
     "title": "People Playground, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-people-playground-webport-362.html",
+    "url": "./truffled/games/ppg/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-people-playground-webport-362-peoplepg.webp",
     "frameType": "unity"
   },
@@ -2907,7 +2907,7 @@
     "id": "truffled-pikuniku-webport-363",
     "title": "Pikuniku, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-pikuniku-webport-363.html",
+    "url": "./truffled/games/pikubog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-pikuniku-webport-363-piku.webp",
     "frameType": "unity"
   },
@@ -2915,7 +2915,7 @@
     "id": "truffled-pixel-gun-3d-364",
     "title": "Pixel Gun 3D",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-pixel-gun-3d-364.html",
+    "url": "./truffled/games/pixl/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-pixel-gun-3d-364-pixelgun.webp",
     "frameType": "iframe"
   },
@@ -2923,7 +2923,7 @@
     "id": "truffled-pizzatron-3000-365",
     "title": "Pizzatron 3000",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-pizzatron-3000-365.html",
+    "url": "./truffled/games/pizza/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-pizzatron-3000-365-pizza3.webp",
     "frameType": "iframe"
   },
@@ -2931,7 +2931,7 @@
     "id": "truffled-pizza-tower-webport-366",
     "title": "Pizza Tower, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-pizza-tower-webport-366.html",
+    "url": "./truffled/games/NoiseUpdate/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-pizza-tower-webport-366-pizzatower.webp",
     "frameType": "iframe"
   },
@@ -2955,7 +2955,7 @@
     "id": "truffled-plants-vs-zombies-garden-endless-369",
     "title": "Plants VS Zombies Garden Endless",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-plants-vs-zombies-garden-endless-369.html",
+    "url": "./truffled/games/pvzge/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-plants-vs-zombies-garden-endless-369-pvz2.webp",
     "frameType": "iframe"
   },
@@ -2963,7 +2963,7 @@
     "id": "truffled-plauge-inc-webport-370",
     "title": "Plauge Inc, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-plauge-inc-webport-370.html",
+    "url": "./truffled/games/PlagueInc/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-plauge-inc-webport-370-plaugeinc.webp",
     "frameType": "unity"
   },
@@ -3035,7 +3035,7 @@
     "id": "truffled-polytrack-379",
     "title": "Polytrack",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-polytrack-379.html",
+    "url": "./truffled/games/polytrack/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-polytrack-379-poly.webp",
     "frameType": "iframe"
   },
@@ -3043,7 +3043,7 @@
     "id": "truffled-portal-380",
     "title": "Portal",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-portal-380.html",
+    "url": "./truffled/games/portal/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-portal-380-portal.webp",
     "frameType": "iframe"
   },
@@ -3067,7 +3067,7 @@
     "id": "truffled-potion-craft-alchemy-simulator-webport-383",
     "title": "Potion Craft Alchemy Simulator, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-potion-craft-alchemy-simulator-webport-383.html",
+    "url": "./truffled/games/pcraft/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-potion-craft-alchemy-simulator-webport-383-pcraft.webp",
     "frameType": "unity"
   },
@@ -3075,7 +3075,7 @@
     "id": "truffled-pretend-its-not-there-webport-384",
     "title": "Pretend its not there, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-pretend-its-not-there-webport-384.html",
+    "url": "./truffled/games/pretenditsnotthere/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-pretend-its-not-there-webport-384-pre.webp",
     "frameType": "iframe"
   },
@@ -3083,7 +3083,7 @@
     "id": "truffled-prodigy-385",
     "title": "Prodigy",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-prodigy-385.html",
+    "url": "./truffled/games/prodigy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-prodigy-385-prodigy.webp",
     "frameType": "iframe"
   },
@@ -3099,7 +3099,7 @@
     "id": "truffled-quake-387",
     "title": "Quake",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-quake-387.html",
+    "url": "./truffled/games/quake/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-quake-387-quake.webp",
     "frameType": "iframe"
   },
@@ -3107,7 +3107,7 @@
     "id": "truffled-quake-ii-388",
     "title": "Quake II",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-quake-ii-388.html",
+    "url": "./truffled/games/quakeii/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-quake-ii-388-quakeii.webp",
     "frameType": "iframe"
   },
@@ -3115,7 +3115,7 @@
     "id": "truffled-quake-iii-389",
     "title": "Quake III",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-quake-iii-389.html",
+    "url": "./truffled/games/quakeiii/Quake3.htm",
     "thumbnail": "./truffled/thumbnails/truffled-quake-iii-389-quakeiii.webp",
     "frameType": "iframe"
   },
@@ -3123,7 +3123,7 @@
     "id": "truffled-rabbids-alive-and-kicking-390",
     "title": "Rabbids Alive And Kicking",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-rabbids-alive-and-kicking-390.html",
+    "url": "./truffled/games/rabbidsa/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-rabbids-alive-and-kicking-390-rabbidalive.webp",
     "frameType": "iframe"
   },
@@ -3131,7 +3131,7 @@
     "id": "truffled-rabbids-travel-in-time-391",
     "title": "Rabbids Travel In Time",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-rabbids-travel-in-time-391.html",
+    "url": "./truffled/games/rabbidst/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-rabbids-travel-in-time-391-rabbidstravel.webp",
     "frameType": "iframe"
   },
@@ -3139,7 +3139,7 @@
     "id": "truffled-raft-wars-392",
     "title": "Raft Wars",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-raft-wars-392.html",
+    "url": "./truffled/games/raft-wars/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-raft-wars-392-raft1.webp",
     "frameType": "iframe"
   },
@@ -3147,7 +3147,7 @@
     "id": "truffled-raft-wars-2-393",
     "title": "Raft Wars 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-raft-wars-2-393.html",
+    "url": "./truffled/games/raft-wars-2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-raft-wars-2-393-raft2.webp",
     "frameType": "iframe"
   },
@@ -3155,7 +3155,7 @@
     "id": "truffled-raft-webport-394",
     "title": "RAFT, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-raft-webport-394.html",
+    "url": "./truffled/games/raft/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-raft-webport-394-raft.webp",
     "frameType": "unity"
   },
@@ -3163,7 +3163,7 @@
     "id": "truffled-ragdoll-archers-395",
     "title": "Ragdoll Archers",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ragdoll-archers-395.html",
+    "url": "./truffled/games/ragdoll-archers/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ragdoll-archers-395-archer.webp",
     "frameType": "iframe"
   },
@@ -3171,7 +3171,7 @@
     "id": "truffled-ragdoll-hit-396",
     "title": "Ragdoll Hit",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ragdoll-hit-396.html",
+    "url": "./truffled/games/ragdoll/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ragdoll-hit-396-hit.webp",
     "frameType": "iframe"
   },
@@ -3179,7 +3179,7 @@
     "id": "truffled-raldi-s-crack-house-397",
     "title": "Raldi's Crack House",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-raldi-s-crack-house-397.html",
+    "url": "./truffled/games/raldi/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-raldi-s-crack-house-397-raldi.webp",
     "frameType": "iframe"
   },
@@ -3195,7 +3195,7 @@
     "id": "truffled-re-run-webport-399",
     "title": "RE:RUN, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-re-run-webport-399.html",
+    "url": "./truffled/games/rerun/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-re-run-webport-399-rerun.webp",
     "frameType": "unity"
   },
@@ -3203,7 +3203,7 @@
     "id": "truffled-repo-webport-400",
     "title": "REPO, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-repo-webport-400.html",
+    "url": "./truffled/games/repo/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-repo-webport-400-repo.webp",
     "frameType": "unity"
   },
@@ -3227,7 +3227,7 @@
     "id": "truffled-retro-bowl-403",
     "title": "Retro Bowl",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-retro-bowl-403.html",
+    "url": "./truffled/games/retro-bowl/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-retro-bowl-403-retro.webp",
     "frameType": "iframe"
   },
@@ -3235,7 +3235,7 @@
     "id": "truffled-retro-bowl-college-404",
     "title": "Retro Bowl College",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-retro-bowl-college-404.html",
+    "url": "./truffled/games/rbcollege/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-retro-bowl-college-404-retroc.webp",
     "frameType": "iframe"
   },
@@ -3251,7 +3251,7 @@
     "id": "truffled-riddle-school-406",
     "title": "Riddle School",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-406.html",
+    "url": "./truffled/games/riddleschool/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-406-riddle1.webp",
     "frameType": "iframe"
   },
@@ -3259,7 +3259,7 @@
     "id": "truffled-riddle-school-2-407",
     "title": "Riddle School 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-2-407.html",
+    "url": "./truffled/games/sriddleschool2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-2-407-riddle2.webp",
     "frameType": "iframe"
   },
@@ -3267,7 +3267,7 @@
     "id": "truffled-riddle-school-3-408",
     "title": "Riddle School 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-3-408.html",
+    "url": "./truffled/games/riddleschool3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-3-408-riddle3.webp",
     "frameType": "iframe"
   },
@@ -3275,7 +3275,7 @@
     "id": "truffled-riddle-school-4-409",
     "title": "Riddle School 4",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-4-409.html",
+    "url": "./truffled/games/riddleschool4/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-4-409-riddle4.webp",
     "frameType": "iframe"
   },
@@ -3283,7 +3283,7 @@
     "id": "truffled-riddle-school-5-410",
     "title": "Riddle School 5",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-5-410.html",
+    "url": "./truffled/games/riddleschool5/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-5-410-riddle5.webp",
     "frameType": "iframe"
   },
@@ -3291,7 +3291,7 @@
     "id": "truffled-riddle-school-transfer-411",
     "title": "Riddle School Transfer",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-transfer-411.html",
+    "url": "./truffled/games/riddleschooltransfer/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-transfer-411-riddletr.webp",
     "frameType": "iframe"
   },
@@ -3299,7 +3299,7 @@
     "id": "truffled-riddle-school-transfer-2-412",
     "title": "Riddle School Transfer 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-riddle-school-transfer-2-412.html",
+    "url": "./truffled/games/riddleschooltransfer2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-riddle-school-transfer-2-412-riddletr2.webp",
     "frameType": "iframe"
   },
@@ -3323,7 +3323,7 @@
     "id": "truffled-rooftop-snipers-415",
     "title": "Rooftop Snipers",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-rooftop-snipers-415.html",
+    "url": "./truffled/games/rooftop-snipers/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-rooftop-snipers-415-roof2.webp",
     "frameType": "iframe"
   },
@@ -3331,7 +3331,7 @@
     "id": "truffled-rooftop-snipers-2-416",
     "title": "Rooftop Snipers 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-rooftop-snipers-2-416.html",
+    "url": "./truffled/games/rooftop-snipers-2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-rooftop-snipers-2-416-roof1.webp",
     "frameType": "iframe"
   },
@@ -3363,7 +3363,7 @@
     "id": "truffled-running-fred-webport-420",
     "title": "Running Fred, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-running-fred-webport-420.html",
+    "url": "./truffled/games/fred/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-running-fred-webport-420-fred.webp",
     "frameType": "iframe"
   },
@@ -3371,7 +3371,7 @@
     "id": "truffled-rhythm-hell-421",
     "title": "Rhythm Hell",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-rhythm-hell-421.html",
+    "url": "./truffled/games/rhythm-hell/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-rhythm-hell-421-rhythmhell.webp",
     "frameType": "iframe"
   },
@@ -3395,7 +3395,7 @@
     "id": "truffled-sanic-ball-webport-424",
     "title": "Sanic Ball, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sanic-ball-webport-424.html",
+    "url": "./truffled/games/ball/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sanic-ball-webport-424-sanicball.webp",
     "frameType": "iframe"
   },
@@ -3403,7 +3403,7 @@
     "id": "truffled-scary-path-425",
     "title": "Scary Path",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-scary-path-425.html",
+    "url": "./truffled/games/scary-path/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-scary-path-425-path.webp",
     "frameType": "iframe"
   },
@@ -3435,7 +3435,7 @@
     "id": "truffled-silksong-webport-429",
     "title": "Silksong, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-silksong-webport-429.html",
+    "url": "./truffled/games/silk/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-silksong-webport-429-silk.webp",
     "frameType": "unity"
   },
@@ -3443,7 +3443,7 @@
     "id": "truffled-skibidi-shooter-430",
     "title": "Skibidi Shooter",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-skibidi-shooter-430.html",
+    "url": "./truffled/games/skibidi-shooter/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-skibidi-shooter-430-ski.webp",
     "frameType": "iframe"
   },
@@ -3451,7 +3451,7 @@
     "id": "truffled-skiing-fred-431",
     "title": "Skiing Fred",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-skiing-fred-431.html",
+    "url": "./truffled/games/skiing/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-skiing-fred-431-skiing.webp",
     "frameType": "unity"
   },
@@ -3459,7 +3459,7 @@
     "id": "truffled-slender-the-8-pages-webport-432",
     "title": "Slender: The 8 Pages, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-slender-the-8-pages-webport-432.html",
+    "url": "./truffled/games/slender/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-slender-the-8-pages-webport-432-slender.webp",
     "frameType": "iframe"
   },
@@ -3475,7 +3475,7 @@
     "id": "truffled-slendytubbies-ii-webport-434",
     "title": "Slendytubbies II, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-slendytubbies-ii-webport-434.html",
+    "url": "./truffled/games/slendy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-slendytubbies-ii-webport-434-slendy.webp",
     "frameType": "unity"
   },
@@ -3483,7 +3483,7 @@
     "id": "truffled-slendytubbies-ii-2d-webport-435",
     "title": "Slendytubbies II 2D, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-slendytubbies-ii-2d-webport-435.html",
+    "url": "./truffled/games/slendy2d/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-slendytubbies-ii-2d-webport-435-slendy2d.webp",
     "frameType": "unity"
   },
@@ -3515,7 +3515,7 @@
     "id": "truffled-slope-439",
     "title": "Slope",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-slope-439.html",
+    "url": "./truffled/games/slope/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-slope-439-slope.webp",
     "frameType": "iframe"
   },
@@ -3523,7 +3523,7 @@
     "id": "truffled-slowroads-440",
     "title": "Slowroads",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-slowroads-440.html",
+    "url": "./truffled/games/slowroads/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-slowroads-440-slow.webp",
     "frameType": "iframe"
   },
@@ -3531,7 +3531,7 @@
     "id": "truffled-sm64-super-mario-64-441",
     "title": "SM64, Super Mario 64",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sm64-super-mario-64-441.html",
+    "url": "./truffled/games/sm64/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sm64-super-mario-64-441-sm64.webp",
     "frameType": "iframe"
   },
@@ -3539,7 +3539,7 @@
     "id": "truffled-super-mario-64-coop-dx-442",
     "title": "Super Mario 64 Coop DX",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-super-mario-64-coop-dx-442.html",
+    "url": "./truffled/games/sm64coop/sm64coopdx.html",
     "thumbnail": "./truffled/thumbnails/truffled-super-mario-64-coop-dx-442.webp",
     "frameType": "iframe"
   },
@@ -3579,7 +3579,7 @@
     "id": "truffled-super-tux-kart-447",
     "title": "Super Tux Kart",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-super-tux-kart-447.html",
+    "url": "./truffled/games/supertuxkart/SuperTuxKart.html",
     "thumbnail": "./truffled/thumbnails/truffled-super-tux-kart-447-supertuxkart.webp",
     "frameType": "iframe"
   },
@@ -3587,7 +3587,7 @@
     "id": "truffled-smash-karts-448",
     "title": "Smash Karts",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-smash-karts-448.html",
+    "url": "./truffled/games/smashkarts/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-smash-karts-448-smashkarts.webp",
     "frameType": "iframe"
   },
@@ -3595,7 +3595,7 @@
     "id": "truffled-snow-rider-3d-449",
     "title": "Snow Rider 3D",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-snow-rider-3d-449.html",
+    "url": "./truffled/games/snowrider3D-main/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-snow-rider-3d-449-snow.webp",
     "frameType": "iframe"
   },
@@ -3611,7 +3611,7 @@
     "id": "truffled-soccer-bros-451",
     "title": "Soccer Bros",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-soccer-bros-451.html",
+    "url": "./truffled/games/soccerbros/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-soccer-bros-451-soccer.webp",
     "frameType": "iframe"
   },
@@ -3619,7 +3619,7 @@
     "id": "truffled-soccer-random-452",
     "title": "Soccer Random",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-soccer-random-452.html",
+    "url": "./truffled/games/soccer-random/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-soccer-random-452-soccerra.webp",
     "frameType": "iframe"
   },
@@ -3635,7 +3635,7 @@
     "id": "truffled-solitaire-454",
     "title": "Solitaire",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-solitaire-454.html",
+    "url": "./truffled/games/solitaire/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-solitaire-454-soli.webp",
     "frameType": "iframe"
   },
@@ -3643,7 +3643,7 @@
     "id": "truffled-sonic-1-455",
     "title": "Sonic 1",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-1-455.html",
+    "url": "./truffled/games/sonic/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-1-455-sonic1.webp",
     "frameType": "iframe"
   },
@@ -3651,7 +3651,7 @@
     "id": "truffled-sonic-2-456",
     "title": "Sonic 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-2-456.html",
+    "url": "./truffled/games/sonic2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-2-456-sonic2.webp",
     "frameType": "iframe"
   },
@@ -3659,7 +3659,7 @@
     "id": "truffled-sonic-3-457",
     "title": "Sonic 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-3-457.html",
+    "url": "./truffled/games/sonic3/sonic3.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-3-457-sonic3.webp",
     "frameType": "iframe"
   },
@@ -3667,7 +3667,7 @@
     "id": "truffled-sonic-4-458",
     "title": "Sonic 4",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-4-458.html",
+    "url": "./truffled/games/sonic4/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-4-458-sonic4.webp",
     "frameType": "iframe"
   },
@@ -3683,7 +3683,7 @@
     "id": "truffled-sonic-cd-460",
     "title": "Sonic CD",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-cd-460.html",
+    "url": "./truffled/games/soniccd/soniccd.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-cd-460-soniccd.webp",
     "frameType": "iframe"
   },
@@ -3723,7 +3723,7 @@
     "id": "truffled-sonic-robo-blast-2-465",
     "title": "Sonic Robo Blast 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-robo-blast-2-465.html",
+    "url": "./truffled/games/srb2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-robo-blast-2-465-robo.webp",
     "frameType": "iframe"
   },
@@ -3731,7 +3731,7 @@
     "id": "truffled-sonic-robo-blast-2-kart-466",
     "title": "Sonic Robo Blast 2 KART",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-robo-blast-2-kart-466.html",
+    "url": "./truffled/games/kart/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-robo-blast-2-kart-466-kart.webp",
     "frameType": "iframe"
   },
@@ -3739,7 +3739,7 @@
     "id": "truffled-sonic-world-next-467",
     "title": "Sonic World Next",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-sonic-world-next-467.html",
+    "url": "./truffled/games/swn/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-sonic-world-next-467-swn.webp",
     "frameType": "iframe"
   },
@@ -3771,7 +3771,7 @@
     "id": "truffled-speed-stars-471",
     "title": "Speed Stars",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-speed-stars-471.html",
+    "url": "./truffled/games/speed-stars/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-speed-stars-471-speed.webp",
     "frameType": "unity"
   },
@@ -3787,7 +3787,7 @@
     "id": "truffled-starbound-webport-473",
     "title": "Starbound, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-starbound-webport-473.html",
+    "url": "./truffled/games/Starbound/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-starbound-webport-473-starbound.webp",
     "frameType": "iframe"
   },
@@ -3795,7 +3795,7 @@
     "id": "truffled-stardew-valley-webport-474",
     "title": "Stardew Valley, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-stardew-valley-webport-474.html",
+    "url": "./truffled/games/stardew/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-stardew-valley-webport-474-stardew.webp",
     "frameType": "iframe"
   },
@@ -3811,7 +3811,7 @@
     "id": "truffled-stick-with-it-webport-476",
     "title": "Stick With It, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-stick-with-it-webport-476.html",
+    "url": "./truffled/games/stick/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-stick-with-it-webport-476-stick.webp",
     "frameType": "iframe"
   },
@@ -3819,7 +3819,7 @@
     "id": "truffled-stickman-hook-477",
     "title": "Stickman Hook",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-stickman-hook-477.html",
+    "url": "./truffled/games/stickman-hook/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-stickman-hook-477-stickman.webp",
     "frameType": "iframe"
   },
@@ -3835,7 +3835,7 @@
     "id": "truffled-subway-surfers-479",
     "title": "Subway Surfers",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-subway-surfers-479.html",
+    "url": "./truffled/games/subway-surfers/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-subway-surfers-479-sub.webp",
     "frameType": "iframe"
   },
@@ -3843,7 +3843,7 @@
     "id": "truffled-super-hot-480",
     "title": "Super Hot",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-super-hot-480.html",
+    "url": "./truffled/games/superhot/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-super-hot-480-superhot.webp",
     "frameType": "iframe"
   },
@@ -3851,7 +3851,7 @@
     "id": "truffled-super-meat-boy-481",
     "title": "Super Meat Boy",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-super-meat-boy-481.html",
+    "url": "./truffled/games/meatboy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-super-meat-boy-481-meat.webp",
     "frameType": "iframe"
   },
@@ -3899,7 +3899,7 @@
     "id": "truffled-taiko-no-tatsujini-487",
     "title": "Taiko No Tatsujini",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-taiko-no-tatsujini-487.html",
+    "url": "./truffled/games/psp/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-taiko-no-tatsujini-487-taiko.webp",
     "frameType": "iframe"
   },
@@ -3907,7 +3907,7 @@
     "id": "truffled-tanuki-sunset-488",
     "title": "Tanuki Sunset",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tanuki-sunset-488.html",
+    "url": "./truffled/games/tanukisunset/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tanuki-sunset-488-tanukisunset.webp",
     "frameType": "unity"
   },
@@ -3915,7 +3915,7 @@
     "id": "truffled-tattle-tail-webport-489",
     "title": "Tattle Tail, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tattle-tail-webport-489.html",
+    "url": "./truffled/games/tattletail/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tattle-tail-webport-489-tat.webp",
     "frameType": "unity"
   },
@@ -3923,7 +3923,7 @@
     "id": "truffled-tax-heaven-3000-webport-490",
     "title": "Tax Heaven 3000, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tax-heaven-3000-webport-490.html",
+    "url": "./truffled/games/th3000/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tax-heaven-3000-webport-490-th3000.webp",
     "frameType": "iframe"
   },
@@ -3931,7 +3931,7 @@
     "id": "truffled-ten-basket-491",
     "title": "Ten Basket",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ten-basket-491.html",
+    "url": "./truffled/games/ten-basket/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ten-basket-491-ten.webp",
     "frameType": "iframe"
   },
@@ -3939,7 +3939,7 @@
     "id": "truffled-terraria-webport-492",
     "title": "Terraria, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-terraria-webport-492.html",
+    "url": "./truffled/games/terraria/terraria-wrapper.html",
     "thumbnail": "./truffled/thumbnails/truffled-terraria-webport-492-ter.webp",
     "frameType": "iframe"
   },
@@ -3947,7 +3947,7 @@
     "id": "truffled-tetris-493",
     "title": "Tetris",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tetris-493.html",
+    "url": "./truffled/games/tetris/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tetris-493-tet.webp",
     "frameType": "iframe"
   },
@@ -3955,7 +3955,7 @@
     "id": "truffled-tetrisweeper-494",
     "title": "Tetrisweeper",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tetrisweeper-494.html",
+    "url": "./truffled/games/tetrisweeper/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tetrisweeper-494-tetriss.webp",
     "frameType": "iframe"
   },
@@ -3963,7 +3963,7 @@
     "id": "truffled-the-binding-of-issac-495",
     "title": "The Binding Of Issac",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-the-binding-of-issac-495.html",
+    "url": "./truffled/games/binding-of-isaac/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-the-binding-of-issac-495-tboi.webp",
     "frameType": "iframe"
   },
@@ -3987,7 +3987,7 @@
     "id": "truffled-the-binding-of-issac-rebirth-webport-498",
     "title": "The Binding Of Issac: Rebirth, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-the-binding-of-issac-rebirth-webport-498.html",
+    "url": "./truffled/games/psp/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-the-binding-of-issac-rebirth-webport-498-tboir.webp",
     "frameType": "iframe"
   },
@@ -3995,7 +3995,7 @@
     "id": "truffled-the-impossible-quiz-499",
     "title": "The Impossible Quiz",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-the-impossible-quiz-499.html",
+    "url": "./truffled/games/theimpossiblequiz/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-the-impossible-quiz-499-quiz.webp",
     "frameType": "iframe"
   },
@@ -4003,7 +4003,7 @@
     "id": "truffled-the-impossible-quiz-2-500",
     "title": "The Impossible Quiz 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-the-impossible-quiz-2-500.html",
+    "url": "./truffled/games/iq2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-the-impossible-quiz-2-500-impos2.webp",
     "frameType": "iframe"
   },
@@ -4035,7 +4035,7 @@
     "id": "truffled-there-is-no-game-504",
     "title": "There Is No Game",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-there-is-no-game-504.html",
+    "url": "./truffled/games/there-is-no-game/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-there-is-no-game-504-ting.webp",
     "frameType": "iframe"
   },
@@ -4051,7 +4051,7 @@
     "id": "truffled-time-shooter-2-506",
     "title": "Time Shooter 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-time-shooter-2-506.html",
+    "url": "./truffled/games/timeshooter2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-time-shooter-2-506-tim2.webp",
     "frameType": "iframe"
   },
@@ -4059,7 +4059,7 @@
     "id": "truffled-time-shooter-3-507",
     "title": "Time Shooter 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-time-shooter-3-507.html",
+    "url": "./truffled/games/timeshoot3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-time-shooter-3-507-tim3.webp",
     "frameType": "iframe"
   },
@@ -4067,7 +4067,7 @@
     "id": "truffled-tiny-fishing-508",
     "title": "Tiny Fishing",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tiny-fishing-508.html",
+    "url": "./truffled/games/tiny-fishing/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tiny-fishing-508-tiny.webp",
     "frameType": "iframe"
   },
@@ -4075,7 +4075,7 @@
     "id": "truffled-to-the-core-webport-509",
     "title": "To The Core, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-to-the-core-webport-509.html",
+    "url": "./truffled/games/tothecore/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-to-the-core-webport-509-to.webp",
     "frameType": "iframe"
   },
@@ -4083,7 +4083,7 @@
     "id": "truffled-tomb-of-the-mask-510",
     "title": "Tomb Of The Mask",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tomb-of-the-mask-510.html",
+    "url": "./truffled/games/tombofthemask/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tomb-of-the-mask-510-tomb.webp",
     "frameType": "iframe"
   },
@@ -4099,7 +4099,7 @@
     "id": "truffled-toss-the-turtle-512",
     "title": "Toss The Turtle",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-toss-the-turtle-512.html",
+    "url": "./truffled/games/tosstheturtle/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-toss-the-turtle-512-ttt.webp",
     "frameType": "iframe"
   },
@@ -4147,7 +4147,7 @@
     "id": "truffled-touhou-mother-webport-518",
     "title": "Touhou Mother, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-touhou-mother-webport-518.html",
+    "url": "./truffled/games/touhoumother/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-touhou-mother-webport-518-touhou.webp",
     "frameType": "iframe"
   },
@@ -4155,7 +4155,7 @@
     "id": "truffled-trombone-champ-webport-519",
     "title": "Trombone Champ, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-trombone-champ-webport-519.html",
+    "url": "./truffled/games/tchamp/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-trombone-champ-webport-519-tchamp.webp",
     "frameType": "iframe"
   },
@@ -4171,7 +4171,7 @@
     "id": "truffled-tung-tung-basics-webport-521",
     "title": "Tung Tung Basics, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-tung-tung-basics-webport-521.html",
+    "url": "./truffled/games/tungtungbog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-tung-tung-basics-webport-521-tungtungbasics.webp",
     "frameType": "unity"
   },
@@ -4187,7 +4187,7 @@
     "id": "truffled-ultrakill-webport-523",
     "title": "Ultrakill, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-ultrakill-webport-523.html",
+    "url": "./truffled/games/ultrakill/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ultrakill-webport-523-ultra.webp",
     "frameType": "iframe"
   },
@@ -4211,7 +4211,7 @@
     "id": "truffled-undertale-10th-anniversary-webport-526",
     "title": "Undertale 10th Anniversary, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-undertale-10th-anniversary-webport-526.html",
+    "url": "./truffled/games/10th/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-undertale-10th-anniversary-webport-526-undertale10.webp",
     "frameType": "iframe"
   },
@@ -4235,7 +4235,7 @@
     "id": "truffled-undertale-yellow-webport-529",
     "title": "Undertale Yellow, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-undertale-yellow-webport-529.html",
+    "url": "./truffled/games/uty/play.html",
     "thumbnail": "./truffled/thumbnails/truffled-undertale-yellow-webport-529-udy.webp",
     "frameType": "iframe"
   },
@@ -4243,7 +4243,7 @@
     "id": "truffled-untitled-goose-game-webport-530",
     "title": "Untitled Goose Game, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-untitled-goose-game-webport-530.html",
+    "url": "./truffled/games/UntitledGooseGameBog/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-untitled-goose-game-webport-530-untitled.webp",
     "frameType": "unityframe"
   },
@@ -4251,7 +4251,7 @@
     "id": "truffled-vampire-survivors-webport-531",
     "title": "Vampire Survivors, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-vampire-survivors-webport-531.html",
+    "url": "./truffled/games/vampire/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-vampire-survivors-webport-531-vampire.webp",
     "frameType": "iframe"
   },
@@ -4259,7 +4259,7 @@
     "id": "truffled-vex-532",
     "title": "Vex",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-vex-532.html",
+    "url": "./truffled/games/vex/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-vex-532-vex.webp",
     "frameType": "iframe"
   },
@@ -4275,7 +4275,7 @@
     "id": "truffled-vex-3-534",
     "title": "Vex 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-vex-3-534.html",
+    "url": "./truffled/games/vex3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-vex-3-534-vex3.webp",
     "frameType": "iframe"
   },
@@ -4283,7 +4283,7 @@
     "id": "truffled-vex-4-535",
     "title": "Vex 4",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-vex-4-535.html",
+    "url": "./truffled/games/vex4/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-vex-4-535-vex4.webp",
     "frameType": "iframe"
   },
@@ -4291,7 +4291,7 @@
     "id": "truffled-vex-5-536",
     "title": "Vex 5",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-vex-5-536.html",
+    "url": "./truffled/games/vex5/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-vex-5-536-vex5.webp",
     "frameType": "iframe"
   },
@@ -4331,7 +4331,7 @@
     "id": "truffled-volley-random-541",
     "title": "Volley Random",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-volley-random-541.html",
+    "url": "./truffled/games/volley-random/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-volley-random-541-splash.png",
     "frameType": "iframe"
   },
@@ -4355,7 +4355,7 @@
     "id": "truffled-webfishing-webport-544",
     "title": "Webfishing, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-webfishing-webport-544.html",
+    "url": "./truffled/games/webfishing/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-webfishing-webport-544-web.webp",
     "frameType": "iframe"
   },
@@ -4363,7 +4363,7 @@
     "id": "truffled-who-s-your-daddy-webport-545",
     "title": "Who's Your Daddy, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-who-s-your-daddy-webport-545.html",
+    "url": "./truffled/games/whoseyourdaddy/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-who-s-your-daddy-webport-545-daddy.webp",
     "frameType": "unity"
   },
@@ -4379,7 +4379,7 @@
     "id": "truffled-wordle-547",
     "title": "Wordle",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-wordle-547.html",
+    "url": "./truffled/games/wordle-unlimited/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-wordle-547-world.webp",
     "frameType": "iframe"
   },
@@ -4395,7 +4395,7 @@
     "id": "truffled-worlds-hardest-game-2-549",
     "title": "Worlds Hardest Game 2",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-worlds-hardest-game-2-549.html",
+    "url": "./truffled/games/worlds-hardest-game-2/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-worlds-hardest-game-2-549-the-worlds-hardest-game-2.jpg",
     "frameType": "iframe"
   },
@@ -4403,7 +4403,7 @@
     "id": "truffled-worlds-hardest-game-3-550",
     "title": "Worlds Hardest Game 3",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-worlds-hardest-game-3-550.html",
+    "url": "./truffled/games/worlds-hardest-game-3/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-worlds-hardest-game-3-550-3.webp",
     "frameType": "iframe"
   },
@@ -4411,7 +4411,7 @@
     "id": "truffled-woody-s-incredible-journey-to-the-escape-from-eternal-terror-551",
     "title": "Woody's Incredible Journey To The Escape From Eternal Terror",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-woody-s-incredible-journey-to-the-escape-from-eternal-terror-551.html",
+    "url": "./truffled/games/WIJ/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-woody-s-incredible-journey-to-the-escape-from-eternal-terror-551-WIJ.webp",
     "frameType": "iframe"
   },
@@ -4435,7 +4435,7 @@
     "id": "truffled-your-only-move-is-hustle-yomi-hustle-webport-554",
     "title": "Your Only Move Is HUSTLE, YOMI Hustle, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-your-only-move-is-hustle-yomi-hustle-webport-554.html",
+    "url": "./truffled/games/YOMIHustle/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-your-only-move-is-hustle-yomi-hustle-webport-554-YOMI.webp",
     "frameType": "iframe"
   },
@@ -4467,7 +4467,7 @@
     "id": "truffled-zuma-558",
     "title": "Zuma",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-zuma-558.html",
+    "url": "./truffled/games/zuma/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-zuma-558-zuma.webp",
     "frameType": "iframe"
   }

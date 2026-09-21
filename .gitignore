@@ -7,3 +7,8 @@ task.md
 backend/
 backend/**
 deploy.sh
+*.pck
+AngryBirds2WebPortFinal.data.unityweb
+BALDI.data
+*Brotli.data.unityweb
+pikubog.data.unityweb

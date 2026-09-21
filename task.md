@@ -16,6 +16,5 @@
 - [x] Task 14: Build production dist and push commit to GitHub repository
 - [x] Task 15: Configure GitHub Actions Pages workflow (.github/workflows/deploy.yml) and push to master
 - [x] Task 16: Scrape 559 games from Truffled, add Truffled category tab, and integrate thumbnails
-
-
-
+- [x] Task 17: Multi-agent and automated audit of every game on http://localhost:5173/ to detect and download any missing assets or broken references
+- [x] Task 18: Implement TikTok Background Ball Maze Breaker game in public/games/tiktok-bounce/ matching screenshot exactly and register in catalog
