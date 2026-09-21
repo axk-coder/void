@@ -28,3 +28,6 @@
 - [x] Task 26: Make Mini Pulse window draggable from header with boundary constraints and position persistence
 - [x] Task 27: Remove redundant duplicate Pulse buttons (remove bottom-right floating pill and sidebar network item, keeping clean top-navbar button)
 - [x] Task 28: Test and verify build and push to GitHub
+- [x] Task 29: Resolve and display actual partner names and avatars in DM list using playFabService.resolveUser
+- [x] Task 30: Implement channel selection and expandable channel list for servers in Mini Pulse
+- [x] Task 31: Test, verify build, update map.txt, and push to GitHub

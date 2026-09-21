@@ -1578,8 +1578,99 @@ html, body {
   color: var(--text-primary);
 }
 
-.mp-friend-user {
+.mp-dm-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.mp-dm-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mp-dm-user {
   font-size: 10px;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.mp-server-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mp-server-header-btn {
+  justify-content: space-between;
+}
+
+.mp-server-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mp-expand-icon {
+  color: var(--text-muted);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.mp-expand-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.mp-server-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 20px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+.mp-server-channel-subitem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  background: var(--bg-tertiary);
+}
+
+.mp-server-channel-subitem:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.mp-server-channel-subitem.active {
+  background: var(--bg-active);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.mp-channel-hash {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.mp-channel-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 

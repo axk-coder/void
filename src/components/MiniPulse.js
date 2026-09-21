@@ -9,6 +9,9 @@ export class MiniPulse {
     this.onOpenAuth = options.onOpenAuth || (() => {});
     this.activeTab = 'chat';
     this.userCache = new Map();
+    this.partnerProfiles = new Map();
+    this.serverDetails = new Map();
+    this.expandedServers = new Set();
     this.isScrolledToBottom = true;
     this.isSubmitting = false;
 
@@ -136,7 +139,7 @@ export class MiniPulse {
               </div>
 
               <div class="mp-channel-section">
-                <div class="mp-section-title">Servers</div>
+                <div class="mp-section-title">Servers & Channels</div>
                 <div class="mp-server-list" id="mp-server-list">
                   <div class="mp-empty-note">No servers joined.</div>
                 </div>
@@ -324,6 +327,7 @@ export class MiniPulse {
       if (key === 'messages' || key === 'navigation' || key === 'channel') {
         this.renderMessages();
         this.updateHeaderTitle();
+        this.renderChannels();
       }
       if (key === 'reply') {
         this.updateReplyBar();
@@ -428,9 +432,13 @@ export class MiniPulse {
     if (state.activeContext === 'global') {
       titleEl.textContent = 'Pulse Global';
     } else if (state.activeContext === 'dm' && state.activeDM) {
-      titleEl.textContent = `DM: ${state.activeDM.partnerName || state.activeDM.partnerUsername || 'Direct Message'}`;
+      const pProfile = state.activeDM.partnerId ? this.partnerProfiles.get(state.activeDM.partnerId) : null;
+      const dName = pProfile?.displayName || state.activeDM.name || state.activeDM.partnerName || state.activeDM.partnerUsername || 'Direct Message';
+      titleEl.textContent = `DM: ${dName}`;
     } else if (state.activeContext === 'server' && state.activeServer) {
-      titleEl.textContent = `${state.activeServer.name || 'Server'} #${state.activeChannelId || 'chat'}`;
+      const srvName = state.activeServer.name || 'Server';
+      const chName = state.activeChannelId || 'chat';
+      titleEl.textContent = `${srvName} #${chName}`;
     } else {
       titleEl.textContent = 'Pulse Chat';
     }
@@ -608,11 +616,12 @@ export class MiniPulse {
     }
   }
 
-  renderChannels() {
+  async renderChannels() {
     const dmList = document.getElementById('mp-dm-list');
     const srvList = document.getElementById('mp-server-list');
-    const dms = appState.getState().dms || [];
-    const servers = appState.getState().servers || [];
+    const state = appState.getState();
+    const dms = state.dms || [];
+    const servers = state.servers || [];
 
     if (dmList) {
       dmList.innerHTML = '';
@@ -622,15 +631,80 @@ export class MiniPulse {
         dms.forEach(dm => {
           const item = document.createElement('div');
           item.className = 'mp-channel-item';
+          const isActive = state.activeContext === 'dm' && state.activeDM && state.activeDM.dmId === dm.dmId;
+          if (isActive) item.classList.add('active');
+
+          if (dm.isGroup) {
+            const gName = dm.name || 'Group Chat';
+            item.innerHTML = `
+              <div class="mp-channel-avatar">G</div>
+              <div class="mp-dm-info">
+                <span class="mp-dm-title">${this.escapeHtml(gName)}</span>
+                <span class="mp-dm-user">Group</span>
+              </div>
+            `;
+            item.addEventListener('click', () => {
+              soundSynth.playClick();
+              appState.setActiveDM(dm);
+              this.switchTab('chat');
+            });
+            dmList.appendChild(item);
+            return;
+          }
+
+          const partnerId = dm.partnerId || (dm.userId !== appState.getCurrentUserId() ? dm.userId : null);
+
+          let initialName = dm.partnerName || dm.partnerUsername || 'Direct Message';
+          let initialUser = dm.partnerUsername ? `@${dm.partnerUsername}` : '';
+          let initialChar = initialName.charAt(0).toUpperCase();
+
+          const cached = partnerId ? this.partnerProfiles.get(partnerId) : null;
+          if (cached) {
+            initialName = cached.displayName || initialName;
+            initialUser = cached.username ? `@${cached.username}` : '';
+            initialChar = initialName.charAt(0).toUpperCase();
+          }
+
           item.innerHTML = `
-            <div class="mp-channel-avatar">${(dm.partnerName || 'U').charAt(0).toUpperCase()}</div>
-            <span>${this.escapeHtml(dm.partnerName || dm.partnerUsername || 'Direct Message')}</span>
+            <div class="mp-channel-avatar" id="dm-av-${this.escapeHtml(dm.dmId)}">${initialChar}</div>
+            <div class="mp-dm-info">
+              <span class="mp-dm-title" id="dm-name-${this.escapeHtml(dm.dmId)}">${this.escapeHtml(initialName)}</span>
+              <span class="mp-dm-user" id="dm-user-${this.escapeHtml(dm.dmId)}">${this.escapeHtml(initialUser)}</span>
+            </div>
           `;
+
+          if (partnerId && !cached) {
+            playFabService.resolveUser(partnerId).then(profile => {
+              if (profile) {
+                this.partnerProfiles.set(partnerId, profile);
+                const nameEl = item.querySelector(`#dm-name-${dm.dmId}`);
+                const userEl = item.querySelector(`#dm-user-${dm.dmId}`);
+                const avEl = item.querySelector(`#dm-av-${dm.dmId}`);
+                if (nameEl) nameEl.textContent = profile.displayName || 'User';
+                if (userEl) userEl.textContent = profile.username ? `@${profile.username}` : '';
+                if (avEl) {
+                  if (profile.avatarUrl && (profile.avatarUrl.startsWith('http://') || profile.avatarUrl.startsWith('https://') || profile.avatarUrl.startsWith('data:image/'))) {
+                    avEl.innerHTML = `<img src="${this.escapeHtml(profile.avatarUrl)}" class="mp-avatar-img" alt="" onerror="this.style.display='none'" />`;
+                  } else {
+                    avEl.textContent = (profile.displayName || 'U').charAt(0).toUpperCase();
+                  }
+                }
+              }
+            });
+          }
+
           item.addEventListener('click', () => {
             soundSynth.playClick();
-            appState.setActiveDM(dm);
+            const pProfile = partnerId ? this.partnerProfiles.get(partnerId) : null;
+            const fullDm = Object.assign({}, dm, {
+              partnerId: partnerId,
+              partnerName: pProfile?.displayName || dm.partnerName || 'User',
+              partnerUsername: pProfile?.username || dm.partnerUsername || ''
+            });
+            appState.setActiveDM(fullDm);
             this.switchTab('chat');
           });
+
           dmList.appendChild(item);
         });
       }
@@ -642,18 +716,91 @@ export class MiniPulse {
         srvList.innerHTML = '<div class="mp-empty-note">No servers joined.</div>';
       } else {
         servers.forEach(srv => {
-          const item = document.createElement('div');
-          item.className = 'mp-channel-item';
-          item.innerHTML = `
+          const sId = srv.id || srv.serverId;
+          const isCurrentServer = state.activeContext === 'server' && state.activeServerId === sId;
+          const isExpanded = this.expandedServers.has(sId) || isCurrentServer;
+
+          const srvWrapper = document.createElement('div');
+          srvWrapper.className = 'mp-server-accordion';
+
+          const srvHeader = document.createElement('div');
+          srvHeader.className = `mp-channel-item mp-server-header-btn ${isCurrentServer ? 'active' : ''}`;
+          srvHeader.innerHTML = `
             <div class="mp-channel-avatar">${(srv.name || 'S').charAt(0).toUpperCase()}</div>
-            <span>${this.escapeHtml(srv.name || 'Server')}</span>
+            <span class="mp-server-name">${this.escapeHtml(srv.name || 'Server')}</span>
+            <svg class="mp-expand-icon ${isExpanded ? 'rotated' : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           `;
-          item.addEventListener('click', () => {
+
+          const channelsContainer = document.createElement('div');
+          channelsContainer.className = 'mp-server-channels';
+          channelsContainer.style.display = isExpanded ? 'flex' : 'none';
+
+          const populateChannels = (channels) => {
+            channelsContainer.innerHTML = '';
+            const chList = Array.isArray(channels) && channels.length > 0 ? channels : [{ id: 'chat', name: 'chat' }];
+            chList.forEach(ch => {
+              const chId = typeof ch === 'object' ? ch.id : ch;
+              const chName = typeof ch === 'object' ? (ch.name || ch.id) : ch;
+              const isChActive = isCurrentServer && (state.activeChannelId === chId || (!state.activeChannelId && chId === 'chat'));
+
+              const chItem = document.createElement('div');
+              chItem.className = `mp-server-channel-subitem ${isChActive ? 'active' : ''}`;
+              chItem.innerHTML = `
+                <span class="mp-channel-hash">#</span>
+                <span class="mp-channel-name">${this.escapeHtml(chName)}</span>
+              `;
+
+              chItem.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundSynth.playClick();
+                appState.setActiveServer(srv);
+                appState.setActiveChannel(chId);
+                this.switchTab('chat');
+              });
+
+              channelsContainer.appendChild(chItem);
+            });
+          };
+
+          if (srv.channels && Array.isArray(srv.channels) && srv.channels.length > 0) {
+            populateChannels(srv.channels);
+          } else if (this.serverDetails.has(sId)) {
+            populateChannels(this.serverDetails.get(sId).channels);
+          } else {
+            populateChannels([{ id: 'chat', name: 'chat' }]);
+            if (isExpanded) {
+              playFabService.getServer(sId).then(res => {
+                if (res && res.server) {
+                  this.serverDetails.set(sId, res.server);
+                  populateChannels(res.server.channels);
+                }
+              });
+            }
+          }
+
+          srvHeader.addEventListener('click', () => {
             soundSynth.playClick();
-            appState.setActiveServer(srv);
-            this.switchTab('chat');
+            if (this.expandedServers.has(sId)) {
+              this.expandedServers.delete(sId);
+            } else {
+              this.expandedServers.add(sId);
+            }
+            if (!this.serverDetails.has(sId)) {
+              playFabService.getServer(sId).then(res => {
+                if (res && res.server) {
+                  this.serverDetails.set(sId, res.server);
+                  populateChannels(res.server.channels);
+                }
+              });
+            }
+            this.renderChannels();
           });
-          srvList.appendChild(item);
+
+          srvWrapper.appendChild(srvHeader);
+          srvWrapper.appendChild(channelsContainer);
+          srvList.appendChild(srvWrapper);
         });
       }
     }
@@ -696,7 +843,13 @@ export class MiniPulse {
         try {
           const res = await playFabService.createOrGetDM(f.playFabId);
           if (res && res.success && res.dm) {
-            appState.setActiveDM(res.dm);
+            const fullDm = Object.assign({}, res.dm, {
+              partnerId: f.playFabId,
+              partnerName: f.displayName,
+              partnerUsername: f.username
+            });
+            this.partnerProfiles.set(f.playFabId, f);
+            appState.setActiveDM(fullDm);
             this.switchTab('chat');
           }
         } catch (err) {
