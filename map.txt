@@ -1,0 +1,12 @@
+PROJECT MAP: void
+
+ROOT:
+- index.html: Main application interface, games browser shell, modal dialogs (terms, privacy, credits, settings).
+- style.css: Modern grayscale UI styling, responsive layout, minimal typography, focus states.
+- app.js: Core state management, game player iframe controller, search & category filtering, tab cloaking, panic key handler.
+- privacy.html: Privacy policy documentation.
+- terms.html: Terms of service documentation.
+- credits.html: Project credits and open source attribution.
+- task.md: Development roadmap and progress tracker.
+- map.txt: Project architecture and file reference for agents.
+- .agents/: Local agent customizations and RTK rules.

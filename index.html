@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="no-referrer">
+  <title>void</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%2318181b'/></svg>">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-container">
+      <div class="brand">
+        <a href="index.html" class="brand-link" id="brand-link">
+          <span class="brand-name">void</span>
+        </a>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false">
+      </div>
+
+      <nav class="nav-actions">
+        <button type="button" class="btn-icon" id="open-settings-btn" title="Settings">Settings</button>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-icon" id="github-link">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="filter-bar">
+      <div class="categories" id="category-filters">
+        <button type="button" class="category-btn active" data-category="all">All</button>
+        <button type="button" class="category-btn" data-category="action">Action</button>
+        <button type="button" class="category-btn" data-category="arcade">Arcade</button>
+        <button type="button" class="category-btn" data-category="puzzle">Puzzle</button>
+        <button type="button" class="category-btn" data-category="multiplayer">Multiplayer</button>
+        <button type="button" class="category-btn" data-category="favorites">Favorites</button>
+      </div>
+      <div class="sort-controls">
+        <select id="sort-select" class="sort-select">
+          <option value="name-asc">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="recent">Recently Added</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="catalog-section" id="catalog-section">
+      <div class="games-grid" id="games-grid">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-box">
+            <h2 class="empty-title">No Games Installed</h2>
+            <p class="empty-description">The catalog is ready. Games added to the collection will display here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="player-section hidden" id="player-section">
+      <div class="player-toolbar">
+        <div class="player-info">
+          <span class="player-title" id="current-game-title">Game</span>
+        </div>
+        <div class="player-actions">
+          <button type="button" class="btn-action" id="reload-game-btn">Reload</button>
+          <button type="button" class="btn-action" id="fullscreen-game-btn">Fullscreen</button>
+          <button type="button" class="btn-action" id="open-blank-btn">Popout</button>
+          <button type="button" class="btn-action btn-close" id="close-player-btn">Close</button>
+        </div>
+      </div>
+      <div class="player-frame-container" id="player-frame-container">
+        <iframe id="game-frame" class="game-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" allow="fullscreen; autoplay; gamepad"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-copy">
+        <span>void platform</span>
+      </div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="credits.html">Credits</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay hidden" id="settings-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Settings</h3>
+        <button type="button" class="modal-close-btn" id="close-settings-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label class="setting-label" for="cloak-select">Tab Cloak</label>
+          <select id="cloak-select" class="form-control">
+            <option value="none">Default (void)</option>
+            <option value="google">Google</option>
+            <option value="docs">Google Docs</option>
+            <option value="drive">Google Drive</option>
+            <option value="classroom">Google Classroom</option>
+            <option value="canvas">Canvas</option>
+          </select>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label" for="panic-key-input">Panic Key</label>
+          <input type="text" id="panic-key-input" class="form-control" maxlength="1" placeholder="`">
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label" for="panic-url-input">Panic Redirect URL</label>
+          <input type="url" id="panic-url-input" class="form-control" placeholder="https://google.com">
+        </div>
+
+        <div class="setting-group">
+          <button type="button" class="btn-full" id="about-blank-launcher-btn">Open in about:blank</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-save" id="save-settings-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
