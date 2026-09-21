@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Match</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+body {
+  background: #121214;
+  color: #ececed;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.stat span { color: #5865F2; }
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 75px);
+  grid-gap: 10px;
+  perspective: 1000px;
+}
+.card {
+  width: 75px;
+  height: 75px;
+  background: #27272a;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s, background 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+.card.flipped, .card.matched {
+  transform: rotateY(180deg);
+}
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 800;
+}
+.card-front {
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  color: #5865F2;
+}
+.card-back {
+  background: #3f3f46;
+  transform: rotateY(180deg);
+  border: 1px solid #5865F2;
+  color: #ffffff;
+}
+.card.matched .card-back {
+  background: #10b981;
+  border-color: #059669;
+}
+.btn {
+  margin-top: 16px;
+  background: #5865F2;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="stat">MOVES: <span id="moves">0</span></div>
+  <div class="stat">MATCHES: <span id="matches">0</span> / 8</div>
+  <div class="stat">TIME: <span id="timer">00:00</span></div>
+</div>
+
+<div class="board" id="board"></div>
+
+<button class="btn" id="restart">Restart Game</button>
+
+<script>
+const ICONS = ['ALPHA', 'BETA', 'GAMMA', 'DELTA', 'OMEGA', 'SIGMA', 'THETA', 'ZETA'];
+let cards = [];
+let flipped = [];
+let matched = 0;
+let moves = 0;
+let time = 0;
+let timerInterval = null;
+let isBusy = false;
+
+const boardEl = document.getElementById('board');
+const movesEl = document.getElementById('moves');
+const matchesEl = document.getElementById('matches');
+const timerEl = document.getElementById('timer');
+const restartBtn = document.getElementById('restart');
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function initGame() {
+  clearInterval(timerInterval);
+  flipped = [];
+  matched = 0;
+  moves = 0;
+  time = 0;
+  isBusy = false;
+
+  movesEl.textContent = '0';
+  matchesEl.textContent = '0';
+  timerEl.textContent = '00:00';
+
+  timerInterval = setInterval(() => {
+    time++;
+    timerEl.textContent = formatTime(time);
+  }, 1000);
+
+  const deck = [...ICONS, ...ICONS].sort(() => Math.random() - 0.5);
+  boardEl.innerHTML = '';
+
+  deck.forEach((symbol, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.index = index;
+    card.dataset.symbol = symbol;
+
+    card.innerHTML = `
+      <div class="card-face card-front">?</div>
+      <div class="card-face card-back">${symbol.slice(0, 2)}</div>
+    `;
+
+    card.addEventListener('click', () => handleCardClick(card));
+    boardEl.appendChild(card);
+  });
+}
+
+function handleCardClick(card) {
+  if (isBusy || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+  card.classList.add('flipped');
+  flipped.push(card);
+
+  if (flipped.length === 2) {
+    moves++;
+    movesEl.textContent = String(moves);
+    isBusy = true;
+
+    const [c1, c2] = flipped;
+    if (c1.dataset.symbol === c2.dataset.symbol) {
+      c1.classList.add('matched');
+      c2.classList.add('matched');
+      matched++;
+      matchesEl.textContent = String(matched);
+      flipped = [];
+      isBusy = false;
+
+      if (matched === 8) {
+        clearInterval(timerInterval);
+      }
+    } else {
+      setTimeout(() => {
+        c1.classList.remove('flipped');
+        c2.classList.remove('flipped');
+        flipped = [];
+        isBusy = false;
+      }, 700);
+    }
+  }
+}
+
+restartBtn.addEventListener('click', initGame);
+initGame();
+</script>
+</body>
+</html>

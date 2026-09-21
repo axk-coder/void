@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometry Jump</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+body {
+  background: #121214;
+  color: #ececed;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+.header {
+  margin-bottom: 12px;
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.stat span { color: #5865F2; }
+canvas {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  max-width: 95vw;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+.instructions {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #71717a;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="stat">ATTEMPT: <span id="attempt">1</span></div>
+  <div class="stat">PROGRESS: <span id="progress">0%</span></div>
+</div>
+<canvas id="canvas" width="800" height="320"></canvas>
+<div class="instructions">Spacebar, Up Arrow, or Click to Jump</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const attemptEl = document.getElementById('attempt');
+const progressEl = document.getElementById('progress');
+
+let attempt = 1;
+let progress = 0;
+let gameOver = false;
+let victory = false;
+
+const LEVEL_LENGTH = 5000;
+let distance = 0;
+const speed = 7;
+
+const player = {
+  x: 100,
+  y: 220,
+  size: 32,
+  vy: 0,
+  gravity: 0.8,
+  jumpForce: -13,
+  isGrounded: true,
+  rotation: 0
+};
+
+const groundY = 220;
+
+const levelObjects = [];
+function generateLevel() {
+  levelObjects.length = 0;
+  for (let x = 600; x < LEVEL_LENGTH; x += 220 + Math.random() * 200) {
+    const type = Math.random() > 0.4 ? 'spike' : (Math.random() > 0.5 ? 'double_spike' : 'block');
+    if (type === 'spike') {
+      levelObjects.push({ type: 'spike', x: x, y: groundY + 32, w: 28, h: 32 });
+    } else if (type === 'double_spike') {
+      levelObjects.push({ type: 'spike', x: x, y: groundY + 32, w: 28, h: 32 });
+      levelObjects.push({ type: 'spike', x: x + 28, y: groundY + 32, w: 28, h: 32 });
+    } else {
+      levelObjects.push({ type: 'block', x: x, y: groundY, w: 32, h: 32 });
+      levelObjects.push({ type: 'spike', x: x + 64, y: groundY + 32, w: 28, h: 32 });
+    }
+  }
+}
+
+function resetGame(fullReset = false) {
+  if (fullReset) attempt = 1;
+  else attempt++;
+  attemptEl.textContent = String(attempt);
+
+  distance = 0;
+  progress = 0;
+  gameOver = false;
+  victory = false;
+  player.y = groundY;
+  player.vy = 0;
+  player.isGrounded = true;
+  player.rotation = 0;
+  generateLevel();
+}
+
+function jump() {
+  if (gameOver || victory) {
+    resetGame();
+    return;
+  }
+  if (player.isGrounded) {
+    player.vy = player.jumpForce;
+    player.isGrounded = false;
+  }
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') {
+    e.preventDefault();
+    jump();
+  }
+});
+
+canvas.addEventListener('pointerdown', (e) => {
+  e.preventDefault();
+  jump();
+});
+
+function update() {
+  if (gameOver || victory) return;
+
+  distance += speed;
+  progress = Math.min(100, Math.floor((distance / LEVEL_LENGTH) * 100));
+  progressEl.textContent = `${progress}%`;
+
+  if (distance >= LEVEL_LENGTH) {
+    victory = true;
+    return;
+  }
+
+  player.vy += player.gravity;
+  player.y += player.vy;
+
+  if (player.y >= groundY) {
+    player.y = groundY;
+    player.vy = 0;
+    player.isGrounded = true;
+    player.rotation = Math.round(player.rotation / (Math.PI / 2)) * (Math.PI / 2);
+  } else {
+    player.rotation += 0.12;
+  }
+
+  const pBox = {
+    x: player.x,
+    y: player.y,
+    w: player.size,
+    h: player.size
+  };
+
+  for (let obj of levelObjects) {
+    const screenX = obj.x - distance + player.x;
+    if (screenX < -50 || screenX > 850) continue;
+
+    if (obj.type === 'spike') {
+      const spikeLeft = screenX + 6;
+      const spikeRight = screenX + obj.w - 6;
+      const spikeTop = obj.y - obj.h + 8;
+      const spikeBottom = obj.y;
+
+      if (
+        pBox.x + pBox.w > spikeLeft &&
+        pBox.x < spikeRight &&
+        pBox.y + pBox.h > spikeTop &&
+        pBox.y < spikeBottom
+      ) {
+        gameOver = true;
+      }
+    } else if (obj.type === 'block') {
+      const bX = screenX;
+      const bY = obj.y;
+      const bW = obj.w;
+      const bH = obj.h;
+
+      if (
+        pBox.x + pBox.w > bX &&
+        pBox.x < bX + bW &&
+        pBox.y + pBox.h > bY &&
+        pBox.y < bY + bH
+      ) {
+        if (player.vy > 0 && pBox.y + pBox.h - player.vy <= bY + 10) {
+          player.y = bY - player.size;
+          player.vy = 0;
+          player.isGrounded = true;
+          player.rotation = Math.round(player.rotation / (Math.PI / 2)) * (Math.PI / 2);
+        } else {
+          gameOver = true;
+        }
+      }
+    }
+  }
+}
+
+function draw() {
+  ctx.fillStyle = '#18181b';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = '#27272a';
+  ctx.lineWidth = 1;
+  const gridOffset = (distance * 0.5) % 40;
+  for (let x = -gridOffset; x < canvas.width; x += 40) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = '#09090b';
+  ctx.fillRect(0, groundY + player.size, canvas.width, canvas.height - (groundY + player.size));
+  ctx.strokeStyle = '#5865F2';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, groundY + player.size);
+  ctx.lineTo(canvas.width, groundY + player.size);
+  ctx.stroke();
+
+  for (let obj of levelObjects) {
+    const screenX = obj.x - distance + player.x;
+    if (screenX < -50 || screenX > 850) continue;
+
+    if (obj.type === 'spike') {
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.moveTo(screenX, obj.y);
+      ctx.lineTo(screenX + obj.w / 2, obj.y - obj.h);
+      ctx.lineTo(screenX + obj.w, obj.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#b91c1c';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    } else if (obj.type === 'block') {
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillRect(screenX, obj.y, obj.w, obj.h);
+      ctx.strokeStyle = '#1d4ed8';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(screenX, obj.y, obj.w, obj.h);
+    }
+  }
+
+  ctx.save();
+  ctx.translate(player.x + player.size / 2, player.y + player.size / 2);
+  ctx.rotate(player.rotation);
+  ctx.fillStyle = '#10b981';
+  ctx.fillRect(-player.size / 2, -player.size / 2, player.size, player.size);
+  ctx.strokeStyle = '#059669';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-player.size / 2, -player.size / 2, player.size, player.size);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(2, -6, 6, 6);
+  ctx.fillRect(2, 2, 6, 6);
+  ctx.restore();
+
+  if (gameOver) {
+    ctx.fillStyle = 'rgba(0,0,0,0.75)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 24px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('CRASHED!', canvas.width / 2, 140);
+    ctx.fillStyle = '#a1a1aa';
+    ctx.font = '14px system-ui';
+    ctx.fillText('Click or Press Space to Retry', canvas.width / 2, 175);
+  } else if (victory) {
+    ctx.fillStyle = 'rgba(0,0,0,0.75)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 24px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('LEVEL COMPLETE!', canvas.width / 2, 140);
+    ctx.fillStyle = '#a1a1aa';
+    ctx.font = '14px system-ui';
+    ctx.fillText('Click or Press Space to Play Again', canvas.width / 2, 175);
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+generateLevel();
+loop();
+</script>
+</body>
+</html>

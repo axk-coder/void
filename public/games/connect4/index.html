@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect Four</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+body {
+  background: #121214;
+  color: #ececed;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.status {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+.btn {
+  background: #27272a;
+  color: #ececed;
+  border: 1px solid #3f3f46;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.btn:hover {
+  background: #3f3f46;
+  border-color: #5865F2;
+}
+.btn.active {
+  background: #5865F2;
+  border-color: #5865F2;
+  color: #ffffff;
+}
+.board-container {
+  background: #1e3a8a;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  border: 2px solid #2563eb;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 54px);
+  grid-gap: 8px;
+}
+.cell {
+  width: 54px;
+  height: 54px;
+  background: #0f172a;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.8);
+}
+.cell:hover {
+  filter: brightness(1.2);
+}
+.cell.p1 {
+  background: #ef4444;
+  box-shadow: inset 0 -3px 6px rgba(0,0,0,0.4), 0 0 10px rgba(239,68,68,0.5);
+}
+.cell.p2 {
+  background: #eab308;
+  box-shadow: inset 0 -3px 6px rgba(0,0,0,0.4), 0 0 10px rgba(234,179,8,0.5);
+}
+.cell.win {
+  animation: pulseWin 0.6s infinite alternate;
+}
+@keyframes pulseWin {
+  from { transform: scale(0.95); }
+  to { transform: scale(1.1); filter: brightness(1.4); }
+}
+.controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="status">
+    <div class="indicator" id="indicator"></div>
+    <span id="status-text">Red's Turn</span>
+  </div>
+  <button class="btn" id="reset-btn">Reset</button>
+</div>
+
+<div class="board-container">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="controls">
+  <button class="btn active" id="mode-ai">VS Computer</button>
+  <button class="btn" id="mode-pvp">2 Players</button>
+</div>
+
+<script>
+const ROWS = 6;
+const COLS = 7;
+let board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+let currentPlayer = 1;
+let vsAI = true;
+let isGameOver = false;
+
+const gridEl = document.getElementById('grid');
+const statusText = document.getElementById('status-text');
+const indicator = document.getElementById('indicator');
+const resetBtn = document.getElementById('reset-btn');
+const modeAiBtn = document.getElementById('mode-ai');
+const modePvpBtn = document.getElementById('mode-pvp');
+
+function createGrid() {
+  gridEl.innerHTML = '';
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      cell.addEventListener('click', () => handleColumnClick(c));
+      gridEl.appendChild(cell);
+    }
+  }
+}
+
+function updateBoardUI(winningCells = []) {
+  const cells = gridEl.children;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const idx = r * COLS + c;
+      const cell = cells[idx];
+      cell.className = 'cell';
+      if (board[r][c] === 1) cell.classList.add('p1');
+      if (board[r][c] === 2) cell.classList.add('p2');
+
+      if (winningCells.some(([wr, wc]) => wr === r && wc === c)) {
+        cell.classList.add('win');
+      }
+    }
+  }
+
+  if (!isGameOver) {
+    indicator.style.background = currentPlayer === 1 ? '#ef4444' : '#eab308';
+    statusText.textContent = currentPlayer === 1 ? "Red's Turn" : (vsAI ? "Computer's Turn" : "Yellow's Turn");
+  }
+}
+
+function dropPiece(col, player) {
+  for (let r = ROWS - 1; r >= 0; r--) {
+    if (board[r][col] === 0) {
+      board[r][col] = player;
+      return r;
+    }
+  }
+  return -1;
+}
+
+function checkWin(player) {
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS - 3; c++) {
+      if (board[r][c] === player && board[r][c+1] === player && board[r][c+2] === player && board[r][c+3] === player) {
+        return [[r, c], [r, c+1], [r, c+2], [r, c+3]];
+      }
+    }
+  }
+  for (let r = 0; r < ROWS - 3; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (board[r][c] === player && board[r+1][c] === player && board[r+2][c] === player && board[r+3][c] === player) {
+        return [[r, c], [r+1, c], [r+2, c], [r+3, c]];
+      }
+    }
+  }
+  for (let r = 0; r < ROWS - 3; r++) {
+    for (let c = 0; c < COLS - 3; c++) {
+      if (board[r][c] === player && board[r+1][c+1] === player && board[r+2][c+2] === player && board[r+3][c+3] === player) {
+        return [[r, c], [r+1, c+1], [r+2, c+2], [r+3, c+3]];
+      }
+    }
+  }
+  for (let r = 3; r < ROWS; r++) {
+    for (let c = 0; c < COLS - 3; c++) {
+      if (board[r][c] === player && board[r-1][c+1] === player && board[r-2][c+2] === player && board[r-3][c+3] === player) {
+        return [[r, c], [r-1, c+1], [r-2, c+2], [r-3, c+3]];
+      }
+    }
+  }
+  return null;
+}
+
+function isBoardFull() {
+  return board[0].every(cell => cell !== 0);
+}
+
+function handleColumnClick(col) {
+  if (isGameOver || (vsAI && currentPlayer === 2)) return;
+  const row = dropPiece(col, currentPlayer);
+  if (row === -1) return;
+
+  const winning = checkWin(currentPlayer);
+  if (winning) {
+    isGameOver = true;
+    updateBoardUI(winning);
+    statusText.textContent = `${currentPlayer === 1 ? 'Red' : 'Yellow'} Wins!`;
+    return;
+  }
+
+  if (isBoardFull()) {
+    isGameOver = true;
+    updateBoardUI();
+    statusText.textContent = "It's a Draw!";
+    return;
+  }
+
+  currentPlayer = currentPlayer === 1 ? 2 : 1;
+  updateBoardUI();
+
+  if (vsAI && currentPlayer === 2 && !isGameOver) {
+    setTimeout(makeAIMove, 400);
+  }
+}
+
+function makeAIMove() {
+  if (isGameOver) return;
+
+  for (let c = 0; c < COLS; c++) {
+    if (board[0][c] === 0) {
+      const r = dropPiece(c, 2);
+      if (checkWin(2)) {
+        board[r][c] = 0;
+        executeMove(c);
+        return;
+      }
+      board[r][c] = 0;
+    }
+  }
+
+  for (let c = 0; c < COLS; c++) {
+    if (board[0][c] === 0) {
+      const r = dropPiece(c, 1);
+      if (checkWin(1)) {
+        board[r][c] = 0;
+        executeMove(c);
+        return;
+      }
+      board[r][c] = 0;
+    }
+  }
+
+  const preferredCols = [3, 2, 4, 1, 5, 0, 6];
+  const validCols = preferredCols.filter(c => board[0][c] === 0);
+  if (validCols.length > 0) {
+    executeMove(validCols[0]);
+  }
+}
+
+function executeMove(col) {
+  const row = dropPiece(col, 2);
+  const winning = checkWin(2);
+  if (winning) {
+    isGameOver = true;
+    updateBoardUI(winning);
+    statusText.textContent = vsAI ? 'Computer Wins!' : 'Yellow Wins!';
+    return;
+  }
+  if (isBoardFull()) {
+    isGameOver = true;
+    updateBoardUI();
+    statusText.textContent = "It's a Draw!";
+    return;
+  }
+  currentPlayer = 1;
+  updateBoardUI();
+}
+
+function resetGame() {
+  board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+  currentPlayer = 1;
+  isGameOver = false;
+  updateBoardUI();
+}
+
+resetBtn.addEventListener('click', resetGame);
+
+modeAiBtn.addEventListener('click', () => {
+  vsAI = true;
+  modeAiBtn.classList.add('active');
+  modePvpBtn.classList.remove('active');
+  resetGame();
+});
+
+modePvpBtn.addEventListener('click', () => {
+  vsAI = false;
+  modePvpBtn.classList.add('active');
+  modeAiBtn.classList.remove('active');
+  resetGame();
+});
+
+createGrid();
+updateBoardUI();
+</script>
+</body>
+</html>

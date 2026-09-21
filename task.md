@@ -11,3 +11,7 @@
 - [x] Task 9: Add built-in game library in public/games/ (2048, Snake, Tetris, Flappy Bird, Pong, Breakout, Space Invaders, Minesweeper, Asteroids, Tic Tac Toe)
 - [x] Task 10: Create deploy script, build production assets, and publish repository to GitHub (https://github.com/axk-coder/void)
 - [x] Task 11: Verify game launch, controls, and sandbox execution
+- [x] Task 12: Add new high quality offline games (Dino Runner, Pacman, Connect Four, Stack Tower, Memory Cards, Geometry Jump, Helix Fall, Wordle)
+- [x] Task 13: Update catalog in src/main.js and test all newly added games
+- [x] Task 14: Build production dist and push commit to GitHub repository
+

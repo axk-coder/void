@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helix Fall</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+body {
+  background: #121214;
+  color: #ececed;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+.header {
+  margin-bottom: 12px;
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.stat span { color: #5865F2; }
+canvas {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  max-width: 95vw;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  cursor: grab;
+}
+canvas:active { cursor: grabbing; }
+.instructions {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #71717a;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="stat">SCORE: <span id="score">0</span></div>
+  <div class="stat">BEST: <span id="best">0</span></div>
+</div>
+<canvas id="canvas" width="380" height="520"></canvas>
+<div class="instructions">Drag Left / Right or Arrow Keys to Rotate Tower</div>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+
+let bestScore = parseInt(localStorage.getItem('helix_best') || '0', 10);
+bestEl.textContent = String(bestScore);
+
+let score = 0;
+let gameOver = false;
+let rotation = 0;
+let rotationSpeed = 0;
+
+const ball = {
+  x: 190,
+  y: 120,
+  vy: 0,
+  radius: 10,
+  gravity: 0.35,
+  bounceForce: -8
+};
+
+const platforms = [];
+const PLATFORM_GAP = 120;
+const TOWER_RADIUS = 130;
+
+function createPlatforms() {
+  platforms.length = 0;
+  for (let i = 0; i < 30; i++) {
+    const y = 200 + i * PLATFORM_GAP;
+    const holeAngle = Math.random() * Math.PI * 2;
+    const holeSize = 0.8 + Math.random() * 0.4;
+    const dangerAngle = holeAngle + Math.PI * (0.6 + Math.random() * 0.8);
+    const dangerSize = 0.5;
+
+    platforms.push({
+      y: y,
+      passed: false,
+      holeAngle: holeAngle,
+      holeSize: holeSize,
+      dangerAngle: dangerAngle,
+      dangerSize: dangerSize
+    });
+  }
+}
+
+function initGame() {
+  score = 0;
+  gameOver = false;
+  rotation = 0;
+  rotationSpeed = 0;
+  ball.y = 120;
+  ball.vy = 0;
+  scoreEl.textContent = '0';
+  createPlatforms();
+}
+
+let isDragging = false;
+let lastPointerX = 0;
+
+window.addEventListener('pointerdown', (e) => {
+  isDragging = true;
+  lastPointerX = e.clientX;
+});
+
+window.addEventListener('pointermove', (e) => {
+  if (isDragging) {
+    const dx = e.clientX - lastPointerX;
+    rotation += dx * 0.015;
+    lastPointerX = e.clientX;
+  }
+});
+
+window.addEventListener('pointerup', () => isDragging = false);
+
+window.addEventListener('keydown', (e) => {
+  if (gameOver) {
+    if (e.code === 'Space' || e.code === 'Enter') initGame();
+    return;
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+    rotation -= 0.08;
+  } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+    rotation += 0.08;
+  }
+});
+
+canvas.addEventListener('pointerdown', () => {
+  if (gameOver) initGame();
+});
+
+function normalizeAngle(angle) {
+  angle = angle % (Math.PI * 2);
+  if (angle < 0) angle += Math.PI * 2;
+  return angle;
+}
+
+function update() {
+  if (gameOver) return;
+
+  ball.vy += ball.gravity;
+  ball.y += ball.vy;
+
+  for (let p of platforms) {
+    if (!p.passed && ball.y >= p.y - ball.radius && ball.y - ball.vy <= p.y + ball.radius) {
+      const currentTowerAngle = normalizeAngle(-rotation + Math.PI / 2);
+      const holeStart = normalizeAngle(p.holeAngle);
+      const holeEnd = normalizeAngle(p.holeAngle + p.holeSize);
+
+      let inHole = false;
+      if (holeStart < holeEnd) {
+        inHole = currentTowerAngle >= holeStart && currentTowerAngle <= holeEnd;
+      } else {
+        inHole = currentTowerAngle >= holeStart || currentTowerAngle <= holeEnd;
+      }
+
+      if (inHole) {
+        if (!p.passed && ball.vy > 0) {
+          p.passed = true;
+          score += 10;
+          scoreEl.textContent = String(score);
+          if (score > bestScore) {
+            bestScore = score;
+            bestEl.textContent = String(bestScore);
+            localStorage.setItem('helix_best', String(bestScore));
+          }
+        }
+      } else {
+        const dangerStart = normalizeAngle(p.dangerAngle);
+        const dangerEnd = normalizeAngle(p.dangerAngle + p.dangerSize);
+        let inDanger = false;
+        if (dangerStart < dangerEnd) {
+          inDanger = currentTowerAngle >= dangerStart && currentTowerAngle <= dangerEnd;
+        } else {
+          inDanger = currentTowerAngle >= dangerStart || currentTowerAngle <= dangerEnd;
+        }
+
+        if (inDanger) {
+          gameOver = true;
+        } else {
+          ball.y = p.y - ball.radius;
+          ball.vy = ball.bounceForce;
+        }
+      }
+    }
+  }
+}
+
+function draw() {
+  ctx.fillStyle = '#18181b';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const cameraY = ball.y - 140;
+
+  ctx.fillStyle = '#27272a';
+  ctx.fillRect(190 - 24, 0, 48, canvas.height);
+
+  for (let p of platforms) {
+    const screenY = p.y - cameraY;
+    if (screenY < -50 || screenY > canvas.height + 50) continue;
+
+    ctx.save();
+    ctx.translate(190, screenY);
+    ctx.scale(1, 0.25);
+
+    ctx.lineWidth = 24;
+    ctx.strokeStyle = '#5865F2';
+    ctx.beginPath();
+    ctx.arc(0, 0, TOWER_RADIUS, rotation + p.holeAngle + p.holeSize, rotation + p.holeAngle);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.arc(0, 0, TOWER_RADIUS, rotation + p.dangerAngle, rotation + p.dangerAngle + p.dangerSize);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  ctx.fillStyle = '#fde047';
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y - cameraY, ball.radius, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(ball.x - 3, ball.y - cameraY - 3, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  if (gameOver) {
+    ctx.fillStyle = 'rgba(0,0,0,0.75)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 24px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', canvas.width / 2, 220);
+    ctx.fillStyle = '#ececed';
+    ctx.font = '16px system-ui';
+    ctx.fillText(`Score: ${score}`, canvas.width / 2, 255);
+    ctx.fillStyle = '#a1a1aa';
+    ctx.font = '13px system-ui';
+    ctx.fillText('Tap or Press Space to Restart', canvas.width / 2, 290);
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+initGame();
+loop();
+</script>
+</body>
+</html>

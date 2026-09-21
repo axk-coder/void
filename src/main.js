@@ -18,7 +18,15 @@ const games = [
   { id: 'space-invaders', title: 'Space Invaders', category: 'action', url: './games/space-invaders/index.html' },
   { id: 'minesweeper', title: 'Minesweeper', category: 'puzzle', url: './games/minesweeper/index.html' },
   { id: 'asteroids', title: 'Asteroids', category: 'action', url: './games/asteroids/index.html' },
-  { id: 'tictactoe', title: 'Tic Tac Toe', category: 'multiplayer', url: './games/tictactoe/index.html' }
+  { id: 'tictactoe', title: 'Tic Tac Toe', category: 'multiplayer', url: './games/tictactoe/index.html' },
+  { id: 'dino', title: 'Dino Runner', category: 'arcade', url: './games/dino/index.html' },
+  { id: 'pacman', title: 'Pac-Man', category: 'arcade', url: './games/pacman/index.html' },
+  { id: 'connect4', title: 'Connect Four', category: 'multiplayer', url: './games/connect4/index.html' },
+  { id: 'stack', title: 'Stack Tower', category: 'arcade', url: './games/stack/index.html' },
+  { id: 'memory', title: 'Memory Match', category: 'puzzle', url: './games/memory/index.html' },
+  { id: 'geometry', title: 'Geometry Jump', category: 'action', url: './games/geometry/index.html' },
+  { id: 'helix', title: 'Helix Fall', category: 'arcade', url: './games/helix/index.html' },
+  { id: 'wordle', title: 'Word Guess', category: 'puzzle', url: './games/wordle/index.html' }
 ];
 
 const CATEGORIES = [
