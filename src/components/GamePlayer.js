@@ -1,5 +1,6 @@
 import { appState } from '../services/state.js';
 import { soundSynth } from '../services/soundEffects.js';
+import { sandboxStorageService } from '../services/sandboxStorage.js';
 
 export class GamePlayer {
   constructor(container, { onClose }) {
@@ -50,6 +51,11 @@ export class GamePlayer {
       </section>
     `;
 
+    const frame = this.container.querySelector('#game-frame');
+    if (frame && this.currentGame) {
+      sandboxStorageService.injectIframeBridge(frame, this.currentGame.id || this.currentGame.title);
+    }
+
     this.attachEvents();
   }
 
@@ -72,6 +78,7 @@ export class GamePlayer {
       const frame = this.container.querySelector('#game-frame');
       if (frame && this.currentGame) {
         frame.src = this.currentGame.url;
+        sandboxStorageService.injectIframeBridge(frame, this.currentGame.id || this.currentGame.title);
       }
     });
 
@@ -112,6 +119,7 @@ export class GamePlayer {
         doc.body.style.height = '100vh';
         doc.body.style.overflow = 'hidden';
         doc.body.appendChild(frame);
+        sandboxStorageService.injectIframeBridge(frame, this.currentGame.id || this.currentGame.title);
       }
     });
   }
