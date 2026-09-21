@@ -137,7 +137,7 @@ class VoidApp {
                 </div>
                 <div class="user-info-text">
                   <span class="user-display-name" id="footer-user-name">Guest</span>
-                  <span class="user-status-text" id="footer-user-status">PULSE ON TOP!</span>
+                  <span class="user-status-text" id="footer-user-status">VOID</span>
                 </div>
               </button>
 
@@ -263,7 +263,7 @@ class VoidApp {
     }
 
     if (nameEl) nameEl.textContent = user.displayName || user.username || 'User';
-    if (statusEl) statusEl.textContent = user.statusMessage || 'PULSE ON TOP!';
+    if (statusEl) statusEl.textContent = user.statusMessage || 'VOID';
     if (dotEl) {
       dotEl.className = `presence-badge-dot dot-${user.presence || 'online'}`;
     }

@@ -77,12 +77,13 @@ export class AuthModal {
       <div class="auth-overlay-backdrop">
         <div class="auth-modal-wrapper">
           <div class="auth-brand-header">
-            <div class="auth-pulse-badge">
+            <div class="auth-void-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                <circle cx="12" cy="12" r="9"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
               </svg>
             </div>
-            <h1 class="auth-brand-name">PULSE</h1>
+            <h1 class="auth-brand-name">VOID</h1>
           </div>
 
           <div class="auth-card">
