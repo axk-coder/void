@@ -33,6 +33,8 @@ class PlayFabService {
     this.currentUser = null;
     this.userCache = new Map();
     this.serverCache = new Map();
+    this.fileCache = new Map();
+    this.fileInFlight = new Map();
     this.lastSendTimestamp = 0;
     this.pendingRequests = 0;
     this.onSessionExpired = null;
@@ -885,6 +887,98 @@ class PlayFabService {
     const current = (await this.loadUserSettings()) || {};
     const merged = Object.assign({}, current, settings);
     return await this.saveUserSettings(merged);
+  }
+
+  getCachedFile(fileId) {
+    if (!fileId) return null;
+    return this.fileCache.get(String(fileId).trim()) || null;
+  }
+
+  async uploadFile(file, onProgress) {
+    if (!this.sessionTicket) throw new Error("Not authenticated");
+    if (!file) throw new Error("No file selected");
+    if (file.size > 10 * 1024 * 1024) {
+      throw new Error("File size exceeds 10MB limit");
+    }
+
+    const base64Data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+    const chunkSize = 6000;
+    const totalChunks = Math.ceil(base64Data.length / chunkSize);
+    const uploadId = "upl_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+
+    let finalRes = null;
+    for (let i = 0; i < totalChunks; i++) {
+      if (typeof onProgress === 'function') {
+        onProgress(i + 1, totalChunks);
+      }
+      const chunk = base64Data.slice(i * chunkSize, (i + 1) * chunkSize);
+      const payload = {
+        uploadId: uploadId,
+        chunkIndex: i,
+        totalChunks: totalChunks,
+        fileName: file.name,
+        fileType: file.type || "application/octet-stream",
+        fileSize: file.size,
+        chunkData: chunk
+      };
+      const res = await this.executeScript("uploadFileChunk", payload, { silent: true });
+      if (!res || !res.success) {
+        throw new Error(res?.error || `Upload failed on chunk ${i + 1}/${totalChunks}`);
+      }
+      if (i === totalChunks - 1) {
+        finalRes = res;
+      }
+    }
+
+    if (!finalRes || !finalRes.fileId) {
+      throw new Error("Failed to finalize file upload");
+    }
+
+    this.fileCache.set(finalRes.fileId, {
+      fileName: file.name,
+      fileType: file.type || "application/octet-stream",
+      fileSize: file.size,
+      data: base64Data
+    });
+
+    return finalRes;
+  }
+
+  async downloadFile(fileId) {
+    const cleanId = String(fileId || "").trim();
+    if (!cleanId) throw new Error("File ID required");
+
+    if (this.fileCache.has(cleanId)) {
+      return this.fileCache.get(cleanId);
+    }
+
+    if (this.fileInFlight.has(cleanId)) {
+      return await this.fileInFlight.get(cleanId);
+    }
+
+    if (!this.sessionTicket) throw new Error("Not authenticated");
+
+    const reqPromise = (async () => {
+      try {
+        const res = await this.executeScript("downloadFile", { fileId: cleanId }, { silent: true });
+        if (!res || !res.success || !res.file) {
+          throw new Error(res?.error || "File could not be found");
+        }
+        this.fileCache.set(cleanId, res.file);
+        return res.file;
+      } finally {
+        this.fileInFlight.delete(cleanId);
+      }
+    })();
+
+    this.fileInFlight.set(cleanId, reqPromise);
+    return await reqPromise;
   }
 }
 

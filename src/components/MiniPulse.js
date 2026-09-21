@@ -132,7 +132,21 @@ export class MiniPulse {
                 <button type="button" class="mp-reply-cancel" id="mp-reply-cancel" title="Cancel Reply">&times;</button>
               </div>
 
+              <div class="mp-upload-progress" id="mp-upload-progress" style="display: none; padding: 4px 8px; font-size: 11px; color: var(--text-secondary); background: var(--bg-tertiary); border-radius: var(--radius-sm); margin-bottom: 4px; align-items: center; gap: 6px;">
+                <svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                  <path d="M12 2a10 10 0 0 1 10 10"></path>
+                </svg>
+                <span id="mp-upload-status">Uploading file...</span>
+              </div>
+
               <div class="mp-composer-box">
+                <input type="file" id="mp-file-input" style="display: none;" multiple />
+                <button type="button" class="mp-attach-btn" id="mp-attach-btn" title="Upload File (Max 10MB)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                  </svg>
+                </button>
                 <textarea id="mp-composer-input" class="mp-input-field" placeholder="Send a message..." rows="1" maxlength="2000"></textarea>
                 <button type="button" class="mp-send-btn" id="mp-send-btn" title="Send (Enter)">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15">
@@ -519,6 +533,19 @@ export class MiniPulse {
     const replyCancel = document.getElementById('mp-reply-cancel');
     replyCancel?.addEventListener('click', () => {
       appState.clearReplyingTo();
+    });
+
+    const fileInput = document.getElementById('mp-file-input');
+    const attachBtn = document.getElementById('mp-attach-btn');
+    attachBtn?.addEventListener('click', () => {
+      fileInput?.click();
+    });
+
+    fileInput?.addEventListener('change', (e) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        this.handleFileUpload(files);
+      }
     });
 
     const feed = document.getElementById('mp-messages-feed');
@@ -1030,6 +1057,100 @@ export class MiniPulse {
       }
     });
 
+    feed.querySelectorAll('.btn-download-file').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const fileId = btn.getAttribute('data-file-id');
+        const fileName = btn.getAttribute('data-file-name') || 'download';
+        if (!fileId) return;
+
+        const origHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span>Downloading...</span>`;
+
+        try {
+          const fileObj = await playFabService.downloadFile(fileId);
+          if (fileObj && fileObj.data) {
+            const link = document.createElement('a');
+            link.href = fileObj.data;
+            link.download = fileObj.fileName || fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        } catch (err) {
+          alert(err.message || 'Failed to download file');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
+      });
+    });
+
+    feed.querySelectorAll('.btn-play-media').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const fileId = btn.getAttribute('data-file-id');
+        const card = btn.closest('.discord-file-embed');
+        if (!fileId || !card) return;
+
+        const origHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<span>Loading...</span>`;
+
+        try {
+          const fileObj = await playFabService.downloadFile(fileId);
+          if (fileObj && fileObj.data) {
+            btn.style.display = 'none';
+            const audioBox = card.querySelector('.file-audio-preview');
+            if (audioBox) {
+              audioBox.style.display = 'block';
+              const audio = audioBox.querySelector('audio');
+              if (audio) {
+                audio.src = fileObj.data;
+                audio.play().catch(() => {});
+              }
+            }
+          }
+        } catch {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
+      });
+    });
+
+    feed.querySelectorAll('.file-image-preview').forEach(previewEl => {
+      const fileId = previewEl.getAttribute('data-file-id');
+      const img = previewEl.querySelector('img');
+      if (fileId && (!img || !img.getAttribute('src'))) {
+        playFabService.downloadFile(fileId).then(fileObj => {
+          if (fileObj && fileObj.data && img) {
+            img.src = fileObj.data;
+            previewEl.style.display = 'block';
+          }
+        }).catch(() => {});
+      }
+    });
+
+    feed.querySelectorAll('.file-video-preview').forEach(previewEl => {
+      const fileId = previewEl.getAttribute('data-file-id');
+      const video = previewEl.querySelector('video');
+      if (fileId && (!video || !video.getAttribute('src'))) {
+        const cached = playFabService.getCachedFile(fileId);
+        if (cached && cached.data && video) {
+          video.src = cached.data;
+          previewEl.style.display = 'block';
+        } else {
+          playFabService.downloadFile(fileId).then(fileObj => {
+            if (fileObj && fileObj.data && video) {
+              video.src = fileObj.data;
+              previewEl.style.display = 'block';
+            }
+          }).catch(() => {});
+        }
+      }
+    });
+
     if (this.isScrolledToBottom) {
       this.scrollToBottom();
     }
@@ -1259,6 +1380,65 @@ export class MiniPulse {
     }
   }
 
+  async handleFileUpload(files) {
+    if (!files || files.length === 0) return;
+    if (!playFabService.isAuthenticated()) {
+      this.onOpenAuth();
+      return;
+    }
+
+    const validFiles = [];
+    for (const f of files) {
+      if (f.size > 10 * 1024 * 1024) {
+        alert(`"${f.name}" exceeds the 10MB limit and was skipped.`);
+      } else {
+        validFiles.push(f);
+      }
+    }
+
+    if (validFiles.length === 0) return;
+
+    const progressBox = document.getElementById('mp-upload-progress');
+    const statusText = document.getElementById('mp-upload-status');
+    const fileInput = document.getElementById('mp-file-input');
+    const sendBtn = document.getElementById('mp-send-btn');
+
+    if (progressBox) progressBox.style.display = 'flex';
+    if (sendBtn) sendBtn.disabled = true;
+
+    try {
+      for (let i = 0; i < validFiles.length; i++) {
+        const file = validFiles[i];
+        const prefix = validFiles.length > 1 ? `(${i + 1}/${validFiles.length}) ` : '';
+        if (statusText) {
+          statusText.textContent = `Uploading ${prefix}${file.name || 'file'}...`;
+        }
+
+        const uploadRes = await playFabService.uploadFile(file, (currentChunk, totalChunks) => {
+          if (statusText) {
+            statusText.textContent = `Uploading ${prefix}${file.name || 'file'}... (${currentChunk}/${totalChunks})`;
+          }
+        });
+
+        if (uploadRes && uploadRes.success && uploadRes.fileId) {
+          const fileMsg = `pulse://file/${uploadRes.fileId}?name=${encodeURIComponent(uploadRes.fileName || file.name || 'file')}&size=${uploadRes.fileSize || file.size}&type=${encodeURIComponent(uploadRes.fileType || file.type || 'application/octet-stream')}`;
+          const target = appState.getTargetParam();
+          const reply = appState.getState().replyingTo;
+          soundSynth.playSent();
+          appState.clearReplyingTo();
+          await playFabService.sendMessage(target, fileMsg, reply);
+          pollingEngine.pollNow();
+        }
+      }
+    } catch (err) {
+      alert(err.message || 'Failed to upload file');
+    } finally {
+      if (progressBox) progressBox.style.display = 'none';
+      if (sendBtn) sendBtn.disabled = false;
+      if (fileInput) fileInput.value = '';
+    }
+  }
+
   scrollToBottom() {
     const feed = document.getElementById('mp-messages-feed');
     if (feed) {
@@ -1289,6 +1469,122 @@ export class MiniPulse {
 
     let escaped = this.escapeHtml(rawText);
 
+    const fileRegex = /pulse:\/\/file\/(file_[0-9]+_[0-9]+)(?:\?([^\s<>"'`]+))?/gi;
+    let fileMatch;
+    const handledFiles = new Set();
+    const fileEmbeds = [];
+
+    while ((fileMatch = fileRegex.exec(rawText)) !== null) {
+      const fullMatch = fileMatch[0];
+      const fId = fileMatch[1];
+      const queryStr = fileMatch[2] || '';
+
+      escaped = escaped.replace(this.escapeHtml(fullMatch), '').trim();
+
+      if (!handledFiles.has(fId)) {
+        handledFiles.add(fId);
+        let fName = 'File Attachment';
+        let fSize = 0;
+        let fType = 'application/octet-stream';
+
+        if (queryStr) {
+          try {
+            const params = new URLSearchParams(queryStr);
+            if (params.get('name')) fName = decodeURIComponent(params.get('name'));
+            if (params.get('size')) fSize = parseInt(params.get('size'), 10) || 0;
+            if (params.get('type')) fType = decodeURIComponent(params.get('type'));
+          } catch {}
+        }
+
+        let sizeFormatted = '';
+        if (fSize > 0) {
+          if (fSize >= 1024 * 1024) sizeFormatted = (fSize / (1024 * 1024)).toFixed(1) + ' MB';
+          else sizeFormatted = Math.max(1, Math.round(fSize / 1024)) + ' KB';
+        }
+
+        const isVideo = fType.startsWith('video/') || /\.(mp4|webm|mov|mkv)$/i.test(fName);
+        const isAudio = !isVideo && (fType.startsWith('audio/') || /\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i.test(fName));
+        const isImage = !isVideo && !isAudio && (fType.startsWith('image/') || /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(fName));
+        const cachedFile = playFabService.getCachedFile(fId);
+
+        let iconSvg = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+            <polyline points="13 2 13 9 20 9"></polyline>
+          </svg>
+        `;
+        if (isVideo) {
+          iconSvg = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <polygon points="23 7 16 12 23 17 23 7"></polygon>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+          `;
+        } else if (isAudio) {
+          iconSvg = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+          `;
+        } else if (isImage) {
+          iconSvg = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+          `;
+        }
+
+        fileEmbeds.push(`
+          <div class="discord-file-embed" data-file-id="${this.escapeHtml(fId)}" data-file-type="${isVideo ? 'video' : (isAudio ? 'audio' : (isImage ? 'image' : 'file'))}">
+            <div class="discord-file-content">
+              <div class="discord-file-icon">
+                ${iconSvg}
+              </div>
+              <div class="discord-file-info">
+                <span class="discord-file-name" title="${this.escapeHtml(fName)}">${this.escapeHtml(fName)}</span>
+                ${sizeFormatted ? `<span class="discord-file-size">${sizeFormatted}</span>` : ''}
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                ${isAudio ? `
+                  <button type="button" class="btn-play-media" data-file-id="${this.escapeHtml(fId)}" data-file-type="audio">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Play</span>
+                  </button>
+                ` : ''}
+                <button type="button" class="btn-download-file" data-file-id="${this.escapeHtml(fId)}" data-file-name="${this.escapeHtml(fName)}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span>Download</span>
+                </button>
+              </div>
+            </div>
+            ${isImage ? `
+              <div class="file-image-preview" data-file-id="${this.escapeHtml(fId)}" style="${cachedFile && cachedFile.data ? 'display: block;' : 'display: none;'}">
+                <img src="${cachedFile && cachedFile.data ? this.escapeHtml(cachedFile.data) : ''}" alt="${this.escapeHtml(fName)}" />
+              </div>
+            ` : ''}
+            ${isVideo ? `
+              <div class="file-video-preview" data-file-id="${this.escapeHtml(fId)}" style="display: block;">
+                <video controls preload="metadata" src="${cachedFile && cachedFile.data ? this.escapeHtml(cachedFile.data) : ''}"></video>
+              </div>
+            ` : ''}
+            ${isAudio ? `
+              <div class="file-audio-preview" data-file-id="${this.escapeHtml(fId)}" style="${cachedFile && cachedFile.data ? 'display: block;' : 'display: none;'}">
+                <audio controls preload="none" src="${cachedFile && cachedFile.data ? this.escapeHtml(cachedFile.data) : ''}"></audio>
+              </div>
+            ` : ''}
+          </div>
+        `);
+      }
+    }
+
     escaped = escaped.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
       if (url.match(/\.(jpeg|jpg|gif|png|webp|avif)($|\?)/i) || url.match(/klipy\.com|giphy\.com|tenor\.com/i)) {
         return `<div class="mp-media-embed"><img src="${url}" class="mp-embed-img" loading="lazy" alt="" onerror="this.parentElement.style.display='none'" /></div>`;
@@ -1299,6 +1595,10 @@ export class MiniPulse {
     escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
     escaped = escaped.replace(/`([^`]+)`/g, '<code class="mp-inline-code">$1</code>');
+
+    if (fileEmbeds.length > 0) {
+      escaped = (escaped ? `${escaped}<br/>` : '') + fileEmbeds.join('');
+    }
 
     return escaped;
   }
