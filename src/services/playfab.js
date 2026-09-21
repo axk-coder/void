@@ -783,6 +783,76 @@ class PlayFabService {
   async createOrGetDM(partnerId) {
     return await this.executeScript("createOrGetDM", { partnerId });
   }
+
+  async getUserData(keys = []) {
+    if (!this.sessionTicket) return {};
+    try {
+      const payload = Array.isArray(keys) && keys.length > 0 ? { Keys: keys } : {};
+      const res = await this.post("GetUserData", payload, true);
+      const dataObj = {};
+      if (res && res.Data) {
+        for (const [k, item] of Object.entries(res.Data)) {
+          dataObj[k] = item?.Value || '';
+        }
+      }
+      return dataObj;
+    } catch {
+      return {};
+    }
+  }
+
+  async updateUserData(data, permission = "Private") {
+    if (!this.sessionTicket || !data || typeof data !== 'object') return false;
+    try {
+      const cleanData = {};
+      for (const [k, v] of Object.entries(data)) {
+        if (k && typeof k === 'string') {
+          cleanData[k] = typeof v === 'string' ? v : JSON.stringify(v);
+        }
+      }
+      await this.post("UpdateUserData", {
+        Data: cleanData,
+        Permission: permission
+      }, true);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async loadUserSettings() {
+    const data = await this.getUserData(["void_user_settings"]);
+    if (data && data.void_user_settings) {
+      try {
+        return JSON.parse(data.void_user_settings);
+      } catch {}
+    }
+    return null;
+  }
+
+  async saveUserSettings(settings) {
+    if (!settings || typeof settings !== 'object') return false;
+    return await this.updateUserData({
+      void_user_settings: JSON.stringify(settings)
+    }, "Private");
+  }
+
+  async loadGameSandboxCookies() {
+    const data = await this.getUserData(["void_cookie_sandbox"]);
+    if (data && data.void_cookie_sandbox) {
+      try {
+        return JSON.parse(data.void_cookie_sandbox);
+      } catch {}
+    }
+    return null;
+  }
+
+  async saveGameSandboxCookies(cookiesMapObj) {
+    if (!cookiesMapObj || typeof cookiesMapObj !== 'object') return false;
+    return await this.updateUserData({
+      void_cookie_sandbox: JSON.stringify(cookiesMapObj)
+    }, "Private");
+  }
 }
 
 export const playFabService = new PlayFabService();

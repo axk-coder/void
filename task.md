@@ -40,7 +40,6 @@
 - [x] Task 38: Test build, update map.txt, and push to GitHub
 - [x] Task 39: Implement Sandboxed Cookie & Storage Virtualization engine (sandboxStorage.js) for isolated game persistence
 - [x] Task 40: Hook sandboxed cookie bridge into GamePlayer and Popout windows, verify and push to GitHub
-
-
-
-
+- [x] Task 41: Implement PlayFab UserData private key synchronization for sandboxed game cookies (void_cookie_sandbox)
+- [x] Task 42: Implement PlayFab UserData private key synchronization for user settings (void_user_settings: theme, panic key/url, pulse key, sound, cloak)
+- [x] Task 43: Test build, verify UserData endpoints, and push updates to GitHub

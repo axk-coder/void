@@ -1,7 +1,10 @@
+import { playFabService } from './playfab.js';
+
 export class SandboxStorageService {
   constructor() {
     this.storagePrefix = 'void_cookie_sandbox_';
     this.storageFallback = new Map();
+    this.syncTimeout = null;
     this.initPostMessageBridge();
   }
 
@@ -68,6 +71,8 @@ export class SandboxStorageService {
     } catch {
       this.storageFallback.set(key, payload);
     }
+
+    this.scheduleCloudSync();
   }
 
   getCookieString(gameId) {
@@ -127,6 +132,76 @@ export class SandboxStorageService {
     } catch {
       this.storageFallback.delete(key);
     }
+    this.scheduleCloudSync();
+  }
+
+  getAllSandboxCookies() {
+    const result = {};
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith(this.storagePrefix)) {
+          const gameId = k.slice(this.storagePrefix.length);
+          const raw = localStorage.getItem(k);
+          if (raw) {
+            try {
+              result[gameId] = JSON.parse(raw);
+            } catch {}
+          }
+        }
+      }
+    } catch {}
+
+    for (const [k, v] of this.storageFallback.entries()) {
+      if (k.startsWith(this.storagePrefix)) {
+        const gameId = k.slice(this.storagePrefix.length);
+        if (!result[gameId]) {
+          try {
+            result[gameId] = JSON.parse(v);
+          } catch {}
+        }
+      }
+    }
+
+    return result;
+  }
+
+  restoreAllSandboxCookies(cloudData) {
+    if (!cloudData || typeof cloudData !== 'object') return;
+    for (const [gameId, cookiesObj] of Object.entries(cloudData)) {
+      if (gameId && cookiesObj && typeof cookiesObj === 'object') {
+        const key = this.getStoreKey(gameId);
+        const payload = JSON.stringify(cookiesObj);
+        try {
+          localStorage.setItem(key, payload);
+        } catch {
+          this.storageFallback.set(key, payload);
+        }
+      }
+    }
+  }
+
+  async syncFromCloud() {
+    if (!playFabService.isAuthenticated()) return;
+    try {
+      const cloudData = await playFabService.loadGameSandboxCookies();
+      if (cloudData) {
+        this.restoreAllSandboxCookies(cloudData);
+      }
+    } catch {}
+  }
+
+  scheduleCloudSync() {
+    if (!playFabService.isAuthenticated()) return;
+    if (this.syncTimeout) {
+      clearTimeout(this.syncTimeout);
+    }
+    this.syncTimeout = setTimeout(async () => {
+      try {
+        const payload = this.getAllSandboxCookies();
+        await playFabService.saveGameSandboxCookies(payload);
+      } catch {}
+    }, 800);
   }
 
   injectIframeBridge(iframe, gameId) {
@@ -140,8 +215,6 @@ export class SandboxStorageService {
         if (!doc) return;
 
         const safeGameId = this.sanitizeGameId(gameId);
-
-        let initialCookie = this.getCookieString(safeGameId);
 
         try {
           Object.defineProperty(doc, 'cookie', {

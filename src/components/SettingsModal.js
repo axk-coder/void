@@ -72,6 +72,27 @@ export class SettingsModal {
       playFabService.syncCurrentUserProfile().then(() => {
         if (this.isOpen) this.render();
       }).catch(() => {});
+      playFabService.loadUserSettings().then(cloudSettings => {
+        if (cloudSettings && this.isOpen) {
+          if (cloudSettings.theme) {
+            this.currentTheme = cloudSettings.theme;
+            localStorage.setItem('pulse_theme', cloudSettings.theme);
+            appState.setTheme(cloudSettings.theme);
+          }
+          if (cloudSettings.panicKey !== undefined) {
+            this.panicKey = cloudSettings.panicKey;
+            this.panicUrl = cloudSettings.panicUrl || 'https://www.google.com';
+            localStorage.setItem('void_panic_key', this.panicKey);
+            localStorage.setItem('void_panic_url', this.panicUrl);
+            appState.setPanicSettings(this.panicKey, this.panicUrl);
+          }
+          if (cloudSettings.pulseToggleKey) {
+            this.pulseToggleKey = cloudSettings.pulseToggleKey;
+            localStorage.setItem('pulse_toggle_key', this.pulseToggleKey);
+          }
+          this.render();
+        }
+      }).catch(() => {});
     }
   }
 
@@ -591,6 +612,7 @@ export class SettingsModal {
     audioToggle?.addEventListener('click', () => {
       const isEnabled = soundSynth.toggleSound();
       audioToggle.textContent = isEnabled ? 'Enabled' : 'Disabled';
+      this.syncSettingsToCloud();
     });
 
     const themeBtns = this.container.querySelectorAll('.theme-select-btn');
@@ -600,6 +622,7 @@ export class SettingsModal {
         if (themeKey) {
           this.currentTheme = themeKey;
           appState.setTheme(themeKey);
+          this.syncSettingsToCloud();
           this.render();
         }
       });
@@ -619,6 +642,7 @@ export class SettingsModal {
       localStorage.setItem('void_panic_key', keyVal);
       localStorage.setItem('void_panic_url', urlVal);
       appState.setPanicSettings(keyVal, urlVal);
+      this.syncSettingsToCloud();
       this.message = keyVal ? `Redirect keybind set to "${keyVal}"` : 'Redirect keybind disabled';
       this.render();
     });
@@ -629,6 +653,7 @@ export class SettingsModal {
       const keyVal = keyInput ? keyInput.value.trim() : ']';
       this.pulseToggleKey = keyVal || ']';
       localStorage.setItem('pulse_toggle_key', this.pulseToggleKey);
+      this.syncSettingsToCloud();
       this.message = `Pulse toggle shortcut set to "${this.pulseToggleKey}"`;
       this.render();
     });
@@ -643,6 +668,7 @@ export class SettingsModal {
       if (link) {
         link.href = profile.icon;
       }
+      this.syncSettingsToCloud();
     });
 
     const blankLauncher = this.container.querySelector('#open-about-blank-launcher');
@@ -707,6 +733,21 @@ export class SettingsModal {
         this.callbacks.onLogout();
       }
     });
+  }
+
+  async syncSettingsToCloud() {
+    if (!playFabService.isAuthenticated()) return;
+    const settings = {
+      theme: this.currentTheme,
+      panicKey: this.panicKey,
+      panicUrl: this.panicUrl,
+      pulseToggleKey: this.pulseToggleKey,
+      soundEnabled: soundSynth.enabled,
+      cloak: appState.getState().cloak || 'none'
+    };
+    try {
+      await playFabService.saveUserSettings(settings);
+    } catch {}
   }
 
   escapeHtml(str) {

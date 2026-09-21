@@ -1,8 +1,9 @@
 import './styles/main.css';
 import { appState } from './services/state.js';
 import { playFabService } from './services/playfab.js';
-import { soundSynth } from './services/soundEffects.js';
 import { pollingEngine } from './services/pollingEngine.js';
+import { soundSynth } from './services/soundEffects.js';
+import { sandboxStorageService } from './services/sandboxStorage.js';
 import { AuthModal } from './components/AuthModal.js';
 import { SettingsModal, CLOAKS } from './components/SettingsModal.js';
 import { LegalModal } from './components/LegalModal.js';
@@ -11,29 +12,162 @@ import { GamePlayer } from './components/GamePlayer.js';
 import { MiniPulse } from './components/MiniPulse.js';
 import truffledGames from './data/truffledGames.json';
 
-const builtInGames = [
-  { id: '2048', title: '2048', category: 'puzzle', url: './games/2048/index.html' },
-  { id: 'snake', title: 'Snake', category: 'arcade', url: './games/snake/index.html' },
-  { id: 'tetris', title: 'Tetris', category: 'puzzle', url: './games/tetris/index.html' },
-  { id: 'flappy', title: 'Flappy Bird', category: 'arcade', url: './games/flappy/index.html' },
-  { id: 'pong', title: 'Pong', category: 'multiplayer', url: './games/pong/index.html' },
-  { id: 'breakout', title: 'Breakout', category: 'arcade', url: './games/breakout/index.html' },
-  { id: 'space-invaders', title: 'Space Invaders', category: 'action', url: './games/space-invaders/index.html' },
-  { id: 'minesweeper', title: 'Minesweeper', category: 'puzzle', url: './games/minesweeper/index.html' },
-  { id: 'asteroids', title: 'Asteroids', category: 'action', url: './games/asteroids/index.html' },
-  { id: 'tictactoe', title: 'Tic Tac Toe', category: 'multiplayer', url: './games/tictactoe/index.html' },
-  { id: 'dino', title: 'Dino Runner', category: 'arcade', url: './games/dino/index.html' },
-  { id: 'pacman', title: 'Pac-Man', category: 'arcade', url: './games/pacman/index.html' },
-  { id: 'connect4', title: 'Connect Four', category: 'multiplayer', url: './games/connect4/index.html' },
-  { id: 'stack', title: 'Stack Tower', category: 'arcade', url: './games/stack/index.html' },
-  { id: 'memory', title: 'Memory Match', category: 'puzzle', url: './games/memory/index.html' },
-  { id: 'geometry', title: 'Geometry Jump', category: 'action', url: './games/geometry/index.html' },
-  { id: 'helix', title: 'Helix Fall', category: 'arcade', url: './games/helix/index.html' },
-  { id: 'wordle', title: 'Word Guess', category: 'puzzle', url: './games/wordle/index.html' },
-  { id: 'tiktok-bounce', title: 'Ball Maze Breaker', category: 'arcade', url: './games/tiktok-bounce/index.html' }
+const BUILTIN_GAMES = [
+  {
+    id: '2048',
+    title: '2048',
+    category: 'puzzle',
+    url: './games/2048/index.html',
+    badge: 'Popular',
+    desc: 'Join numbers and get to the 2048 tile'
+  },
+  {
+    id: 'snake',
+    title: 'Snake Classic',
+    category: 'arcade',
+    url: './games/snake/index.html',
+    badge: 'Classic',
+    desc: 'Classic arcade snake game with smooth controls'
+  },
+  {
+    id: 'tetris',
+    title: 'Tetris Grid',
+    category: 'puzzle',
+    url: './games/tetris/index.html',
+    badge: 'Retro',
+    desc: 'Block falling puzzle strategy game'
+  },
+  {
+    id: 'flappy',
+    title: 'Flappy Bird',
+    category: 'arcade',
+    url: './games/flappy/index.html',
+    badge: 'Arcade',
+    desc: 'Navigate through pipes in this arcade favorite'
+  },
+  {
+    id: 'pong',
+    title: 'Pong Battle',
+    category: 'multiplayer',
+    url: './games/pong/index.html',
+    badge: 'VS AI',
+    desc: 'Paddle vs AI classic ping pong'
+  },
+  {
+    id: 'breakout',
+    title: 'Breakout DX',
+    category: 'arcade',
+    url: './games/breakout/index.html',
+    badge: 'Arcade',
+    desc: 'Smash all bricks with the bounce paddle'
+  },
+  {
+    id: 'space-invaders',
+    title: 'Space Defenders',
+    category: 'action',
+    url: './games/space-invaders/index.html',
+    badge: 'Action',
+    desc: 'Defend Earth from alien invader waves'
+  },
+  {
+    id: 'minesweeper',
+    title: 'Minesweeper Pro',
+    category: 'puzzle',
+    url: './games/minesweeper/index.html',
+    badge: 'Puzzle',
+    desc: 'Clear the board without detonating any mines'
+  },
+  {
+    id: 'asteroids',
+    title: 'Asteroid Field',
+    category: 'action',
+    url: './games/asteroids/index.html',
+    badge: 'Space',
+    desc: 'Blast asteroids and UFOs in deep space'
+  },
+  {
+    id: 'tictactoe',
+    title: 'Tic Tac Toe AI',
+    category: 'multiplayer',
+    url: './games/tictactoe/index.html',
+    badge: 'Casual',
+    desc: 'Match 3 in a row against unbeatable AI'
+  },
+  {
+    id: 'dino',
+    title: 'Dino Runner',
+    category: 'arcade',
+    url: './games/dino/index.html',
+    badge: 'Offline',
+    desc: 'Jump over cacti and obstacles as a T-Rex'
+  },
+  {
+    id: 'pacman',
+    title: 'Pacman Maze',
+    category: 'arcade',
+    url: './games/pacman/index.html',
+    badge: 'Classic',
+    desc: 'Chomp pellets and outsmart ghosts in the maze'
+  },
+  {
+    id: 'connect4',
+    title: 'Connect Four',
+    category: 'multiplayer',
+    url: './games/connect4/index.html',
+    badge: 'VS AI',
+    desc: 'Drop chips to connect 4 in a row'
+  },
+  {
+    id: 'stack',
+    title: 'Stack Tower',
+    category: 'arcade',
+    url: './games/stack/index.html',
+    badge: 'Precision',
+    desc: 'Stack moving isometric blocks as high as possible'
+  },
+  {
+    id: 'memory',
+    title: 'Memory Cards',
+    category: 'puzzle',
+    url: './games/memory/index.html',
+    badge: 'Brain',
+    desc: 'Flip cards and find all matching emoji pairs'
+  },
+  {
+    id: 'geometry',
+    title: 'Geometry Jump',
+    category: 'action',
+    url: './games/geometry/index.html',
+    badge: 'Rhythm',
+    desc: 'Dash and leap over geometric spikes and traps'
+  },
+  {
+    id: 'helix',
+    title: 'Helix Fall',
+    category: 'arcade',
+    url: './games/helix/index.html',
+    badge: '3D Physics',
+    desc: 'Rotate the cylinder to drop through platform gaps'
+  },
+  {
+    id: 'wordle',
+    title: 'Wordle Quest',
+    category: 'puzzle',
+    url: './games/wordle/index.html',
+    badge: 'Word',
+    desc: 'Guess the hidden 5-letter word in 6 tries'
+  },
+  {
+    id: 'tiktok-bounce',
+    title: 'TikTok Ball Maze',
+    category: 'arcade',
+    url: './games/tiktok-bounce/index.html',
+    badge: 'Popular',
+    desc: 'Bouncing ball spinning concentric maze breaker with trails'
+  }
 ];
 
-const games = [...builtInGames, ...truffledGames];
+const games = [...BUILTIN_GAMES, ...truffledGames];
 
 const CATEGORIES = [
   { id: 'all', name: 'All Games' },
@@ -78,6 +212,7 @@ class VoidApp {
     } else {
       this.updateUserProfilePanel();
       pollingEngine.start();
+      this.syncUserData();
     }
 
     this.renderCatalog();
@@ -88,6 +223,7 @@ class VoidApp {
         this.updateUserProfilePanel();
         if (state.user) {
           pollingEngine.start();
+          this.syncUserData();
         }
       }
       if (key === 'category' || key === 'search' || key === 'sort') {
@@ -97,6 +233,46 @@ class VoidApp {
         this.updateHeaderBadge();
       }
     });
+  }
+
+  async syncUserData() {
+    if (!playFabService.isAuthenticated()) return;
+    try {
+      await sandboxStorageService.syncFromCloud();
+      const cloudSettings = await playFabService.loadUserSettings();
+      if (cloudSettings) {
+        if (cloudSettings.theme) {
+          localStorage.setItem('pulse_theme', cloudSettings.theme);
+          appState.setTheme(cloudSettings.theme);
+        }
+        if (cloudSettings.panicKey !== undefined) {
+          localStorage.setItem('void_panic_key', cloudSettings.panicKey);
+          localStorage.setItem('void_panic_url', cloudSettings.panicUrl || 'https://google.com');
+          appState.setPanicSettings(cloudSettings.panicKey, cloudSettings.panicUrl || 'https://google.com');
+        }
+        if (cloudSettings.pulseToggleKey) {
+          localStorage.setItem('pulse_toggle_key', cloudSettings.pulseToggleKey);
+        }
+        if (typeof cloudSettings.soundEnabled === 'boolean') {
+          soundSynth.enabled = cloudSettings.soundEnabled;
+          const soundSvg = document.getElementById('sound-icon-svg');
+          if (soundSvg) {
+            soundSvg.innerHTML = soundSynth.enabled
+              ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>'
+              : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+          }
+        }
+        if (cloudSettings.cloak) {
+          appState.setCloak(cloudSettings.cloak);
+          const profile = CLOAKS[cloudSettings.cloak] || CLOAKS.none;
+          document.title = profile.title;
+          let link = document.querySelector("link[rel*='icon']");
+          if (link) {
+            link.href = profile.icon;
+          }
+        }
+      }
+    } catch {}
   }
 
   setupSharedCookieBridge() {
@@ -111,6 +287,7 @@ class VoidApp {
           }
           this.updateUserProfilePanel();
           pollingEngine.start();
+          this.syncUserData();
         }
       }
     });
@@ -462,6 +639,9 @@ class VoidApp {
         soundSvg.innerHTML = isEnabled
           ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>'
           : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+      }
+      if (this.settingsModal) {
+        this.settingsModal.syncSettingsToCloud();
       }
     });
 
