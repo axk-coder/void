@@ -4,3 +4,6 @@ dist
 *.log
 map.txt
 task.md
+backend/
+backend/**
+deploy.sh
