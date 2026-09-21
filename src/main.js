@@ -159,7 +159,7 @@ class VoidApp {
               <button type="button" class="footer-link-btn" id="footer-terms-btn">Terms</button>
               <span class="footer-dot">•</span>
               <button type="button" class="footer-link-btn" id="footer-credits-btn">Credits</button>
-              <span class="footer-version-tag">6.0</span>
+              <span class="footer-version-tag">1</span>
             </div>
           </div>
         </aside>
