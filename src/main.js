@@ -311,9 +311,25 @@ class VoidApp {
 
       if (isToggleKey && !isInputActive) {
         e.preventDefault();
-        appState.toggleMiniPulse();
+        this.togglePulseButtonVisibility();
       }
     });
+  }
+
+  togglePulseButtonVisibility() {
+    const btn = document.getElementById('top-pulse-btn');
+    if (!btn) return;
+    const isHidden = (window.getComputedStyle(btn).display === 'none') || (btn.style.display === 'none');
+    if (isHidden) {
+      btn.style.display = 'inline-flex';
+      soundSynth.playClick();
+      this.updateHeaderBadge();
+    } else {
+      btn.style.display = 'none';
+      if (appState.getState().miniPulseOpen) {
+        appState.setMiniPulseOpen(false);
+      }
+    }
   }
 
   renderShell() {
@@ -396,7 +412,7 @@ class VoidApp {
             </div>
 
             <div class="top-navbar-actions">
-              <button type="button" class="btn-header" id="top-pulse-btn" title="Pulse Chat (Shortcut: ] or })">
+              <button type="button" class="btn-header" id="top-pulse-btn" title="Pulse Chat" style="display: none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
