@@ -16,11 +16,13 @@ export class MiniPulse {
     this.isMembersOpen = false;
     this.isScrolledToBottom = true;
     this.isSubmitting = false;
+    this.cloudSyncTimeout = null;
 
     this.render();
     this.bindEvents();
     this.setupDraggable();
     this.setupResizable();
+    this.syncFromCloud();
     this.subscribeState();
   }
 
@@ -168,6 +170,92 @@ export class MiniPulse {
     `;
   }
 
+  saveLayoutSettings() {
+    const panel = document.getElementById('mini-pulse-panel');
+    const layout = {
+      isRailOpen: this.isRailOpen,
+      isSubpanelOpen: this.isSubpanelOpen,
+      isChatOpen: this.isChatOpen,
+      isMembersOpen: this.isMembersOpen,
+      width: panel ? panel.style.width : null,
+      height: panel ? panel.style.height : null,
+      docked: appState.getState().miniPulseDocked
+    };
+    try {
+      localStorage.setItem('pulse_ui_layout', JSON.stringify(layout));
+    } catch {}
+
+    if (this.cloudSyncTimeout) clearTimeout(this.cloudSyncTimeout);
+    this.cloudSyncTimeout = setTimeout(async () => {
+      if (playFabService.isAuthenticated()) {
+        try {
+          await playFabService.savePulseSettings({ layout });
+        } catch {}
+      }
+    }, 600);
+  }
+
+  applyLayoutSettings(layout) {
+    if (!layout || typeof layout !== 'object') return;
+    if (typeof layout.isRailOpen === 'boolean') {
+      this.isRailOpen = layout.isRailOpen;
+      const rail = document.getElementById('mp-rail');
+      const toggle = document.getElementById('mp-toggle-rail-btn');
+      rail?.classList.toggle('collapsed', !this.isRailOpen);
+      toggle?.classList.toggle('active-toggle', this.isRailOpen);
+    }
+    if (typeof layout.isSubpanelOpen === 'boolean') {
+      this.isSubpanelOpen = layout.isSubpanelOpen;
+      const sub = document.getElementById('mp-subpanel');
+      const toggle = document.getElementById('mp-toggle-subpanel-btn');
+      sub?.classList.toggle('collapsed', !this.isSubpanelOpen);
+      toggle?.classList.toggle('active-toggle', this.isSubpanelOpen);
+    }
+    if (typeof layout.isChatOpen === 'boolean') {
+      this.isChatOpen = layout.isChatOpen;
+      const chat = document.getElementById('mp-chat-column');
+      const toggle = document.getElementById('mp-toggle-chat-btn');
+      chat?.classList.toggle('collapsed', !this.isChatOpen);
+      toggle?.classList.toggle('active-toggle', this.isChatOpen);
+    }
+    if (typeof layout.isMembersOpen === 'boolean') {
+      this.isMembersOpen = layout.isMembersOpen;
+      const members = document.getElementById('mp-members-panel');
+      const toggle = document.getElementById('mp-toggle-members-btn');
+      members?.classList.toggle('collapsed', !this.isMembersOpen);
+      toggle?.classList.toggle('active-toggle', this.isMembersOpen);
+      if (this.isMembersOpen) this.renderMembers();
+    }
+    const panel = document.getElementById('mini-pulse-panel');
+    if (panel) {
+      if (layout.width) panel.style.width = layout.width;
+      if (layout.height) panel.style.height = layout.height;
+    }
+    if (typeof layout.docked === 'boolean' && layout.docked !== appState.getState().miniPulseDocked) {
+      appState.setMiniPulseDocked(layout.docked);
+    }
+  }
+
+  async syncFromCloud() {
+    try {
+      const local = localStorage.getItem('pulse_ui_layout');
+      if (local) {
+        this.applyLayoutSettings(JSON.parse(local));
+      }
+    } catch {}
+
+    if (!playFabService.isAuthenticated()) return;
+    try {
+      const cloud = await playFabService.loadPulseSettings();
+      if (cloud) {
+        if (cloud.layout) {
+          this.applyLayoutSettings(cloud.layout);
+          localStorage.setItem('pulse_ui_layout', JSON.stringify(cloud.layout));
+        }
+      }
+    } catch {}
+  }
+
   setupDraggable() {
     const header = document.getElementById('mini-pulse-header');
     const panel = document.getElementById('mini-pulse-panel');
@@ -298,6 +386,7 @@ export class MiniPulse {
       if (!isResizing) return;
       isResizing = false;
       panel.style.transition = '';
+      this.saveLayoutSettings();
       window.removeEventListener('mousemove', onResizeMove);
       window.removeEventListener('mouseup', onResizeUp);
       window.removeEventListener('touchmove', onResizeMove);
@@ -320,6 +409,7 @@ export class MiniPulse {
       soundSynth.playClick();
       const state = appState.getState();
       appState.setMiniPulseDocked(!state.miniPulseDocked);
+      this.saveLayoutSettings();
     });
 
     const toggleRailBtn = document.getElementById('mp-toggle-rail-btn');
@@ -331,6 +421,7 @@ export class MiniPulse {
         rail.classList.toggle('collapsed', !this.isRailOpen);
       }
       toggleRailBtn.classList.toggle('active-toggle', this.isRailOpen);
+      this.saveLayoutSettings();
     });
 
     const toggleSubpanelBtn = document.getElementById('mp-toggle-subpanel-btn');
@@ -342,6 +433,7 @@ export class MiniPulse {
         sub.classList.toggle('collapsed', !this.isSubpanelOpen);
       }
       toggleSubpanelBtn.classList.toggle('active-toggle', this.isSubpanelOpen);
+      this.saveLayoutSettings();
     });
 
     const toggleChatBtn = document.getElementById('mp-toggle-chat-btn');
@@ -353,6 +445,7 @@ export class MiniPulse {
         chat.classList.toggle('collapsed', !this.isChatOpen);
       }
       toggleChatBtn.classList.toggle('active-toggle', this.isChatOpen);
+      this.saveLayoutSettings();
     });
 
     const toggleMembersBtn = document.getElementById('mp-toggle-members-btn');
@@ -367,6 +460,7 @@ export class MiniPulse {
       if (this.isMembersOpen) {
         this.renderMembers();
       }
+      this.saveLayoutSettings();
     });
 
     const membersCloseBtn = document.getElementById('mp-members-close-btn');
@@ -378,6 +472,7 @@ export class MiniPulse {
         members.classList.add('collapsed');
       }
       toggleMembersBtn?.classList.remove('active-toggle');
+      this.saveLayoutSettings();
     });
 
     const railGlobal = document.getElementById('mp-rail-global-btn');

@@ -821,20 +821,43 @@ class PlayFabService {
   }
 
   async loadUserSettings() {
-    const data = await this.getUserData(["void_user_settings"]);
-    if (data && data.void_user_settings) {
-      try {
-        return JSON.parse(data.void_user_settings);
-      } catch {}
+    const data = await this.getUserData(["pulse_user_settings", "void_user_settings", "pulse_theme"]);
+    if (data) {
+      const raw = data.pulse_user_settings || data.void_user_settings;
+      if (raw) {
+        try {
+          return JSON.parse(raw);
+        } catch {}
+      }
+      if (data.pulse_theme) {
+        return { theme: data.pulse_theme };
+      }
     }
     return null;
   }
 
   async saveUserSettings(settings) {
     if (!settings || typeof settings !== 'object') return false;
-    return await this.updateUserData({
-      void_user_settings: JSON.stringify(settings)
-    }, "Private");
+    const payload = JSON.stringify(settings);
+    try {
+      setCookie("pulse_user_settings", payload);
+      if (settings.theme) setCookie("pulse_theme", settings.theme);
+    } catch {}
+
+    try {
+      window.postMessage({
+        type: 'PULSE_SETTINGS_SYNC',
+        settings
+      }, '*');
+    } catch {}
+
+    const dataObj = {
+      pulse_user_settings: payload,
+      void_user_settings: payload
+    };
+    if (settings.theme) dataObj.pulse_theme = settings.theme;
+
+    return await this.updateUserData(dataObj, "Private");
   }
 
   async loadGameSandboxCookies() {
@@ -852,6 +875,16 @@ class PlayFabService {
     return await this.updateUserData({
       void_cookie_sandbox: JSON.stringify(cookiesMapObj)
     }, "Private");
+  }
+
+  async loadPulseSettings() {
+    return await this.loadUserSettings();
+  }
+
+  async savePulseSettings(settings) {
+    const current = (await this.loadUserSettings()) || {};
+    const merged = Object.assign({}, current, settings);
+    return await this.saveUserSettings(merged);
   }
 }
 

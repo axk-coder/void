@@ -41,5 +41,6 @@
 - [x] Task 39: Implement Sandboxed Cookie & Storage Virtualization engine (sandboxStorage.js) for isolated game persistence
 - [x] Task 40: Hook sandboxed cookie bridge into GamePlayer and Popout windows, verify and push to GitHub
 - [x] Task 41: Implement PlayFab UserData private key synchronization for sandboxed game cookies (void_cookie_sandbox)
-- [x] Task 42: Implement PlayFab UserData private key synchronization for user settings (void_user_settings: theme, panic key/url, pulse key, sound, cloak)
-- [x] Task 43: Test build, verify UserData endpoints, and push updates to GitHub
+- [x] Task 44: Implement bidirectional settings sync (theme, cloak, panic key/url, sound, pulse hotkey) in standalone Pulse app (/home/akidin/Documents/games and apps/msg app) via PlayFab UserData and cross-window messaging
+- [x] Task 45: Verify build in both VOID and msg app, verify exploit protection with private permissions, and push changes to GitHub
+
