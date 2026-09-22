@@ -168,28 +168,9 @@ export class GamePlayer {
             <iframe id="game-frame" class="game-frame" src="${this.escapeHtml(this.currentGame.url)}" sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-downloads" allow="fullscreen; autoplay; gamepad"></iframe>
           </div>
         </div>
-
-        <footer class="player-footer-bar">
-          <div class="player-hints">
-            <span class="player-hint-key">Esc</span>
-            <span class="player-hint-desc">Exit</span>
-            <span class="player-hint-sep">•</span>
-            <span class="player-hint-key">F</span>
-            <span class="player-hint-desc">Fullscreen</span>
-            <span class="player-hint-sep">•</span>
-            <span class="player-hint-key">R</span>
-            <span class="player-hint-desc">Reload</span>
-            <span class="player-hint-sep">•</span>
-            <span class="player-hint-key">]</span>
-            <span class="player-hint-desc">Pulse Chat</span>
-          </div>
-          <div class="player-footer-sync">
-            <span class="sync-dot"></span>
-            <span>Isolated Sandbox Storage Synchronized</span>
-          </div>
-        </footer>
       </section>
     `;
+
 
     const frame = this.container.querySelector('#game-frame');
     if (frame && this.currentGame) {

@@ -50,3 +50,4 @@
 - [x] Task 50: Run fixer script to download and resolve missing assets
 - [x] Task 51: Run deploy script to commit and push changes to master branch
 - [x] Task 52: Overhaul GamePlayer UI with sleek grayscale styling, responsive layout, aspect-ratio switcher, rich header bar with icons and shortcuts
+- [x] Task 53: Remove player bottom footer bar completely from GamePlayer
