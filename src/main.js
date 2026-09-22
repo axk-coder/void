@@ -164,6 +164,14 @@ const BUILTIN_GAMES = [
     url: './games/tiktok-bounce/index.html',
     badge: 'Popular',
     desc: 'Bouncing ball spinning concentric maze breaker with trails'
+  },
+  {
+    id: 'blender-online',
+    title: 'Blender 3D Online',
+    category: 'apps',
+    url: './apps/blender/index.html',
+    badge: '3D Suite',
+    desc: 'Full offline WebGL 3D modeling, sculpting, and scene design studio'
   }
 ];
 
@@ -171,6 +179,7 @@ const games = [...BUILTIN_GAMES, ...truffledGames];
 
 const CATEGORIES = [
   { id: 'all', name: 'All Games' },
+  { id: 'apps', name: 'Apps & Tools' },
   { id: 'truffled', name: 'Truffled' },
   { id: 'action', name: 'Action' },
   { id: 'arcade', name: 'Arcade' },
@@ -178,6 +187,7 @@ const CATEGORIES = [
   { id: 'multiplayer', name: 'Multiplayer' },
   { id: 'favorites', name: 'Favorites' }
 ];
+
 
 class VoidApp {
   constructor() {
@@ -552,9 +562,19 @@ class VoidApp {
 
     let filtered = games.filter(g => {
       const matchesSearch = !query || (g.title && g.title.toLowerCase().includes(query));
-      const matchesCategory = category === 'all' || (g.category && g.category.toLowerCase() === category);
+      let matchesCategory = false;
+      if (category === 'all') {
+        matchesCategory = true;
+      } else if (category === 'truffled') {
+        matchesCategory = (g.category === 'truffled' || (g.url && g.url.includes('truffled')));
+      } else if (category === 'apps') {
+        matchesCategory = (g.category === 'apps' || g.category === 'tools' || g.badge === '3D Suite');
+      } else {
+        matchesCategory = (g.category && g.category.toLowerCase() === category);
+      }
       return matchesSearch && matchesCategory;
     });
+
 
     const cards = grid.querySelectorAll('.game-card');
     cards.forEach(c => c.remove());
