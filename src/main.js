@@ -167,13 +167,14 @@ const BUILTIN_GAMES = [
   },
   {
     id: 'blender-online',
-    title: 'Blender 3D Online',
+    title: 'Blender 3D (WASM)',
     category: 'apps',
-    url: './apps/blender/index.html',
-    badge: '3D Suite',
-    desc: 'Full offline WebGL 3D modeling, sculpting, and scene design studio'
+    url: 'https://truffled.lol/iframe.html?url=/tools/blender/index.html',
+    badge: 'Real Blender',
+    desc: 'Real Blender interface compiled to WebAssembly with WebGPU backend'
   }
 ];
+
 
 const games = [...BUILTIN_GAMES, ...truffledGames];
 
