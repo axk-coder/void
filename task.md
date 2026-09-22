@@ -46,4 +46,6 @@
 - [x] Task 46: Make top navbar Pulse button hidden by default and toggle its visibility using the configured shortcut keybind (default: "]" and "}")
 - [x] Task 47: Implement pulse://file parsing, media embeds (images, video, audio, files), download handler, and file upload composer in Mini Pulse
 - [x] Task 48: Add clipboard image paste and drag-and-drop file uploading support to Mini Pulse
-
+- [x] Task 49: Run puller script to fetch latest catalog and games
+- [x] Task 50: Run fixer script to download and resolve missing assets
+- [x] Task 51: Run deploy script to commit and push changes to master branch

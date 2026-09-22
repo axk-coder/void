@@ -1803,7 +1803,7 @@
     "id": "truffled-geometry-dash-webport-225",
     "title": "Geometry Dash, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-geometry-dash-webport-225.html",
+    "url": "./truffled/games/geo/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-geometry-dash-webport-225-gd.webp",
     "frameType": "iframe"
   },
@@ -2051,7 +2051,7 @@
     "id": "truffled-hollow-knight-webport-256",
     "title": "Hollow Knight, Webport",
     "category": "truffled",
-    "url": "./truffled/games/hollowknight/index.html",
+    "url": "./truffled/games/newesthk/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-hollow-knight-webport-256-hollow.webp",
     "frameType": "iframe"
   },
@@ -3755,7 +3755,7 @@
     "id": "truffled-spaceflight-simulator-webport-469",
     "title": "Spaceflight Simulator, Webport",
     "category": "truffled",
-    "url": "./truffled/gamefile/truffled-spaceflight-simulator-webport-469.html",
+    "url": "./truffled/games/spaceflightsim/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-spaceflight-simulator-webport-469-ssim.webp",
     "frameType": "iframe"
   },
@@ -4187,7 +4187,7 @@
     "id": "truffled-ultrakill-webport-523",
     "title": "Ultrakill, Webport",
     "category": "truffled",
-    "url": "./truffled/games/ultrakill/index.html",
+    "url": "./truffled/games/thkill/index.html",
     "thumbnail": "./truffled/thumbnails/truffled-ultrakill-webport-523-ultra.webp",
     "frameType": "iframe"
   },
