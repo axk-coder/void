@@ -51,8 +51,3 @@
 - [x] Task 51: Run deploy script to commit and push changes to master branch
 - [x] Task 52: Overhaul GamePlayer UI with sleek grayscale styling, responsive layout, aspect-ratio switcher, rich header bar with icons and shortcuts
 - [x] Task 53: Remove player bottom footer bar completely from GamePlayer
-- [x] Task 54: Scrape high-demand webports from Truffled, 3kh0, and open webport repositories
-- [x] Task 55: Add Blender Online Web 3D Modeling Studio in public/apps/blender/ and register in catalog
-- [x] Task 56: Download missing assets and register webports in catalog
-- [x] Task 57: Build production dist, update map.txt, and deploy to GitHub
-
