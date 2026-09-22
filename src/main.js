@@ -169,11 +169,12 @@ const BUILTIN_GAMES = [
     id: 'blender-online',
     title: 'Blender 3D (WASM)',
     category: 'apps',
-    url: 'https://truffled.lol/iframe.html?url=/tools/blender/index.html',
+    url: './tools/blender/index.html',
     badge: 'Real Blender',
     desc: 'Real Blender interface compiled to WebAssembly with WebGPU backend'
   }
 ];
+
 
 
 const games = [...BUILTIN_GAMES, ...truffledGames];
