@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Lethal Company Web</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+    }
+
+    #unity-container {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #unity-canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      outline: none;
+      background: #000;
+      touch-action: none;
+    }
+
+    #unity-loading-bar {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      z-index: 10;
+    }
+
+    #unity-logo {
+      width: 154px;
+      height: 130px;
+      margin: 0 auto 10px;
+      background: url("TemplateData/unity-logo-light.png") no-repeat center / contain;
+    }
+
+    #unity-progress-bar-empty {
+      width: 100%;
+      height: 12px;
+      border: 1px solid #777;
+      box-sizing: border-box;
+    }
+
+    #unity-progress-bar-full {
+      width: 0%;
+      height: 100%;
+      background: #fff;
+      transition: width 0.1s linear;
+    }
+
+    #unity-warning {
+      position: fixed;
+      left: 50%;
+      top: 5%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 8px 12px;
+      display: none;
+      z-index: 100;
+      max-width: 90%;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PXHK7Q7G3Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-PXHK7Q7G3Z");
+</script>
+<body>
+  <div id="unity-container">
+    <canvas id="unity-canvas" width="1920" height="1080"></canvas>
+
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+    </div>
+
+    <div id="unity-warning"></div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("unity-canvas");
+    const loadingBar = document.getElementById("unity-loading-bar");
+    const progressBarFull = document.getElementById("unity-progress-bar-full");
+    const warning = document.getElementById("unity-warning");
+
+    const wispProtocol = location.protocol === "https:" ? "wss:" : "ws:";
+    const wispPort = location.port ? ":" + location.port : "";
+
+    window.WISP_URL =
+      wispProtocol +
+      "//" +
+      location.hostname +
+      wispPort +
+      "/wisp/";
+
+    window.WispRelayWSState = {
+      sock: null,
+      recvPtr: 0,
+      sid: 0,
+      url: window.WISP_URL
+    };
+
+    console.log("[wisp] endpoint:", window.WISP_URL);
+
+    function resizeCanvas() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      canvas.width = width;
+      canvas.height = height;
+
+      if (window.unityInstance) {
+        try {
+          window.unityInstance.SendMessage(
+            "WebGLInput",
+            "SetCanvasSize",
+            width + "," + height
+          );
+        } catch (e) {
+        }
+      }
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("orientationchange", resizeCanvas);
+
+    resizeCanvas();
+
+    function unityShowBanner(message, type) {
+      warning.textContent = message;
+
+      if (type === "error") {
+        warning.style.display = "block";
+      } else {
+        warning.style.display = "none";
+      }
+
+      console.log("[unity]", type || "info", message);
+    }
+
+    async function loadSplitFile(url, expectedParts, mimeType) {
+      const parts = [];
+      let totalSize = 0;
+
+      console.log(
+        "[unity] loading",
+        url,
+        "with",
+        expectedParts,
+        "parts"
+      );
+
+      const padWidth = String(expectedParts).length;
+
+      for (let i = 1; i <= expectedParts; i++) {
+        const padded = String(i).padStart(padWidth, "0");
+        const candidates = padded === String(i)
+          ? [url + ".part" + i]
+          : [url + ".part" + padded, url + ".part" + i];
+
+        let response = null;
+        let partUrl = candidates[0];
+
+        for (const candidate of candidates) {
+          partUrl = candidate;
+
+          console.log(
+            "[unity] loading part",
+            i + "/" + expectedParts,
+            partUrl
+          );
+
+          response = await fetch(partUrl, {
+            method: "GET",
+            cache: "no-store"
+          });
+
+          if (response.ok) break;
+        }
+
+        if (!response.ok) {
+          throw new Error(
+            "Failed to load " +
+            partUrl +
+            " (" +
+            response.status +
+            ")"
+          );
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+
+        if (contentType.includes("text/html")) {
+          throw new Error(
+            "Part " +
+            i +
+            " returned HTML instead of binary (missing file, got redirect to 404): " +
+            partUrl
+          );
+        }
+
+        const buffer = await response.arrayBuffer();
+
+        if (buffer.byteLength === 0) {
+          throw new Error(
+            "Part " +
+            i +
+            " is empty: " +
+            partUrl
+          );
+        }
+
+        if (buffer.byteLength < 1024) {
+          const head = new TextDecoder().decode(buffer.slice(0, Math.min(buffer.byteLength, 200)));
+
+          if (head.includes("<!") || head.includes("<html")) {
+            throw new Error(
+              "Part " +
+              i +
+              " looks like a 404 page (" +
+              buffer.byteLength +
+              " bytes): " +
+              partUrl
+            );
+          }
+        }
+
+        parts.push(buffer);
+        totalSize += buffer.byteLength;
+
+        console.log(
+          "[unity] part",
+          i,
+          "loaded:",
+          (buffer.byteLength / 1024 / 1024).toFixed(2),
+          "MB"
+        );
+      }
+
+      console.log(
+        "[unity] combining",
+        url,
+        "(" +
+        (totalSize / 1024 / 1024).toFixed(2) +
+        " MB)"
+      );
+
+      const combined = new Blob(parts, {
+        type: mimeType
+      });
+
+      const objectUrl = URL.createObjectURL(combined);
+
+      console.log(
+        "[unity] created",
+        mimeType,
+        "blob:",
+        objectUrl
+      );
+
+      return objectUrl;
+    }
+
+    function loadUnityLoader() {
+      return new Promise((resolve, reject) => {
+        if (typeof createUnityInstance === "function") {
+          resolve();
+          return;
+        }
+
+        const script = document.createElement("script");
+
+        script.src = "Build/build.loader.js";
+        script.async = true;
+
+        script.onload = () => {
+          console.log("[unity] build.loader.js loaded");
+
+          if (typeof createUnityInstance !== "function") {
+            reject(
+              new Error(
+                "build.loader.js loaded but createUnityInstance is still undefined"
+              )
+            );
+            return;
+          }
+
+          resolve();
+        };
+
+        script.onerror = () => {
+          reject(
+            new Error(
+              "Could not load Build/build.loader.js"
+            )
+          );
+        };
+
+        document.head.appendChild(script);
+      });
+    }
+
+    async function startUnity() {
+      let dataUrl = null;
+      let wasmUrl = null;
+
+      try {
+        loadingBar.style.display = "block";
+
+        console.log("[unity] loading Unity loader");
+
+        await loadUnityLoader();
+
+        console.log("[unity] Unity loader ready");
+        console.log("[unity] preparing build files");
+
+        dataUrl = await loadSplitFile(
+          "Build/build.data",
+          18,
+          "application/octet-stream"
+        );
+
+        console.log("[unity] data ready");
+
+        wasmUrl = await loadSplitFile(
+          "Build/build.wasm",
+          5,
+          "application/wasm"
+        );
+
+        console.log("[unity] wasm ready");
+
+        resizeCanvas();
+
+        const config = {
+          dataUrl: dataUrl,
+
+          frameworkUrl: "Build/build.framework.js",
+
+          codeUrl: wasmUrl,
+
+          streamingAssetsUrl: "StreamingAssets",
+
+          companyName: "ZeekerssRBLX",
+
+          productName: "Lethal Company",
+
+          productVersion: "0.1",
+
+          matchWebGLToCanvasSize: true,
+
+          showBanner: unityShowBanner,
+
+          webglContextAttributes: {
+            antialias: false,
+            preserveDrawingBuffer: true,
+            powerPreference: "high-performance",
+            failIfMajorPerformanceCaveat: false
+          }
+        };
+
+        console.log("[unity] creating Unity instance");
+
+        const instance = await createUnityInstance(
+          canvas,
+          config,
+          function(progress) {
+            const percent = Math.round(progress * 100);
+
+            progressBarFull.style.width = percent + "%";
+
+            if (
+              percent === 0 ||
+              percent === 25 ||
+              percent === 50 ||
+              percent === 75 ||
+              percent === 90 ||
+              percent === 95 ||
+              percent === 100
+            ) {
+              console.log(
+                "[unity] unity progress:",
+                percent + "%"
+              );
+            }
+          }
+        );
+
+        window.unityInstance = instance;
+
+        resizeCanvas();
+
+        console.log("[unity] Unity loaded");
+
+        loadingBar.style.display = "none";
+
+      } catch (error) {
+        console.error(
+          "[unity] failed to load:",
+          error
+        );
+
+        loadingBar.style.display = "none";
+
+        unityShowBanner(
+          "Unity failed to load: " + error.message,
+          "error"
+        );
+      }
+    }
+
+    window.addEventListener("load", function() {
+      console.log("[unity] loader loaded");
+
+      startUnity();
+    });
+  </script>
+</body>
+</html>
+

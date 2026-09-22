@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PXHK7Q7G3Z"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag("js", new Date());
+gtag("config", "G-PXHK7Q7G3Z");
+</script>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Unity WebGL Player | Shrimp.io</title>
+<link rel="shortcut icon" href="TemplateData/favicon.ico">
+<link rel="stylesheet" href="TemplateData/style.css">
+<style>
+html, body {
+width: 100%;
+height: 100%;
+margin: 0;
+padding: 0;
+overflow: hidden;
+background: transparent !important;
+}
+#unity-container {
+width: 100%;
+height: 100%;
+position: absolute;
+top: 0;
+left: 0;
+background: transparent !important;
+}
+#unity-canvas {
+width: 100% !important;
+height: 100% !important;
+background: transparent !important;
+}
+#unity-loading-bar {
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+display: flex;
+flex-direction: column;
+align-items: center;
+z-index: 10;
+}
+#loading-text {
+color: white;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-size: 18px;
+letter-spacing: 1px;
+text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+#unity-footer { display: none; }
+#unity-warning { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20; }
+</style>
+</head>
+<body>
+<div id="unity-container">
+<canvas id="unity-canvas" tabindex="-1"></canvas>
+<div id="unity-loading-bar">
+<div id="loading-text">LOADING... 0%</div>
+</div>
+<div id="unity-warning"></div>
+<div id="unity-footer">
+<div id="unity-webgl-logo"></div>
+<div id="unity-fullscreen-button"></div>
+<div id="unity-build-title">Shrimp.io</div>
+</div>
+</div>
+<script>
+var container = document.querySelector("#unity-container");
+var canvas = document.querySelector("#unity-canvas");
+var loadingBar = document.querySelector("#unity-loading-bar");
+var loadingText = document.querySelector("#loading-text");
+var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+var warningBanner = document.querySelector("#unity-warning");
+function unityShowBanner(msg, type) {
+    function updateBannerVisibility() {
+      warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+    }
+    var div = document.createElement('div');
+    div.innerHTML = msg;
+    warningBanner.appendChild(div);
+    if (type == 'error') div.style = 'background: red; padding: 10px; color: white;';
+    else {
+      if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+      setTimeout(function() {
+        warningBanner.removeChild(div);
+        updateBannerVisibility();
+      }, 5000);
+    }
+    updateBannerVisibility();
+  }
+
+  var buildUrl = "Build";
+  var loaderUrl = buildUrl + "/shrimpiobog.loader.js";
+  var config = {
+    dataUrl: buildUrl + "/shrimpiobog.data",
+    frameworkUrl: buildUrl + "/shrimpiobog.framework.js",
+    codeUrl: buildUrl + "/shrimpiobog.wasm",
+    streamingAssetsUrl: "StreamingAssets",
+    companyName: "VuVuu",
+    productName: "Shrimp.io",
+    productVersion: "0.19.75",
+    showBanner: unityShowBanner,
+    webglContextAttributes: { alpha: true, preserveDrawingBuffer: true }
+  };
+
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    var meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+    document.getElementsByTagName('head')[0].appendChild(meta);
+  }
+
+  var script = document.createElement("script");
+  script.src = loaderUrl;
+  script.onload = () => {
+    createUnityInstance(canvas, config, (progress) => {
+      loadingText.innerHTML = "LOADING... " + Math.round(100 * progress) + "%";
+    }).then((unityInstance) => {
+      loadingBar.style.display = "none";
+      fullscreenButton.onclick = () => {
+        unityInstance.SetFullscreen(1);
+      };
+    }).catch((message) => {
+      console.error(message);
+    });
+  };
+  document.body.appendChild(script);
+</script>
+</body>
+</html>

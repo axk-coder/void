@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+    <title>Clustertruck</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
+      }
+
+      #unity-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: none;
+      }
+
+      #unity-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        outline: none;
+      }
+
+      #unity-footer {
+        display: none;
+      }
+
+      #unity-loading-bar {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+      }
+
+      #unity-status {
+        margin-top: 12px;
+        width: 300px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        color: #bbb;
+        white-space: nowrap;
+      }
+
+      #unity-warning {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: transparent;
+      }
+
+      #unity-error {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        max-width: 80%;
+        padding: 16px 20px;
+        background: #2a1414;
+        border: 1px solid #a33;
+        color: #f4d5d5;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PXHK7Q7G3Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-PXHK7Q7G3Z");
+</script>
+  <body>
+    <div id="unity-container">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+        <div id="unity-status"></div>
+      </div>
+
+      <div id="unity-warning"></div>
+      <div id="unity-error"></div>
+    </div>
+
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var statusText = document.querySelector("#unity-status");
+      var warningBanner = document.querySelector("#unity-warning");
+      var errorBox = document.querySelector("#unity-error");
+
+      function showError(msg) {
+        loadingBar.style.display = "none";
+        errorBox.style.display = "block";
+        errorBox.innerHTML = msg;
+      }
+
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display =
+            warningBanner.children.length ? "block" : "none";
+        }
+
+        var div = document.createElement("div");
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+
+        if (type == "error") {
+          div.style = "background: red; padding: 10px;";
+        } else {
+          if (type == "warning") {
+            div.style = "background: yellow; padding: 10px;";
+          }
+
+          setTimeout(function () {
+            if (div.parentNode === warningBanner) {
+              warningBanner.removeChild(div);
+              updateBannerVisibility();
+            }
+          }, 5000);
+        }
+
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/ClusterTruckWEB.loader.js";
+      var dataUrl = buildUrl + "/ClusterTruckWEB.data";
+      var wasmUrl = buildUrl + "/ClusterTruckWEB.wasm";
+
+      var DATA_PARTS = 6;
+      var WASM_PARTS = 5;
+
+      async function fetchPart(url) {
+        var res = await fetch(url, {
+          cache: "no-store"
+        });
+
+        if (!res.ok) {
+          throw new Error(
+            "Failed to fetch " + url + " (HTTP " + res.status + ")"
+          );
+        }
+
+        var contentType = (res.headers.get("content-type") || "").toLowerCase();
+
+        if (
+          contentType.includes("text/html") ||
+          contentType.includes("text/plain")
+        ) {
+          throw new Error(
+            "Server returned HTML/text instead of binary data for " + url
+          );
+        }
+
+        return await res.arrayBuffer();
+      }
+
+      async function assembleFile(
+        baseUrl,
+        partCount,
+        mimeType,
+        label,
+        onBytes
+      ) {
+        var buffers = [];
+        var total = 0;
+
+        for (var i = 1; i <= partCount; i++) {
+          statusText.textContent =
+            "Downloading " +
+            label +
+            " (" +
+            i +
+            "/" +
+            partCount +
+            ")";
+
+          var buffer = await fetchPart(
+            baseUrl + ".part" + i
+          );
+
+          if (!buffer || buffer.byteLength === 0) {
+            throw new Error(
+              "Empty file received: " +
+              baseUrl +
+              ".part" +
+              i
+            );
+          }
+
+          buffers.push(buffer);
+          total += buffer.byteLength;
+          onBytes(buffer.byteLength);
+        }
+
+        var blob = new Blob(buffers, {
+          type: mimeType
+        });
+
+        var objectUrl = URL.createObjectURL(blob);
+
+        return {
+          url: objectUrl,
+          size: total
+        };
+      }
+
+      var objectUrls = [];
+
+      async function boot() {
+        loadingBar.style.display = "block";
+        statusText.textContent = "Checking files...";
+        progressBarFull.style.width = "0%";
+
+        var totalBytes = 0;
+        var loadedBytes = 0;
+
+        var dataSizes = [];
+        var wasmSizes = [];
+
+        for (var i = 1; i <= DATA_PARTS; i++) {
+          var response = await fetch(
+            dataUrl + ".part" + i,
+            {
+              method: "HEAD",
+              cache: "no-store"
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              "Missing data part " + i +
+              " (HTTP " + response.status + ")"
+            );
+          }
+
+          var size = parseInt(
+            response.headers.get("content-length") || "0",
+            10
+          );
+
+          dataSizes.push(size);
+          totalBytes += size;
+        }
+
+        for (var j = 1; j <= WASM_PARTS; j++) {
+          var wasmResponse = await fetch(
+            wasmUrl + ".part" + j,
+            {
+              method: "HEAD",
+              cache: "no-store"
+            }
+          );
+
+          if (!wasmResponse.ok) {
+            throw new Error(
+              "Missing WASM part " + j +
+              " (HTTP " + wasmResponse.status + ")"
+            );
+          }
+
+          var wasmSize = parseInt(
+            wasmResponse.headers.get("content-length") || "0",
+            10
+          );
+
+          wasmSizes.push(wasmSize);
+          totalBytes += wasmSize;
+        }
+
+        function onBytes(bytes) {
+          loadedBytes += bytes;
+
+          if (totalBytes > 0) {
+            var progress = Math.min(
+              loadedBytes / totalBytes,
+              1
+            );
+
+            progressBarFull.style.width =
+              (progress * 90) + "%";
+          }
+        }
+
+        statusText.textContent = "Loading game data...";
+
+        var dataResult = await assembleFile(
+          dataUrl,
+          DATA_PARTS,
+          "application/octet-stream",
+          "game data",
+          onBytes
+        );
+
+        objectUrls.push(dataResult.url);
+
+        statusText.textContent = "Loading engine...";
+
+        var wasmResult = await assembleFile(
+          wasmUrl,
+          WASM_PARTS,
+          "application/wasm",
+          "engine",
+          onBytes
+        );
+
+        objectUrls.push(wasmResult.url);
+
+        statusText.textContent = "Checking WebAssembly...";
+
+        var wasmCheck = await fetch(wasmResult.url);
+        var wasmBuffer = await wasmCheck.arrayBuffer();
+        var wasmBytes = new Uint8Array(wasmBuffer);
+
+        if (
+          wasmBytes.length < 8 ||
+          wasmBytes[0] !== 0x00 ||
+          wasmBytes[1] !== 0x61 ||
+          wasmBytes[2] !== 0x73 ||
+          wasmBytes[3] !== 0x6d
+        ) {
+          throw new Error(
+            "The assembled ClusterTruck WASM is invalid. " +
+            "The first bytes are not a WebAssembly file."
+          );
+        }
+
+        statusText.textContent = "Starting...";
+
+        var config = {
+          dataUrl: dataResult.url,
+          frameworkUrl: buildUrl + "/ClusterTruckWEB.framework.js",
+          codeUrl: wasmResult.url,
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "Landfall",
+          productName: "Clustertruck",
+          productVersion: "1.0",
+          showBanner: unityShowBanner
+        };
+
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          container.className = "unity-mobile";
+          canvas.className = "unity-mobile";
+        }
+
+        await new Promise(function (resolve, reject) {
+          var script = document.createElement("script");
+
+          script.src = loaderUrl;
+
+          script.onload = resolve;
+
+          script.onerror = function () {
+            reject(
+              new Error(
+                "Failed to load " + loaderUrl
+              )
+            );
+          };
+
+          document.body.appendChild(script);
+        });
+
+        var unityInstance = await createUnityInstance(
+          canvas,
+          config,
+          function (progress) {
+            progressBarFull.style.width =
+              (90 + progress * 10) + "%";
+          }
+        );
+
+        loadingBar.style.display = "none";
+
+        objectUrls.forEach(function (url) {
+          URL.revokeObjectURL(url);
+        });
+
+        objectUrls = [];
+
+        window.addEventListener("keydown", function (e) {
+          if (
+            (e.key === "F" || e.key === "f") &&
+            (e.target === document.body || e.target === canvas)
+          ) {
+            unityInstance.SetFullscreen(1);
+          }
+        });
+      }
+
+      boot().catch(function (err) {
+        console.error(err);
+
+        showError(
+          "<b>Failed to start.</b><br>" +
+          (err && err.message
+            ? err.message
+            : err)
+        );
+      });
+    </script>
+  </body>
+</html>

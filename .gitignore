@@ -8,7 +8,9 @@ backend/
 backend/**
 deploy.sh
 *.pck
-AngryBirds2WebPortFinal.data.unityweb
-BALDI.data
-*Brotli.data.unityweb
-pikubog.data.unityweb
+*.data
+*.data.unityweb
+*.wasm.unityweb
+*.unityweb
+mindustry.html
+
