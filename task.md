@@ -55,6 +55,8 @@
 - [x] Task 55: Register Blender 3D Online in BUILTIN_GAMES catalog in src/main.js
 - [x] Task 56: Verify build, update map.txt, and deploy to GitHub
 - [x] Task 57: Implement HTML script/style inline fallback engine in GamePlayer for 404/403 school firewall bypass
+- [x] Task 58: Integrate vite-plugin-singlefile in vite.config.js to inline all application JavaScript (main.js, GamePlayer.js, etc.) and CSS directly into index.html
+
 
 
 
